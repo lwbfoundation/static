@@ -1,6 +1,5 @@
 import React from "react";
-import { Flex, Box, Heading } from "@chakra-ui/core";
-import { Helmet } from "react-helmet";
+import { Heading } from "@chakra-ui/core";
 import PostBody from "../post-body";
 import PrelaunchLayout from "../prelaunch-layout";
 

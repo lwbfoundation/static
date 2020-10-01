@@ -1,8 +1,7 @@
 import React from "react";
-import { Flex, Box, Heading } from "@chakra-ui/core";
+import { Flex, Box } from "@chakra-ui/core";
 import { Global, css } from "@emotion/core";
 import { Helmet } from "react-helmet";
-import PostBody from "../components/post-body";
 
 const PrelaunchLayout = ({ title, children }) => <>
   <Helmet>

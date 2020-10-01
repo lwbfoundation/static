@@ -9,6 +9,12 @@ const PrelaunchLayout = ({ title, children }) => <>
     <title>{title}</title>
   </Helmet>
   <Global styles={css`
+    @font-face {
+      font-family: "Trade Gothic";
+      src: url("/fonts/TradeGothicLTStd-Bd2.otf");
+      font-display: fallback;
+    }
+
     html {
       height: 100%;
       background-color: #4b4b4b;

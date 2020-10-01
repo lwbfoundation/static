@@ -50,15 +50,6 @@ module.exports = {
         isUsingColorMode: false,
       }
     },
-    {
-      resolve: "gatsby-plugin-web-font-loader",
-      options: {
-        custom: {
-          families: ["Trade Gothic"],
-          urls: ["/fonts/fonts.css"],
-        },
-      },
-    },
     `gatsby-transformer-sharp`,
     {
       resolve: "gatsby-plugin-react-svg",

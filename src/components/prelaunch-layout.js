@@ -33,8 +33,8 @@ const PrelaunchLayout = ({ title, children }) => <>
       text-decoration: underline;
     }
   `} />
-  <Flex align="center" justify="center" width="100%" height="100%">
-    <Box textAlign="center" marginBottom="8%">
+  <Flex align="center" justify="center" width="100%" height="100%" paddingX={5}>
+    <Box marginBottom="8%" maxWidth={800}>
       {children}
     </Box>
   </Flex>

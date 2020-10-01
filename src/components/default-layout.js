@@ -5,7 +5,7 @@ import Menu from "./menu"
 
 import "../assets/style.css"
 
-const Layout = ({ children }) => (
+const DefaultLayout = ({ children }) => (
   <div>
     <Grid style={{ margin: `0 auto` }} maxW="90%" w={900} alignSelf="center">
       <Box mb={10} mt={20}>
@@ -18,4 +18,4 @@ const Layout = ({ children }) => (
   </div>
 )
 
-export default Layout
+export default DefaultLayout

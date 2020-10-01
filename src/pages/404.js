@@ -1,11 +1,9 @@
 import React from 'react'
-import { Heading, Box } from '@chakra-ui/core';
-import Layout from '../components/layout';
+import { Link } from '@chakra-ui/core';
+import PrelaunchLayout from '../components/prelaunch-layout';
 
 export default () => (
-    <Layout>
-        <Box>
-            <Heading as="h1" size="xl">Oops, that's a 404</Heading>
-        </Box>
-    </Layout>
-)
+  <PrelaunchLayout>
+    page not found. <Link href="/" textDecoration="underline">go to homepage</Link>
+  </PrelaunchLayout>
+);

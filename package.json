@@ -1,11 +1,11 @@
 {
-  "name": "using-gatsby-source-wordpress-experimental",
-  "description": "Gatsby example site using gatsby-source-wordpress@next",
+  "name": "lwbfoundation-static",
+  "description": "Lewis W. Butler Foundation Static Site",
   "license": "MIT",
   "version": "0.0.1",
   "author": {
-    "name": "Tyler",
-    "email": "tyler@gatsbyjs.com"
+    "name": "Tobias",
+    "email": "tobias@lewiswbutlerfoundation.org"
   },
   "scripts": {
     "develop": "gatsby develop",
@@ -17,7 +17,7 @@
     "serve": "gatsby serve"
   },
   "dependencies": {
-    "@chakra-ui/core": "^0.7.0",
+    "@chakra-ui/core": "^0.8.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "add": "^2.0.6",
@@ -29,12 +29,14 @@
     "gatsby-plugin-netlify-cache": "^1.2.0",
     "gatsby-plugin-react-svg": "^3.0.0",
     "gatsby-plugin-sharp": "^2.6.19",
+    "gatsby-plugin-web-font-loader": "^1.0.4",
     "gatsby-source-filesystem": "^2.3.7",
     "gatsby-source-wordpress-experimental": "^1.0.7",
     "gatsby-transformer-sharp": "2.5.11",
     "gatsby-wordpress-experimental-inline-images": "^0.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.1.0",
     "react-paginate": "^6.3.2",
     "yarn": "^1.22.4"
   },

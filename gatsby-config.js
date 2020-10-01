@@ -22,7 +22,7 @@ module.exports = {
       options: {
         url:
           process.env.WPGRAPHQL_URL ||
-          `https://admin.lewiswbutlerfoundation.org/graphql`,
+          `http://admin.lewiswbutlerfoundation.org/graphql`,
         verbose: true,
         develop: {
           hardCacheMediaFiles: true,
@@ -44,7 +44,21 @@ module.exports = {
         },
       },
     },
-    `gatsby-plugin-chakra-ui`,
+    {
+      resolve: `gatsby-plugin-chakra-ui`,
+      options: {
+        isUsingColorMode: false,
+      }
+    },
+    {
+      resolve: "gatsby-plugin-web-font-loader",
+      options: {
+        custom: {
+          families: ["Trade Gothic"],
+          urls: ["/fonts/fonts.css"],
+        },
+      },
+    },
     `gatsby-transformer-sharp`,
     {
       resolve: "gatsby-plugin-react-svg",

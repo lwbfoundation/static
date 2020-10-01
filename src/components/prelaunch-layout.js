@@ -1,8 +1,7 @@
 import React from "react";
-import { Flex, Box, Heading } from "@chakra-ui/core";
+import { Flex, Box } from "@chakra-ui/core";
 import { Global, css } from "@emotion/core";
 import { Helmet } from "react-helmet";
-import PostBody from "../components/post-body";
 
 const PrelaunchLayout = ({ title, children }) => <>
   <Helmet>
@@ -33,8 +32,8 @@ const PrelaunchLayout = ({ title, children }) => <>
       text-decoration: underline;
     }
   `} />
-  <Flex align="center" justify="center" width="100%" height="100%">
-    <Box textAlign="center" marginBottom="8%">
+  <Flex align="center" justify="center" width="100%" height="100%" paddingX={5}>
+    <Box marginBottom="8%" maxWidth={800}>
       {children}
     </Box>
   </Flex>

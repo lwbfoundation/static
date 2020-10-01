@@ -22,7 +22,7 @@ module.exports = {
       options: {
         url:
           process.env.WPGRAPHQL_URL ||
-          `https://dev-gatsby-source-wordpress-v4.pantheonsite.io/graphql`,
+          `https://admin.lewiswbutlerfoundation.org/graphql`,
         verbose: true,
         develop: {
           hardCacheMediaFiles: true,

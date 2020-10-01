@@ -1,19 +1,11 @@
 import React from "react";
 import { Flex, Box } from "@chakra-ui/core";
 import { Global, css } from "@emotion/core";
-import { Helmet } from "react-helmet";
+import HeadContent from "./head-content";
 
 const PrelaunchLayout = ({ title, children }) => <>
-  <Helmet>
-    <title>{title}</title>
-  </Helmet>
+  <HeadContent title={title} />
   <Global styles={css`
-    @font-face {
-      font-family: "Trade Gothic";
-      src: url("/fonts/TradeGothicLTStd-Bd2.otf");
-      font-display: fallback;
-    }
-
     html {
       height: 100%;
       background-color: #4b4b4b;

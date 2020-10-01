@@ -2,9 +2,11 @@ import React from "react"
 import { graphql } from "gatsby"
 import BlogPost from "../../components/template-parts/blog-post"
 import Placeholder from "../../components/template-parts/placeholder"
+import Homepage from "../../components/template-parts/homepage"
 
 const templates = {
   default: BlogPost,
+  homepage: Homepage,
   placeholder: Placeholder,
 };
 
@@ -33,6 +35,11 @@ export const query = graphql`
       }
       customDisplaySettings {
         statictemplate
+      }
+      customHomepageOptions {
+        subheading
+        donatebuttontext
+        legalinfo
       }
     }
 

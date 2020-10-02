@@ -9,7 +9,7 @@ const Homepage = ({ data }) => (
     <Heading as="h1" fontWeight={200} textTransform="uppercase" letterSpacing={4} fontFamily="Trade Gothic, Helvetica">{data.wp.generalSettings.title}</Heading>
     <PostBody body={data.page.customHomepageOptions.subheading} />
     <PostBody body={data.page.content} />
-    <p><Button>{data.page.customHomepageOptions.donatebuttontext}</Button></p>
+    <p><Button as="a" href="https://checkout.square.site/pay/00a267318b4a4218a46547abbd5de660">{data.page.customHomepageOptions.donatebuttontext}</Button></p>
     <PostBody body={data.page.customHomepageOptions.legalinfo} />
   </>
 )

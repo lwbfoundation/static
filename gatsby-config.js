@@ -1,28 +1,29 @@
-require("dotenv").config({
+require('dotenv').config({
   path: `.env.GATSBY_CONCURRENT_DOWNLOAD`,
-})
+});
 
 // require .env.development or .env.production
-require("dotenv").config({
+require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
-})
+});
 
 module.exports = {
   plugins: [
-    `gatsby-plugin-sharp`,
+    'gatsby-plugin-typescript',
+    'gatsby-plugin-sharp',
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: `images`,
+        name: 'images',
         path: `${__dirname}/src/assets/images`,
       },
     },
     {
-      resolve: `gatsby-source-wordpress-experimental`,
+      resolve: 'gatsby-source-wordpress-experimental',
       options: {
         url:
           process.env.WPGRAPHQL_URL ||
-          `http://admin.lewiswbutlerfoundation.org/graphql`,
+          'http://admin.lewiswbutlerfoundation.org/graphql',
         verbose: true,
         develop: {
           hardCacheMediaFiles: true,
@@ -35,7 +36,7 @@ module.exports = {
         type: {
           Post: {
             limit:
-              process.env.NODE_ENV === `development`
+              process.env.NODE_ENV === 'development'
                 ? // Lets just pull 50 posts in development to make it easy on ourselves.
                   50
                 : // and we don't actually need more than 5000 in production for this particular site
@@ -45,20 +46,20 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-chakra-ui`,
+      resolve: 'gatsby-plugin-chakra-ui',
       options: {
         isUsingColorMode: false,
-      }
+      },
     },
-    `gatsby-transformer-sharp`,
+    'gatsby-transformer-sharp',
     {
-      resolve: "gatsby-plugin-react-svg",
+      resolve: 'gatsby-plugin-react-svg',
       options: {
         rule: {
           include: /\.inline\.svg$/, // See below to configure properly
         },
       },
     },
-    `gatsby-plugin-netlify-cache`,
+    'gatsby-plugin-netlify-cache',
   ],
-}
+};

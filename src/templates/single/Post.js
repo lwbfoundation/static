@@ -1,8 +1,8 @@
-import React from "react"
-import { graphql } from "gatsby"
-import BlogPost from "../../components/template-parts/blog-post"
+import React from 'react';
+import { graphql } from 'gatsby';
+import BlogPost from '../../components/template-parts/blog-post';
 
-export default ({ data }) => <BlogPost data={data} />
+export default ({ data }) => <BlogPost data={data} />;
 
 export const query = graphql`
   query post($id: String!, $nextPage: String, $previousPage: String) {
@@ -28,4 +28,4 @@ export const query = graphql`
       uri
     }
   }
-`
+`;

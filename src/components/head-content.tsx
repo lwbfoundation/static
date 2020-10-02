@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Global, css } from '@emotion/core';
 import { Helmet } from 'react-helmet';
 
-const HeadContent = ({ title }) => (
+interface HeadContentProps {
+  title: string;
+}
+
+const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
   <>
     <Helmet>
       <title>{title}</title>

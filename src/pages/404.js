@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from '@chakra-ui/core';
-import PrelaunchLayout from '../components/prelaunch-layout';
+import CenteredLayout from '../components/centered-layout';
 
 export default () => (
-  <PrelaunchLayout>
+  <CenteredLayout>
     page not found.{' '}
     <Link href="/" textDecoration="underline">
       go to homepage
     </Link>
-  </PrelaunchLayout>
+  </CenteredLayout>
 );

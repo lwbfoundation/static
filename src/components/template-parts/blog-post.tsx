@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { FunctionComponent } from 'react';
 import { Link } from 'gatsby';
 import { Box, Heading } from '@chakra-ui/core';
 import Img from 'gatsby-image';
@@ -7,7 +6,7 @@ import Layout from '../default-layout';
 import { normalizePath } from '../../utils/get-url-path';
 import { PageTemplateProps } from '../../templates/single/Page';
 
-function BlogPost({ data } : PageTemplateProps) {
+const BlogPost: FunctionComponent<PageTemplateProps> = ({ data }) => {
   const { nextPage, previousPage, page } = data;
   const { title, content, featuredImage } = page;
 
@@ -23,6 +22,7 @@ function BlogPost({ data } : PageTemplateProps) {
         </Box>
       )}
 
+      {/* eslint-disable-next-line react/no-danger */}
       <p dangerouslySetInnerHTML={{ __html: content }} />
 
       <br />
@@ -40,6 +40,6 @@ function BlogPost({ data } : PageTemplateProps) {
       )}
     </Layout>
   );
-}
+};
 
 export default BlogPost;

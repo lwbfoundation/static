@@ -1,23 +1,23 @@
-import React, { ComponentType } from 'react';
+import React, { ComponentType, FunctionComponent } from 'react';
 import { graphql } from 'gatsby';
 import BlogPost from '../../components/template-parts/blog-post';
 import Placeholder from '../../components/template-parts/placeholder';
 import Homepage from '../../components/template-parts/homepage';
 
 export interface PageTemplateProps {
-  data: PageQueryResult
+  data: PageQueryResult;
 }
 
 type PageTemplate = ComponentType<PageTemplateProps>;
 
-const templates : { [key: string]: PageTemplate } = {
+const templates: { [key: string]: PageTemplate } = {
   default: BlogPost,
   homepage: Homepage,
   placeholder: Placeholder,
 };
 
 interface GeneralSettings {
-  readonly title: String;
+  readonly title: string;
 }
 
 interface Wp {
@@ -38,6 +38,7 @@ interface Page {
   readonly uri: string;
   readonly title: string;
   readonly content: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly featuredImage: any;
   readonly customDisplaySettings: CustomDisplaySettings;
   readonly customHomepageOptions: CustomHomepageOptions;
@@ -50,12 +51,14 @@ interface PageQueryResult {
   readonly previousPage: Page;
 }
 
-export default ({ data } : PageTemplateProps) => {
+const Page: FunctionComponent<PageTemplateProps> = ({ data }) => {
   const Template =
     templates[data.page.customDisplaySettings.statictemplate] ||
     templates.default;
   return <Template data={data} />;
 };
+
+export default Page;
 
 export const query = graphql`
   query page($id: String!, $nextPage: String, $previousPage: String) {

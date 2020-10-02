@@ -1,19 +1,18 @@
-const { resolve } = require(`path`)
-const path = require(`path`)
-const glob = require(`glob`)
-const chunk = require(`lodash/chunk`)
-const { dd } = require(`dumper.js`)
+const { resolve } = require(`path`);
+const path = require(`path`);
+const glob = require(`glob`);
+const chunk = require(`lodash/chunk`);
+// const { dd } = require(`dumper.js`);
 
 const getTemplates = () => {
-  const sitePath = path.resolve(`./`)
-  return glob.sync('./src/templates/**/*.{js,tsx}', { cwd: sitePath })
-}
+  const sitePath = path.resolve(`./`);
+  return glob.sync('./src/templates/**/*.{js,tsx}', { cwd: sitePath });
+};
 
 //
 // @todo move this to gatsby-theme-wordpress
-exports.createPages = async ({ actions, graphql, reporter }) => {
-  const templates = getTemplates()
-  console.log('templates', templates);
+exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
+  const templates = getTemplates();
 
   const {
     data: {
@@ -32,27 +31,28 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         }
       }
     }
-  `)
+  `);
 
-  const contentTypeTemplateDirectory = `./src/templates/single/`
-  const contentTypeTemplates = templates.filter((path) =>
-    path.includes(contentTypeTemplateDirectory)
-  )
+  const contentTypeTemplateDirectory = `./src/templates/single/`;
+  const contentTypeTemplates = templates.filter((contentTypeTemplatePath) =>
+    contentTypeTemplatePath.includes(contentTypeTemplateDirectory)
+  );
 
   await Promise.all(
     contentNodes.map(async (node, i) => {
-      const { nodeType, uri, id } = node
+      const { nodeType, uri, id } = node;
       // this is a super super basic template hierarchy
       // this doesn't reflect what our hierarchy will look like.
       // this is for testing/demo purposes
-      const templatePath = `${contentTypeTemplateDirectory}${nodeType}`
+      const templatePath = `${contentTypeTemplateDirectory}${nodeType}`;
 
       const contentTypeTemplate = contentTypeTemplates.find(
-        (path) => path.includes(templatePath),
-      )
+        (contentTypeTemplatePath) =>
+          contentTypeTemplatePath.includes(templatePath)
+      );
 
       if (!contentTypeTemplate) {
-        return
+        return;
       }
 
       await actions.createPage({
@@ -63,9 +63,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           nextPage: (contentNodes[i + 1] || {}).id,
           previousPage: (contentNodes[i - 1] || {}).id,
         },
-      })
+      });
     })
-  )
+  );
 
   // create the homepage
   const {
@@ -79,28 +79,28 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         }
       }
     }
-  `)
+  `);
 
-  const perPage = 10
-  const chunkedContentNodes = chunk(allWpPost.nodes, perPage)
+  const perPage = 10;
+  const chunkedContentNodes = chunk(allWpPost.nodes, perPage);
 
   await Promise.all(
     chunkedContentNodes.map(async (nodesChunk, index) => {
-      const firstNode = nodesChunk[0]
-      const page = index + 1
-      const offset = perPage * index
+      const firstNode = nodesChunk[0];
+      const page = index + 1;
+      const offset = perPage * index;
 
       await actions.createPage({
         component: resolve(`./src/templates/index.js`),
         path: page === 1 ? `/blog/` : `/blog/${page}/`,
         context: {
           firstId: firstNode.id,
-          page: page,
-          offset: offset,
+          page,
+          offset,
           totalPages: chunkedContentNodes.length,
           perPage,
         },
-      })
+      });
     })
-  )
-}
+  );
+};

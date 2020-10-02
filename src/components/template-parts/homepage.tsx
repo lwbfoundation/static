@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Heading, Button, Link } from '@chakra-ui/core';
 import { ButtonProps } from '@chakra-ui/core/dist/Button';
 import { LinkProps } from '@chakra-ui/core/dist/Link';
@@ -9,12 +9,13 @@ import { PageTemplateProps } from '../../templates/single/Page';
 type ButtonLinkProps = ButtonProps & LinkProps;
 
 const ButtonLink: React.FC<ButtonLinkProps> = React.forwardRef(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (props: ButtonLinkProps, ref: React.Ref<any>) => {
     return <Button ref={ref} as={Link} {...props} />;
   }
 );
 
-const Homepage = ({ data } : PageTemplateProps) => (
+const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
   <>
     <HeadContent title={data.wp.generalSettings.title} />
     <Heading

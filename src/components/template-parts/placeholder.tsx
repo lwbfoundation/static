@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Heading } from '@chakra-ui/core';
 import PostBody from '../post-body';
-import PrelaunchLayout from '../prelaunch-layout';
+import CenteredLayout from '../centered-layout';
+import { PageTemplateProps } from '../../templates/single/Page';
 
-const Placeholder = ({ data }) => (
-  <PrelaunchLayout title={data.wp.generalSettings.title}>
+const Placeholder: FunctionComponent<PageTemplateProps> = ({ data }) => (
+  <CenteredLayout title={data.wp.generalSettings.title}>
     <Heading
       as="h1"
       fontWeight={200}
@@ -16,7 +17,7 @@ const Placeholder = ({ data }) => (
       {data.wp.generalSettings.title}
     </Heading>
     <PostBody body={data.page.content} />
-  </PrelaunchLayout>
+  </CenteredLayout>
 );
 
 export default Placeholder;

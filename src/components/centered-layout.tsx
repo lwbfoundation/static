@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Flex, Box } from '@chakra-ui/core';
 import { Global, css } from '@emotion/core';
 import HeadContent from './head-content';
 
-const PrelaunchLayout = ({ title, children }) => (
+interface CenteredLayoutProps {
+  title: string;
+}
+
+const CenteredLayout: FunctionComponent<CenteredLayoutProps> = ({
+  title,
+  children,
+}) => (
   <>
     <HeadContent title={title} />
     <Global
@@ -42,4 +49,4 @@ const PrelaunchLayout = ({ title, children }) => (
   </>
 );
 
-export default PrelaunchLayout;
+export default CenteredLayout;

@@ -1,9 +1,13 @@
-import React from "react";
+import React from 'react';
 
-export function onRenderBody({
-  setHeadComponents
-}) {
+export function onRenderBody({ setHeadComponents }) {
   setHeadComponents([
-    <link rel="preload" href="/fonts/TradeGothicLTStd-Bd2.otf" as="font" type="font/otf" crossorigin="anonymous" />
-  ])
+    <link
+      rel="preload"
+      href="/fonts/TradeGothicLTStd-Bd2.otf"
+      as="font"
+      type="font/otf"
+      crossOrigin="anonymous"
+    />,
+  ]);
 }

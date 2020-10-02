@@ -6,13 +6,14 @@ const { dd } = require(`dumper.js`)
 
 const getTemplates = () => {
   const sitePath = path.resolve(`./`)
-  return glob.sync(`./src/templates/**/*.js`, { cwd: sitePath })
+  return glob.sync('./src/templates/**/*.{js,tsx}', { cwd: sitePath })
 }
 
 //
 // @todo move this to gatsby-theme-wordpress
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const templates = getTemplates()
+  console.log('templates', templates);
 
   const {
     data: {
@@ -44,10 +45,10 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       // this is a super super basic template hierarchy
       // this doesn't reflect what our hierarchy will look like.
       // this is for testing/demo purposes
-      const templatePath = `${contentTypeTemplateDirectory}${nodeType}.js`
+      const templatePath = `${contentTypeTemplateDirectory}${nodeType}`
 
       const contentTypeTemplate = contentTypeTemplates.find(
-        (path) => path === templatePath
+        (path) => path.includes(templatePath),
       )
 
       if (!contentTypeTemplate) {

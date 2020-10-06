@@ -31,6 +31,7 @@ interface CustomDisplaySettings {
 interface CustomHomepageOptions {
   readonly subheading: string;
   readonly donatebuttontext: string;
+  readonly newslettersignupbuttontext: string;
   readonly legalinfo: string;
 }
 
@@ -84,6 +85,7 @@ export const query = graphql`
       customHomepageOptions {
         subheading
         donatebuttontext
+        newslettersignupbuttontext
         legalinfo
       }
     }

@@ -5,6 +5,7 @@ import { LinkProps } from '@chakra-ui/core/dist/Link';
 import PostBody from '../post-body';
 import HeadContent from '../head-content';
 import Donate from '../donate';
+import EmailSignup from '../email-signup';
 import { PageTemplateProps } from '../../templates/single/Page';
 
 type ButtonLinkProps = ButtonProps & LinkProps;
@@ -27,6 +28,9 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
       <Donate
         donateButtonText={data.page.customHomepageOptions.donatebuttontext}
       />
+    </Box>
+    <Box maxWidth={600}>
+      <EmailSignup />
     </Box>
     <PostBody body={data.page.customHomepageOptions.legalinfo} />
   </>

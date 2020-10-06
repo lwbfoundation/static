@@ -1,21 +1,29 @@
 import React, { FunctionComponent, useState, forwardRef } from 'react';
+import { Decorator, FORM_ERROR } from 'final-form';
 import { Form, Field, FieldRenderProps } from 'react-final-form';
 import createFieldCalculator from 'final-form-calculate';
 import {
   Box,
   Button,
-  Input,
   Text,
   RadioButtonGroup,
   RadioProps,
 } from '@chakra-ui/core';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, StripeError, StripeCardElement } from '@stripe/stripe-js';
 import {
   CardElement,
   Elements,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import {
+  InputControl,
+  ErrorInfo,
+  SignupFormValues,
+  validateSignupFormValues,
+  FormErrorMessage,
+  FormSuccessMessage,
+} from './form';
 
 const isServer = typeof window === 'undefined';
 
@@ -29,17 +37,17 @@ const StripeLoader: FunctionComponent = ({ children }) => {
   return <Elements stripe={stripePromise}>{children}</Elements>;
 };
 
-interface FormError {
-  message: string;
-}
-
-const genericError: FormError = {
-  message: 'There was an error processing your payment.',
+const genericError: ErrorInfo = {
+  message: (
+    <>
+      There was an error processing your payment. Please email{' '}
+      <a href="mailto:info@lewiswbutlerfoundation.org">
+        info@lewiswbutlerfoundation.org
+      </a>{' '}
+      if you need assistance.
+    </>
+  ),
 };
-
-const InputControl: FunctionComponent<FieldRenderProps<any>> = ({ input }) => (
-  <Input {...input} />
-);
 
 const RadioButtonGroupControl: FunctionComponent<FieldRenderProps<any>> = ({
   input,
@@ -62,7 +70,73 @@ const AmountButton = forwardRef((props: RadioProps, ref) => {
 });
 
 const updateAmount = (_: any, { amountOption, customAmount }: any) =>
-  amountOption || parseFloat(customAmount) * 100;
+  amountOption ||
+  (customAmount && parseFloat(customAmount.replace(/,/g, '')) * 100);
+
+type CardFieldValue = {
+  error: StripeError | undefined;
+  element: StripeCardElement | null | undefined;
+};
+
+type PaymentFormValues = SignupFormValues & {
+  readonly amountOption: number | undefined;
+  readonly customAmount: string | undefined;
+  readonly amount: number | undefined;
+  readonly card: CardFieldValue;
+};
+
+const validatePaymentFormValues: (
+  values: PaymentFormValues
+) => ErrorInfo | undefined = (values) => {
+  const signupValidationError = validateSignupFormValues(values);
+  if (signupValidationError) return signupValidationError;
+
+  const { card, amount, customAmount } = values;
+
+  if (
+    customAmount &&
+    !customAmount.match(/^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/)
+  ) {
+    return {
+      message: 'Please enter a valid amount.',
+    };
+  }
+
+  if (!amount || amount < 500) {
+    return {
+      message: 'Please enter an amount of $5 or greater.',
+    };
+  }
+
+  if (amount > 100000) {
+    return {
+      message: (
+        <>
+          We only accept donations less than $1,000 online. To donate $1,000 or
+          more, please email us at{' '}
+          <a href="mailto:info@lewiswbutlerfoundation.org">
+            info@lewiswbutlerfoundation.org
+          </a>{' '}
+          and we&lsquo;ll give you the information you need.
+        </>
+      ),
+    };
+  }
+
+  if (!card || !card.element) {
+    return {
+      message: 'Please enter your credit card details.',
+    };
+  }
+
+  if (card.error) {
+    return {
+      message: 'Please enter valid credit card details.',
+    };
+  }
+
+  return undefined;
+};
 
 const fieldCalculator = createFieldCalculator(
   {
@@ -77,7 +151,7 @@ const fieldCalculator = createFieldCalculator(
       amount: updateAmount,
     },
   }
-);
+) as Decorator<PaymentFormValues>;
 
 const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
   const stripe = useStripe();
@@ -87,25 +161,28 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
   if (isPaymentComplete)
     return (
-      <div>
+      <FormSuccessMessage>
         Thank you for supporting the Lewis W. Butler Foundation! You will
         receive an email receipt for your records.
-      </div>
+      </FormSuccessMessage>
     );
 
   return (
-    <Form
+    <Form<PaymentFormValues>
       initialValues={{ amountOption: 1000 }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
-        return;
-
         if (!stripe) return genericError;
+
+        const validationError = validatePaymentFormValues(values);
+        if (validationError) {
+          return { [FORM_ERROR]: validationError };
+        }
 
         try {
           const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
-            card: values.card,
+            card: values.card.element as StripeCardElement,
           });
 
           if (error) return genericError;
@@ -134,7 +211,14 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
         return undefined;
       }}
     >
-      {({ handleSubmit, submitting, values, form: { change } }) => (
+      {({
+        handleSubmit,
+        submitting,
+        values,
+        submitError,
+        dirtySinceLastSubmit,
+        form: { change },
+      }) => (
         <form onSubmit={handleSubmit}>
           <pre>
             {(() => {
@@ -142,6 +226,11 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               return JSON.stringify(otherValues, null, 2);
             })()}
           </pre>
+          {submitError && !dirtySinceLastSubmit && (
+            <Box marginBottom="2">
+              <FormErrorMessage>{submitError.message}</FormErrorMessage>
+            </Box>
+          )}
           <Text as="label">
             First name
             <Field
@@ -193,8 +282,11 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               {({ input }) => (
                 <CardElement
                   {...input}
-                  onChange={() =>
-                    change('card', elements?.getElement(CardElement))
+                  onChange={({ error }) =>
+                    change('card', {
+                      error,
+                      element: elements?.getElement(CardElement),
+                    })
                   }
                 />
               )}

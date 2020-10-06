@@ -30,9 +30,7 @@ const isServer = typeof window === 'undefined';
 const StripeLoader: FunctionComponent = ({ children }) => {
   const stripePromise = isServer
     ? Promise.resolve(null)
-    : loadStripe(
-        'pk_test_51HXbQZG7ZcxuJ2LfYoyjGHZajbyOTdqKgBSCaUPXBQ0X8rWg6oV7OiWk5hxmqOJdV1lTOE45PhH5xTXY9zlgwsvx00pluDc8l8'
-      );
+    : loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY as string);
 
   return <Elements stripe={stripePromise}>{children}</Elements>;
 };

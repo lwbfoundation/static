@@ -16,6 +16,7 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 import {
   InputControl,
   ErrorInfo,
@@ -185,7 +186,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
           if (error) return genericError;
 
-          const result = await fetch(
+          const response = await fetch(
             'http://localhost:3000/dev/process_payment',
             {
               method: 'post',
@@ -200,7 +201,17 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             }
           );
 
-          await result.json();
+          if (!response.ok) {
+            return genericError;
+          }
+
+          await response.json();
+
+          trackCustomEvent({
+            category: 'Payment Form',
+            action: 'Payment Complete',
+            value: values.amount,
+          });
         } catch (e) {
           return genericError;
         }

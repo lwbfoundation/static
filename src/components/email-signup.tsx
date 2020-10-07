@@ -3,6 +3,7 @@ import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
 import { Text, Button, Box } from '@chakra-ui/core';
 import saveMailchimpSignup from 'gatsby-plugin-mailchimp';
+import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 import {
   InputControl,
   SignupFormValues,
@@ -85,10 +86,16 @@ const EmailSignupForm: FunctionComponent = () => {
           }
 
           setIsSignupComplete(true);
-          return undefined;
+
+          trackCustomEvent({
+            category: 'Email Signup Form',
+            action: 'Signup Complete',
+          });
         } catch (e) {
           return { [FORM_ERROR]: genericError };
         }
+
+        return undefined;
       }}
     >
       {({ handleSubmit, submitting, dirtySinceLastSubmit, submitError }) => (

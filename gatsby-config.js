@@ -10,6 +10,13 @@ require('dotenv').config({
 module.exports = {
   plugins: [
     'gatsby-plugin-typescript',
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
+        // respectDNT: true,
+      },
+    },
     'gatsby-plugin-sharp',
     {
       resolve: 'gatsby-source-filesystem',

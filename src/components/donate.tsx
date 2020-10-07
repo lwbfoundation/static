@@ -171,7 +171,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
       initialValues={{ amountOption: 1000 }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
-        if (!stripe) return genericError;
+        if (!stripe) return { [FORM_ERROR]: genericError };
 
         const validationError = validatePaymentFormValues(values);
         if (validationError) {
@@ -184,7 +184,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             card: values.card.element as StripeCardElement,
           });
 
-          if (error) return genericError;
+          if (error) return { [FORM_ERROR]: genericError };;
 
           const response = await fetch(
             'http://localhost:3000/dev/process_payment',
@@ -202,7 +202,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           );
 
           if (!response.ok) {
-            return genericError;
+            return { [FORM_ERROR]: genericError };
           }
 
           await response.json();
@@ -213,7 +213,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             value: values.amount,
           });
         } catch (e) {
-          return genericError;
+          return { [FORM_ERROR]: genericError };
         }
 
         setIsPaymentComplete(true);

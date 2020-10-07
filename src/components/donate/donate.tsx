@@ -114,11 +114,15 @@ const FauxInput: FunctionComponent<FauxInputProps> = ({
 const calculatAmountWithFeesCovered = (amount: number) =>
   Math.ceil((amount + 30) / (1 - 0.029));
 
+const parseCustomAmount = (customAmount: string | undefined) => {
+  if (!customAmount) return null;
+  const parsed = parseFloat(customAmount.replace(/,/g, ''));
+  if (!parsed) return null;
+  return parsed * 100;
+};
+
 const updateBaseAmount = (_: any, { amountOption, customAmount }: any) => {
-  return (
-    amountOption ||
-    (customAmount && parseFloat(customAmount.replace(/,/g, '')) * 100)
-  );
+  return amountOption || parseCustomAmount(customAmount);
 };
 
 const updateAmountWithFeesCovered = (_: any, { baseAmount }: any) => {
@@ -272,7 +276,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
             </Box>
           )}
-          <Text as="label" display="block" marginBottom={2}>
+          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
             First name
             <Field
               name="firstName"
@@ -281,7 +285,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               component={InputControl}
             />
           </Text>
-          <Text as="label" display="block" marginBottom={2}>
+          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
             Last name
             <Field
               name="lastName"
@@ -290,7 +294,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               component={InputControl}
             />
           </Text>
-          <Text as="label" display="block" marginBottom={4}>
+          <Text as="label" fontWeight="bold" display="block" marginBottom={4}>
             Email address
             <Field
               name="email"
@@ -300,7 +304,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             />
           </Text>
           <Box marginBottom={4}>
-            <Text display="block" marginBottom={1}>
+            <Text fontWeight="bold" display="block" marginBottom={1}>
               Donation amount
               <Field
                 name="amountOption"
@@ -358,8 +362,8 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             )}
           </Box>
 
-          <Text display="block" marginBottom={2}>
-            Credit card details
+          <Text fontWeight="bold" display="block" marginBottom={2}>
+            Credit card
             {renderClient && (
               <FauxInput
                 marginTop={1}
@@ -418,9 +422,9 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               donation.
             </Text>
           </Field>
-          <Box textAlign="right" marginTop={4}>
+          <Box textAlign={['center', 'right']} marginTop={4}>
             {values.coverFees && values.amount && (
-              <Text display="block" fontWeight="bold">
+              <Text display="block" fontWeight="bold" fontSize="lg">
                 Total: {getCurrencyFormatter().format(values.amount / 100)}
               </Text>
             )}

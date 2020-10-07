@@ -105,7 +105,7 @@ const EmailSignupForm: FunctionComponent = () => {
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
             </Box>
           )}
-          <Text as="label" display="block" marginBottom={2}>
+          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
             First name
             <Field
               name="firstName"
@@ -114,7 +114,7 @@ const EmailSignupForm: FunctionComponent = () => {
               component={InputControl}
             />
           </Text>
-          <Text as="label" display="block" marginBottom={2}>
+          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
             Last name
             <Field
               name="lastName"
@@ -123,8 +123,8 @@ const EmailSignupForm: FunctionComponent = () => {
               component={InputControl}
             />
           </Text>
-          <Text as="label" display="block" marginBottom={2}>
-            Email
+          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
+            Email address
             <Field
               name="email"
               autocomplete="email"

@@ -1,14 +1,23 @@
-import React, { FunctionComponent, useState, forwardRef } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  forwardRef,
+  useEffect,
+} from 'react';
 import { Decorator, FORM_ERROR } from 'final-form';
 import { Form, Field, FieldRenderProps } from 'react-final-form';
 import createFieldCalculator from 'final-form-calculate';
 import {
   Box,
+  PseudoBox,
+  PseudoBoxProps,
   Button,
   Text,
   RadioButtonGroup,
   RadioProps,
+  Checkbox,
 } from '@chakra-ui/core';
+import styled from '@emotion/styled';
 import { loadStripe, StripeCardElement } from '@stripe/stripe-js';
 import {
   CardElement,
@@ -34,6 +43,17 @@ const StripeLoader: FunctionComponent = ({ children }) => {
 
   return <Elements stripe={stripePromise}>{children}</Elements>;
 };
+
+const CheckboxControl: FunctionComponent<FieldRenderProps<any>> = ({
+  input,
+  children,
+  meta,
+  ...rest
+}) => (
+  <Checkbox {...input} {...rest}>
+    {children}
+  </Checkbox>
+);
 
 const RadioButtonGroupControl: FunctionComponent<FieldRenderProps<any>> = ({
   input,
@@ -66,30 +86,109 @@ const AmountButton = forwardRef((props: RadioProps, ref) => {
   );
 });
 
-const updateAmount = (_: any, { amountOption, customAmount }: any) =>
-  amountOption ||
-  (customAmount && parseFloat(customAmount.replace(/,/g, '')) * 100);
+interface FauxInputProps extends PseudoBoxProps {
+  isFocused?: boolean;
+}
+
+const fauxInputFocusProps = {
+  borderColor: '#3182ce',
+  boxShadow: '0 0 0 1px #3182c',
+};
+
+const FauxInput: FunctionComponent<FauxInputProps> = ({
+  isFocused,
+  ...props
+}) => (
+  <PseudoBox
+    borderWidth={1}
+    borderColor="#E2E8F0"
+    paddingX={4}
+    borderRadius={4}
+    minHeight="40px"
+    {...(isFocused && fauxInputFocusProps)}
+    _focusWithin={fauxInputFocusProps}
+    {...props}
+  />
+);
+
+const calculatAmountWithFeesCovered = (amount: number) =>
+  Math.ceil((amount + 30) / (1 - 0.029));
+
+const updateBaseAmount = (_: any, { amountOption, customAmount }: any) => {
+  return (
+    amountOption ||
+    (customAmount && parseFloat(customAmount.replace(/,/g, '')) * 100)
+  );
+};
+
+const updateAmountWithFeesCovered = (_: any, { baseAmount }: any) => {
+  return baseAmount && calculatAmountWithFeesCovered(baseAmount);
+};
+
+const updateAmount = (
+  _: any,
+  { baseAmount, amountWithFeesCovered, coverFees }: any
+) => {
+  return coverFees ? amountWithFeesCovered : baseAmount;
+};
 
 const fieldCalculator = createFieldCalculator(
   {
     field: 'amountOption',
     updates: {
-      amount: updateAmount,
+      baseAmount: updateBaseAmount,
     },
   },
   {
     field: 'customAmount',
+    updates: {
+      baseAmount: updateBaseAmount,
+    },
+  },
+  {
+    field: 'baseAmount',
+    updates: {
+      amountWithFeesCovered: updateAmountWithFeesCovered,
+      amount: updateAmount,
+    },
+  },
+  {
+    field: 'amountWithFeesCovered',
+    updates: {
+      amount: updateAmount,
+    },
+  },
+  {
+    field: 'coverFees',
     updates: {
       amount: updateAmount,
     },
   }
 ) as Decorator<PaymentFormValues>;
 
+const createCurrencyFormatterGetter = () => {
+  let currencyFormatter: Intl.NumberFormat | undefined;
+  return () => {
+    currencyFormatter =
+      currencyFormatter ||
+      new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    return currencyFormatter;
+  };
+};
+
+const getCurrencyFormatter = createCurrencyFormatterGetter();
+
 const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
   const stripe = useStripe();
   const elements = useElements();
 
   const [isPaymentComplete, setIsPaymentComplete] = useState(false);
+  const [renderClient, setRenderClient] = useState(false);
+  const [isCardFieldFocused, setIsCardFieldFocused] = useState(false);
+
+  useEffect(() => {
+    setRenderClient(true);
+  }, []);
 
   if (isPaymentComplete)
     return (
@@ -101,7 +200,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
   return (
     <Form<PaymentFormValues>
-      initialValues={{ amountOption: 2000 }}
+      initialValues={{ amountOption: 2000, coverFees: false }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
         if (!stripe) return { [FORM_ERROR]: genericError };
@@ -162,12 +261,12 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
         form: { change },
       }) => (
         <form onSubmit={handleSubmit}>
-          <pre>
+          {/* <pre>
             {(() => {
               const { card, ...otherValues } = values;
               return JSON.stringify(otherValues, null, 2);
             })()}
-          </pre>
+          </pre> */}
           {submitError && !dirtySinceLastSubmit && (
             <Box marginBottom="2">
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
@@ -239,57 +338,95 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               </Field>
             </Text>
             {typeof values.amountOption === 'undefined' && (
-              <Field
-                name="customAmount"
-                placeholder="Enter donation amount"
-                component={InputControl}
-                marginBottom={2}
-              />
+              <FauxInput display="flex">
+                <Text as="div" lineHeight="1.5em" paddingY={2}>
+                  $
+                </Text>
+                <Field
+                  name="customAmount"
+                  placeholder="0.00"
+                  component={InputControl}
+                  borderWidth={0}
+                  paddingX={0}
+                  flexGrow
+                  display="block"
+                  _focus={{
+                    boxShadow: 'none',
+                  }}
+                />
+              </FauxInput>
             )}
           </Box>
+
           <Text display="block" marginBottom={2}>
             Credit card details
-            <Box
-              marginTop={1}
-              borderWidth={1}
-              borderColor="#E2E8F0"
-              paddingX={4}
-              paddingY={2}
-              borderRadius="4px"
-            >
-              <Field name="card">
-                {({ input }) => (
-                  <CardElement
-                    options={{
-                      style: {
-                        base: {
-                          fontSize: '16px',
-                          lineHeight: '24px',
-                          fontFamily: '-apple-system, system-ui, "Segoe UI"',
-                          fontWeight: '400',
-                          color: 'rgb(26, 32, 44)',
-                          fontSmoothing: 'antialiased',
-                          '::placeholder': {
-                            color: '#A0AEC0',
+            {renderClient && (
+              <FauxInput
+                marginTop={1}
+                paddingY={2}
+                isFocused={isCardFieldFocused}
+              >
+                <Field name="card">
+                  {({ input }) => (
+                    <CardElement
+                      options={{
+                        style: {
+                          base: {
+                            fontSize: '16px',
+                            lineHeight: '24px',
+                            fontFamily: '-apple-system, system-ui, "Segoe UI"',
+                            fontWeight: '400',
+                            color: 'rgb(26, 32, 44)',
+                            fontSmoothing: 'antialiased',
+                            '::placeholder': {
+                              color: '#A0AEC0',
+                            },
                           },
                         },
-                      },
-                    }}
-                    {...input}
-                    onChange={({ error }) =>
-                      change('card', {
-                        error,
-                        element: elements?.getElement(CardElement),
-                      })
-                    }
-                  />
-                )}
-              </Field>
-            </Box>
+                      }}
+                      {...input}
+                      onChange={({ error }) =>
+                        change('card', {
+                          error,
+                          element: elements?.getElement(CardElement),
+                        })
+                      }
+                      onFocus={() => {
+                        setIsCardFieldFocused(true);
+                      }}
+                      onBlur={() => {
+                        setIsCardFieldFocused(false);
+                      }}
+                    />
+                  )}
+                </Field>
+              </FauxInput>
+            )}
           </Text>
+          <Field name="coverFees" component={CheckboxControl} size="lg">
+            <Text fontSize="md">
+              I would like to cover the{' '}
+              {values.baseAmount &&
+                values.amountWithFeesCovered &&
+                getCurrencyFormatter().format(
+                  (values.amountWithFeesCovered - values.baseAmount) / 100
+                )}{' '}
+              transaction fee so that the Lewis W. Butler Foundation gets my
+              full{' '}
+              {values.baseAmount &&
+                getCurrencyFormatter().format(values.baseAmount / 100)}{' '}
+              donation.
+            </Text>
+          </Field>
           <Box textAlign="right" marginTop={4}>
+            {values.coverFees && values.amount && (
+              <Text display="block" fontWeight="bold">
+                Total: {getCurrencyFormatter().format(values.amount / 100)}
+              </Text>
+            )}
             <Button
               type="submit"
+              marginTop={2}
               backgroundColor="gray.600"
               color="white"
               _hover={{ backgroundColor: 'gray.700' }}

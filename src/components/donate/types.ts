@@ -9,6 +9,9 @@ type CardFieldValue = {
 export type PaymentFormValues = SignupFormValues & {
   readonly amountOption: number | undefined;
   readonly customAmount: string | undefined;
+  readonly baseAmount: number | undefined;
+  readonly amountWithFeesCovered: number | undefined;
   readonly amount: number | undefined;
+  readonly coverFees: boolean;
   readonly card: CardFieldValue;
 };

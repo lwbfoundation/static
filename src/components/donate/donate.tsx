@@ -9,7 +9,7 @@ import {
   RadioButtonGroup,
   RadioProps,
 } from '@chakra-ui/core';
-import { loadStripe, StripeError, StripeCardElement } from '@stripe/stripe-js';
+import { loadStripe, StripeCardElement } from '@stripe/stripe-js';
 import {
   CardElement,
   Elements,
@@ -17,14 +17,13 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
+import { PaymentFormValues } from './types';
 import {
-  InputControl,
-  ErrorInfo,
-  SignupFormValues,
-  validateSignupFormValues,
-  FormErrorMessage,
-  FormSuccessMessage,
-} from './form';
+  validatePaymentFormValues,
+  genericError,
+  genericCardError,
+} from './validation';
+import { InputControl, FormErrorMessage, FormSuccessMessage } from '../form';
 
 const isServer = typeof window === 'undefined';
 
@@ -36,31 +35,30 @@ const StripeLoader: FunctionComponent = ({ children }) => {
   return <Elements stripe={stripePromise}>{children}</Elements>;
 };
 
-const genericError: ErrorInfo = {
-  message: (
-    <>
-      There was an error processing your payment. Please email{' '}
-      <a href="mailto:info@lewiswbutlerfoundation.org">
-        info@lewiswbutlerfoundation.org
-      </a>{' '}
-      if you need assistance.
-    </>
-  ),
-};
-
 const RadioButtonGroupControl: FunctionComponent<FieldRenderProps<any>> = ({
   input,
   children,
-}) => <RadioButtonGroup {...input}>{children}</RadioButtonGroup>;
+  meta,
+  ...rest
+}) => (
+  <RadioButtonGroup {...input} {...rest}>
+    {children}
+  </RadioButtonGroup>
+);
 
 const AmountButton = forwardRef((props: RadioProps, ref) => {
   const { isChecked, children, ...rest } = props;
   return (
     <Button
       ref={ref}
-      variantColor={isChecked ? 'red' : 'gray'}
+      backgroundColor={isChecked ? 'gray.600' : 'white'}
+      color={isChecked ? 'white' : 'gray.600'}
+      _hover={{ backgroundColor: isChecked ? 'gray.600' : 'gray.100' }}
+      borderWidth={1}
+      borderColor={isChecked ? 'white' : 'gray.brand'}
       aria-checked={isChecked}
       role="radio"
+      width="calc(33% - 0.5rem)"
       {...rest}
     >
       {children}
@@ -71,71 +69,6 @@ const AmountButton = forwardRef((props: RadioProps, ref) => {
 const updateAmount = (_: any, { amountOption, customAmount }: any) =>
   amountOption ||
   (customAmount && parseFloat(customAmount.replace(/,/g, '')) * 100);
-
-type CardFieldValue = {
-  error: StripeError | undefined;
-  element: StripeCardElement | null | undefined;
-};
-
-type PaymentFormValues = SignupFormValues & {
-  readonly amountOption: number | undefined;
-  readonly customAmount: string | undefined;
-  readonly amount: number | undefined;
-  readonly card: CardFieldValue;
-};
-
-const validatePaymentFormValues: (
-  values: PaymentFormValues
-) => ErrorInfo | undefined = (values) => {
-  const signupValidationError = validateSignupFormValues(values);
-  if (signupValidationError) return signupValidationError;
-
-  const { card, amount, customAmount } = values;
-
-  if (
-    customAmount &&
-    !customAmount.match(/^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/)
-  ) {
-    return {
-      message: 'Please enter a valid amount.',
-    };
-  }
-
-  if (!amount || amount < 500) {
-    return {
-      message: 'Please enter an amount of $5 or greater.',
-    };
-  }
-
-  if (amount > 100000) {
-    return {
-      message: (
-        <>
-          We only accept donations less than $1,000 online. To donate $1,000 or
-          more, please email us at{' '}
-          <a href="mailto:info@lewiswbutlerfoundation.org">
-            info@lewiswbutlerfoundation.org
-          </a>{' '}
-          and we&lsquo;ll give you the information you need.
-        </>
-      ),
-    };
-  }
-
-  if (!card || !card.element) {
-    return {
-      message: 'Please enter your credit card details.',
-    };
-  }
-
-  if (card.error) {
-    return {
-      message: 'Please enter valid credit card details.',
-    };
-  }
-
-  return undefined;
-};
 
 const fieldCalculator = createFieldCalculator(
   {
@@ -168,7 +101,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
   return (
     <Form<PaymentFormValues>
-      initialValues={{ amountOption: 1000 }}
+      initialValues={{ amountOption: 2000 }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
         if (!stripe) return { [FORM_ERROR]: genericError };
@@ -184,7 +117,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             card: values.card.element as StripeCardElement,
           });
 
-          if (error) return { [FORM_ERROR]: genericError };;
+          if (error) return { [FORM_ERROR]: genericCardError };
 
           const response = await fetch(
             'http://localhost:3000/dev/process_payment',
@@ -240,70 +173,132 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
             </Box>
           )}
-          <Text as="label">
+          <Text as="label" display="block" marginBottom={2}>
             First name
             <Field
               name="firstName"
               autocomplete="given-name"
-              marginBottom={2}
+              marginTop={1}
               component={InputControl}
             />
           </Text>
-          <Text as="label">
+          <Text as="label" display="block" marginBottom={2}>
             Last name
             <Field
               name="lastName"
               autocomplete="family-name"
-              marginBottom={2}
+              marginTop={1}
               component={InputControl}
             />
           </Text>
-          <Text as="label">
+          <Text as="label" display="block" marginBottom={4}>
             Email address
             <Field
               name="email"
               autocomplete="email"
-              marginBottom={2}
+              marginTop={1}
               component={InputControl}
             />
           </Text>
-          <Field
-            name="amountOption"
-            component={RadioButtonGroupControl}
-            parse={(value) => (value === '' ? undefined : parseInt(value, 10))}
-            format={(value) =>
-              typeof value === 'undefined' ? '' : value.toString()
-            }
-          >
-            <AmountButton value="1000">$10.00</AmountButton>
-            <AmountButton value="2000">$20.00</AmountButton>
-            <AmountButton value="">Other</AmountButton>
-          </Field>
-          {typeof values.amountOption === 'undefined' && (
-            <Field
-              name="customAmount"
-              component={InputControl}
-              marginBottom={2}
-            />
-          )}
-          <Box marginBottom={2}>
-            <Field name="card">
-              {({ input }) => (
-                <CardElement
-                  {...input}
-                  onChange={({ error }) =>
-                    change('card', {
-                      error,
-                      element: elements?.getElement(CardElement),
-                    })
-                  }
-                />
-              )}
-            </Field>
+          <Box marginBottom={4}>
+            <Text display="block" marginBottom={1}>
+              Donation amount
+              <Field
+                name="amountOption"
+                component={RadioButtonGroupControl}
+                parse={(value) =>
+                  value === '' ? undefined : parseInt(value, 10)
+                }
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                padding={0}
+                marginTop={2}
+                format={(value) =>
+                  typeof value === 'undefined' ? '' : value.toString()
+                }
+              >
+                <AmountButton marginBottom={1} value="1000">
+                  $10
+                </AmountButton>
+                <AmountButton marginBottom={1} value="2000">
+                  $20
+                </AmountButton>
+                <AmountButton marginBottom={1} value="5000">
+                  $50
+                </AmountButton>
+                <AmountButton marginBottom={1} value="10000">
+                  $100
+                </AmountButton>
+                <AmountButton marginBottom={1} value="50000">
+                  $500
+                </AmountButton>
+                <AmountButton marginBottom={1} value="">
+                  Other
+                </AmountButton>
+              </Field>
+            </Text>
+            {typeof values.amountOption === 'undefined' && (
+              <Field
+                name="customAmount"
+                placeholder="Enter donation amount"
+                component={InputControl}
+                marginBottom={2}
+              />
+            )}
           </Box>
-          <Button type="submit" isDisabled={!stripe || submitting}>
-            {donateButtonText}
-          </Button>
+          <Text display="block" marginBottom={2}>
+            Credit card details
+            <Box
+              marginTop={1}
+              borderWidth={1}
+              borderColor="#E2E8F0"
+              paddingX={4}
+              paddingY={2}
+              borderRadius="4px"
+            >
+              <Field name="card">
+                {({ input }) => (
+                  <CardElement
+                    options={{
+                      style: {
+                        base: {
+                          fontSize: '16px',
+                          lineHeight: '24px',
+                          fontFamily: '-apple-system, system-ui, "Segoe UI"',
+                          fontWeight: '400',
+                          color: 'rgb(26, 32, 44)',
+                          fontSmoothing: 'antialiased',
+                          '::placeholder': {
+                            color: '#A0AEC0',
+                          },
+                        },
+                      },
+                    }}
+                    {...input}
+                    onChange={({ error }) =>
+                      change('card', {
+                        error,
+                        element: elements?.getElement(CardElement),
+                      })
+                    }
+                  />
+                )}
+              </Field>
+            </Box>
+          </Text>
+          <Box textAlign="right" marginTop={4}>
+            <Button
+              type="submit"
+              backgroundColor="gray.600"
+              color="white"
+              _hover={{ backgroundColor: 'gray.700' }}
+              isDisabled={!stripe || submitting}
+              width={['100%', 'auto']}
+            >
+              {donateButtonText}
+            </Button>
+          </Box>
         </form>
       )}
     </Form>

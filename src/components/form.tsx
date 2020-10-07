@@ -5,7 +5,9 @@ import { FieldRenderProps } from 'react-final-form';
 
 export const InputControl: FunctionComponent<FieldRenderProps<any>> = ({
   input,
-}) => <Input {...input} />;
+  meta,
+  ...rest
+}) => <Input {...input} {...rest} />;
 
 export interface ErrorInfo {
   readonly message: JSX.Element | string;

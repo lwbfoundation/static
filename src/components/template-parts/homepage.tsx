@@ -4,7 +4,7 @@ import { ButtonProps } from '@chakra-ui/core/dist/Button';
 import { LinkProps } from '@chakra-ui/core/dist/Link';
 import PostBody from '../post-body';
 import HeadContent from '../head-content';
-import Donate from '../donate';
+import Donate from '../donate/donate';
 import EmailSignup from '../email-signup';
 import { PageTemplateProps } from '../../templates/single/Page';
 

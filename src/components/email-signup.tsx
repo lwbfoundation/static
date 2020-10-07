@@ -135,6 +135,9 @@ const EmailSignupForm: FunctionComponent = () => {
           <Box textAlign="right">
             <Button
               type="submit"
+              backgroundColor="gray.600"
+              color="white"
+              _hover={{ backgroundColor: 'gray.700' }}
               isDisabled={submitting}
               width={['100%', 'auto']}
             >

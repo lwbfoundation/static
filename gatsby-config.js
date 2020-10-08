@@ -10,6 +10,13 @@ require('dotenv').config({
 module.exports = {
   plugins: [
     'gatsby-plugin-typescript',
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
+        // respectDNT: true,
+      },
+    },
     'gatsby-plugin-sharp',
     {
       resolve: 'gatsby-source-filesystem',
@@ -58,6 +65,12 @@ module.exports = {
         rule: {
           include: /\.inline\.svg$/, // See below to configure properly
         },
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-mailchimp',
+      options: {
+        endpoint: process.env.MAILCHIMP_FORM_URL,
       },
     },
     'gatsby-plugin-netlify-cache',

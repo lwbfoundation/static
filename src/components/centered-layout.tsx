@@ -29,10 +29,6 @@ const CenteredLayout: FunctionComponent<CenteredLayoutProps> = ({
         #gatsby-focus-wrapper {
           height: 100%;
         }
-
-        a {
-          text-decoration: underline;
-        }
       `}
     />
     <Flex

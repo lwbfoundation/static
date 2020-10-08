@@ -25,6 +25,7 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       rules: {
         'react/prop-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
       },
     },
   ],

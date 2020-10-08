@@ -18,6 +18,10 @@ const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
           src: url('/fonts/TradeGothicLTStd-Bd2.otf');
           font-display: fallback;
         }
+
+        a {
+          text-decoration: underline;
+        }
       `}
     />
   </>

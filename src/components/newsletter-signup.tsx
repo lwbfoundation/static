@@ -12,6 +12,7 @@ import {
   ErrorInfo,
   FormErrorMessage,
   FormSuccessMessage,
+  SubmitButton,
 } from './form';
 
 const genericError: ErrorInfo = {
@@ -50,7 +51,13 @@ const getMailchimpError: (mailchimpError: string) => ErrorInfo = (
   return genericError;
 };
 
-const EmailSignupForm: FunctionComponent = () => {
+interface NewsletterSignupProps {
+  readonly signupButtonText: string;
+}
+
+const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
+  signupButtonText,
+}) => {
   const [isSignupComplete, setIsSignupComplete] = useState(false);
 
   if (isSignupComplete) {
@@ -112,6 +119,7 @@ const EmailSignupForm: FunctionComponent = () => {
               autocomplete="given-name"
               marginTop={1}
               component={InputControl}
+              autoFocus
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
@@ -133,16 +141,9 @@ const EmailSignupForm: FunctionComponent = () => {
             />
           </Text>
           <Box textAlign="right">
-            <Button
-              type="submit"
-              backgroundColor="gray.600"
-              color="white"
-              _hover={{ backgroundColor: 'gray.700' }}
-              isDisabled={submitting}
-              width={['100%', 'auto']}
-            >
-              Sign up
-            </Button>
+            <SubmitButton marginTop={2} isDisabled={submitting}>
+              {signupButtonText}
+            </SubmitButton>
           </Box>
         </form>
       )}
@@ -150,4 +151,4 @@ const EmailSignupForm: FunctionComponent = () => {
   );
 };
 
-export default EmailSignupForm;
+export default NewsletterSignupForm;

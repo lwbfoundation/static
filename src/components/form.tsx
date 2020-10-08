@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Input, Box, BoxProps } from '@chakra-ui/core';
+import { Input, Box, BoxProps, Button, ButtonProps } from '@chakra-ui/core';
 import { FORM_ERROR } from 'final-form';
 import { FieldRenderProps } from 'react-final-form';
 
@@ -94,3 +94,19 @@ export const FormSuccessMessage: FunctionComponent = ({ children }) => {
     </FormMessage>
   );
 };
+
+export const SubmitButton: FunctionComponent<ButtonProps> = (props) => (
+  <Button
+    type="submit"
+    backgroundColor="gray.600"
+    color="white"
+    _hover={{ backgroundColor: 'gray.700' }}
+    width={['100%', 'auto']}
+    fontWeight={200}
+    textTransform="uppercase"
+    letterSpacing={4}
+    fontFamily="Trade Gothic, Helvetica"
+    paddingTop={1}
+    {...props}
+  />
+);

@@ -1,19 +1,20 @@
 import React, { FunctionComponent } from 'react';
+import { Box, BoxProps } from '@chakra-ui/core';
 import styled from '@emotion/styled';
 
-interface PostBodyProps {
+type PostBodyProps = BoxProps & {
   body: string;
-}
+};
 
-const PostBodyInner = styled.div`
+const PostBodyInner = styled(Box)`
   p:not(:last-child) {
     margin-bottom: 2rem;
   }
 `;
 
-const PostBody: FunctionComponent<PostBodyProps> = ({ body }) => (
+const PostBody: FunctionComponent<PostBodyProps> = ({ body, ...rest }) => (
   // eslint-disable-next-line react/no-danger
-  <PostBodyInner dangerouslySetInnerHTML={{ __html: body }} />
+  <PostBodyInner dangerouslySetInnerHTML={{ __html: body }} {...rest} />
 );
 
 export default PostBody;

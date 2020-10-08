@@ -1,5 +1,6 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useRef } from 'react';
 import { Box, Text, Button, ButtonProps } from '@chakra-ui/core';
+import PostBody from './post-body';
 import Donate from './donate/donate';
 import NewsletterSignup from './newsletter-signup';
 
@@ -22,6 +23,7 @@ const HeaderButton: FunctionComponent<HeaderButtonProps> = ({
       backgroundColor="transparent"
       borderColor="gray.500"
       {...(isSelected && selectedStyle)}
+      fontSize={[12, 16]}
       _hover={
         isSelected
           ? selectedStyle
@@ -34,10 +36,10 @@ const HeaderButton: FunctionComponent<HeaderButtonProps> = ({
       borderBottomWidth={2}
       marginX={1}
       display="inline-block"
-      minWidth={150}
+      minWidth={[null, 150]}
       fontWeight={200}
       textTransform="uppercase"
-      letterSpacing={4}
+      letterSpacing={[1, 4]}
       fontFamily="Trade Gothic, Helvetica"
       {...rest}
     />
@@ -47,50 +49,60 @@ const HeaderButton: FunctionComponent<HeaderButtonProps> = ({
 type FormContainerProps = {
   donateButtonText: string;
   emailSignupButtonText: string;
+  legalInfo: string;
 };
 
 enum FormsState {
-  None = 1,
-  Donate,
-  NewsletterSignup,
+  none = 1,
+  donate,
+  newsletterSignup,
 }
 
 const FormsContainer: FunctionComponent<FormContainerProps> = ({
   donateButtonText,
   emailSignupButtonText,
+  legalInfo,
 }) => {
-  const [openForm, setOpenForm] = useState(FormsState.None);
+  const [openForm, setOpenForm] = useState(FormsState.none);
+  const formsContainerRef = useRef<HTMLElement>();
+  const openFormAndScroll = (form: FormsState) => {
+    setOpenForm(form);
+    formsContainerRef.current.scrollIntoView(true);
+  };
   return (
     <Box
+      ref={formsContainerRef}
       position="relative"
       marginX="auto"
       zIndex={2}
       marginTop={-20}
-      width="calc(100% - 2rem)"
+      width="calc(100% - 1rem)"
       maxWidth={520}
       borderRadius={10}
-      paddingX={4}
       paddingY={2}
-      marginBottom={openForm === FormsState.None ? 0 : 20}
+      marginBottom={openForm === FormsState.none ? 0 : 20}
     >
       <Text as="div" textAlign="center" marginBottom={16}>
         <HeaderButton
-          onClick={() => setOpenForm(FormsState.Donate)}
-          isSelected={openForm === FormsState.Donate}
+          onClick={() => openFormAndScroll(FormsState.donate)}
+          isSelected={openForm === FormsState.donate}
         >
           {donateButtonText}
         </HeaderButton>
         <HeaderButton
-          onClick={() => setOpenForm(FormsState.NewsletterSignup)}
-          isSelected={openForm === FormsState.NewsletterSignup}
+          onClick={() => openFormAndScroll(FormsState.newsletterSignup)}
+          isSelected={openForm === FormsState.newsletterSignup}
         >
           {emailSignupButtonText}
         </HeaderButton>
       </Text>
-      {openForm === FormsState.Donate && (
-        <Donate donateButtonText="Donate now" />
+      {openForm === FormsState.donate && (
+        <>
+          <Donate donateButtonText="Donate now" />
+          <PostBody marginTop={8} body={legalInfo} />
+        </>
       )}
-      {openForm === FormsState.NewsletterSignup && (
+      {openForm === FormsState.newsletterSignup && (
         <NewsletterSignup signupButtonText="Sign up" />
       )}
     </Box>

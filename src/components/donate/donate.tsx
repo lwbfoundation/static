@@ -17,7 +17,6 @@ import {
   RadioProps,
   Checkbox,
 } from '@chakra-ui/core';
-import styled from '@emotion/styled';
 import { loadStripe, StripeCardElement } from '@stripe/stripe-js';
 import {
   CardElement,
@@ -32,7 +31,12 @@ import {
   genericError,
   genericCardError,
 } from './validation';
-import { InputControl, FormErrorMessage, FormSuccessMessage } from '../form';
+import {
+  InputControl,
+  FormErrorMessage,
+  FormSuccessMessage,
+  SubmitButton,
+} from '../form';
 
 const isServer = typeof window === 'undefined';
 
@@ -71,9 +75,9 @@ const AmountButton = forwardRef((props: RadioProps, ref) => {
   return (
     <Button
       ref={ref}
-      backgroundColor={isChecked ? 'gray.600' : 'white'}
+      backgroundColor={isChecked ? 'gray.500' : 'white'}
       color={isChecked ? 'white' : 'gray.600'}
-      _hover={{ backgroundColor: isChecked ? 'gray.600' : 'gray.100' }}
+      _hover={{ backgroundColor: isChecked ? 'gray.500' : 'gray.100' }}
       borderWidth={1}
       borderColor={isChecked ? 'white' : 'gray.brand'}
       aria-checked={isChecked}
@@ -111,7 +115,7 @@ const FauxInput: FunctionComponent<FauxInputProps> = ({
   />
 );
 
-const calculatAmountWithFeesCovered = (amount: number) =>
+const calculateAmountWithFeesCovered = (amount: number) =>
   Math.ceil((amount + 30) / (1 - 0.029));
 
 const parseCustomAmount = (customAmount: string | undefined) => {
@@ -126,7 +130,7 @@ const updateBaseAmount = (_: any, { amountOption, customAmount }: any) => {
 };
 
 const updateAmountWithFeesCovered = (_: any, { baseAmount }: any) => {
-  return baseAmount && calculatAmountWithFeesCovered(baseAmount);
+  return baseAmount && calculateAmountWithFeesCovered(baseAmount);
 };
 
 const updateAmount = (
@@ -272,7 +276,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             })()}
           </pre> */}
           {submitError && !dirtySinceLastSubmit && (
-            <Box marginBottom="2">
+            <Box marginBottom="8">
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
             </Box>
           )}
@@ -283,6 +287,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               autocomplete="given-name"
               marginTop={1}
               component={InputControl}
+              autoFocus
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
@@ -343,7 +348,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             </Text>
             {typeof values.amountOption === 'undefined' && (
               <FauxInput display="flex">
-                <Text as="div" lineHeight="1.5em" paddingY={2}>
+                <Text as="div" paddingY={2}>
                   $
                 </Text>
                 <Field
@@ -357,6 +362,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
                   _focus={{
                     boxShadow: 'none',
                   }}
+                  autoFocus
                 />
               </FauxInput>
             )}
@@ -407,7 +413,13 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               </FauxInput>
             )}
           </Text>
-          <Field name="coverFees" component={CheckboxControl} size="lg">
+          <Field
+            name="coverFees"
+            type="checkbox"
+            component={CheckboxControl}
+            size="lg"
+            marginTop={4}
+          >
             <Text fontSize="md">
               I would like to cover the{' '}
               {values.baseAmount &&
@@ -422,23 +434,15 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               donation.
             </Text>
           </Field>
-          <Box textAlign={['center', 'right']} marginTop={4}>
+          <Box textAlign={['center', 'right']} marginTop={8}>
             {values.coverFees && values.amount && (
               <Text display="block" fontWeight="bold" fontSize="lg">
                 Total: {getCurrencyFormatter().format(values.amount / 100)}
               </Text>
             )}
-            <Button
-              type="submit"
-              marginTop={2}
-              backgroundColor="gray.600"
-              color="white"
-              _hover={{ backgroundColor: 'gray.700' }}
-              isDisabled={!stripe || submitting}
-              width={['100%', 'auto']}
-            >
-              {donateButtonText}
-            </Button>
+            <SubmitButton marginTop={4} isDisabled={!stripe || submitting}>
+              {submitting ? 'Submitting...' : donateButtonText}
+            </SubmitButton>
           </Box>
         </form>
       )}

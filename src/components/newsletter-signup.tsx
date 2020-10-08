@@ -108,7 +108,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
       {({ handleSubmit, submitting, dirtySinceLastSubmit, submitError }) => (
         <form onSubmit={handleSubmit}>
           {submitError && !dirtySinceLastSubmit && (
-            <Box marginBottom="2">
+            <Box marginBottom={8}>
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
             </Box>
           )}

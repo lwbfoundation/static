@@ -276,7 +276,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             })()}
           </pre> */}
           {submitError && !dirtySinceLastSubmit && (
-            <Box marginBottom="8">
+            <Box marginBottom={8}>
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
             </Box>
           )}

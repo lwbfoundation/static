@@ -67,7 +67,7 @@ const FormsContainer: FunctionComponent<FormContainerProps> = ({
   const formsContainerRef = useRef<HTMLElement>();
   const openFormAndScroll = (form: FormsState) => {
     setOpenForm(form);
-    formsContainerRef.current.scrollIntoView(true);
+    formsContainerRef.current?.scrollIntoView(true);
   };
   return (
     <Box

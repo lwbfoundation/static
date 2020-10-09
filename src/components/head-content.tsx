@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Global, css } from '@emotion/core';
 import { Helmet } from 'react-helmet';
+import theme from '../gatsby-plugin-chakra-ui/theme';
 
 interface HeadContentProps {
   title: string;
@@ -21,6 +22,10 @@ const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
 
         a {
           text-decoration: underline;
+        }
+
+        body {
+          color: ${theme.colors.gray.type};
         }
       `}
     />

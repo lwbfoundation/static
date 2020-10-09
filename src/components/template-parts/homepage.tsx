@@ -8,9 +8,10 @@ import FormsContainer from '../forms-container';
 
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
   <>
+    <HeadContent title={data.wp.generalSettings.title} />
     <AspectRatioResponsive width="100%" ratio={[1, 1.85 / 1, null, 2.5 / 1]}>
       <Box
-        backgroundColor="gray.600"
+        backgroundColor="gray.type"
         backgroundImage="url(/images/javier-trueba-iQPr1XkF5F0-unsplash.jpg)"
         backgroundSize="cover"
         overflow="visible"
@@ -19,9 +20,12 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
           width="100%"
           ratio={[1, 1.85 / 1, null, 2.5 / 1]}
         >
-          <Box backgroundColor="blackAlpha.700">
+          <Box
+            backgroundColor="blackAlpha.700"
+            borderColor="blue.brand"
+            borderBottomWidth={8}
+          >
             <Text as="div" textAlign="center" color="white" paddingX="1rem">
-              <HeadContent title={data.wp.generalSettings.title} />
               <Heading
                 as="h1"
                 fontWeight={200}
@@ -51,7 +55,14 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
         </Text>
       </Box>
     </Box>
-    <Box width="100%" backgroundColor="gray.600" paddingX={[2, 4]} paddingY={6}>
+    <Box
+      width="100%"
+      backgroundColor="gray.type"
+      paddingX={[2, 4]}
+      paddingY={6}
+      borderColor="blue.brand"
+      borderTopWidth={8}
+    >
       <Text color="white" fontSize="sm" textAlign={['left', 'center']}>
         <PostBody body={data.page.customHomepageOptions.legalinfo} />
       </Text>

@@ -75,9 +75,9 @@ const AmountButton = forwardRef((props: RadioProps, ref) => {
   return (
     <Button
       ref={ref}
-      backgroundColor={isChecked ? 'gray.500' : 'white'}
-      color={isChecked ? 'white' : 'gray.600'}
-      _hover={{ backgroundColor: isChecked ? 'gray.500' : 'gray.100' }}
+      backgroundColor={isChecked ? 'gray.type' : 'white'}
+      color={isChecked ? 'white' : 'gray.type'}
+      _hover={{ backgroundColor: isChecked ? 'gray.type' : 'gray.100' }}
       borderWidth={1}
       borderColor={isChecked ? 'white' : 'gray.brand'}
       aria-checked={isChecked}

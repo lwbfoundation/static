@@ -98,9 +98,10 @@ export const FormSuccessMessage: FunctionComponent = ({ children }) => {
 export const SubmitButton: FunctionComponent<ButtonProps> = (props) => (
   <Button
     type="submit"
-    backgroundColor="gray.600"
+    backgroundColor="blue.brand"
     color="white"
-    _hover={{ backgroundColor: 'gray.700' }}
+    _hover={{ backgroundColor: 'blue.400' }}
+    _active={{ backgroundColor: 'blue.100' }}
     width={['100%', 'auto']}
     fontWeight={200}
     textTransform="uppercase"

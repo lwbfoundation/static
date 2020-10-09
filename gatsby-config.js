@@ -59,6 +59,7 @@ module.exports = {
       },
     },
     'gatsby-transformer-sharp',
+    'gatsby-background-image',
     {
       resolve: 'gatsby-plugin-react-svg',
       options: {

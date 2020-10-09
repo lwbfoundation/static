@@ -326,20 +326,20 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
                   typeof value === 'undefined' ? '' : value.toString()
                 }
               >
-                <AmountButton marginBottom={1} value="1000">
-                  $10
-                </AmountButton>
-                <AmountButton marginBottom={1} value="2000">
-                  $20
-                </AmountButton>
-                <AmountButton marginBottom={1} value="5000">
-                  $50
-                </AmountButton>
                 <AmountButton marginBottom={1} value="10000">
                   $100
                 </AmountButton>
+                <AmountButton marginBottom={1} value="20000">
+                  $200
+                </AmountButton>
                 <AmountButton marginBottom={1} value="50000">
                   $500
+                </AmountButton>
+                <AmountButton marginBottom={1} value="100000">
+                  $1,000
+                </AmountButton>
+                <AmountButton marginBottom={1} value="500000">
+                  $5,000
                 </AmountButton>
                 <AmountButton marginBottom={1} value="">
                   Other

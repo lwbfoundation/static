@@ -17,7 +17,7 @@ import {
   RadioProps,
   Checkbox,
 } from '@chakra-ui/core';
-import { loadStripe, StripeCardElement } from '@stripe/stripe-js';
+import { loadStripe, StripeCardElement } from '@stripe/stripe-js/pure';
 import {
   CardElement,
   Elements,

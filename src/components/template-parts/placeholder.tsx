@@ -5,7 +5,7 @@ import CenteredLayout from '../centered-layout';
 import { PageTemplateProps } from '../../templates/single/Page';
 
 const Placeholder: FunctionComponent<PageTemplateProps> = ({ data }) => (
-  <CenteredLayout title={data.wp.generalSettings.title}>
+  <CenteredLayout title={data.wpCommonSiteSettings.title}>
     <Heading
       as="h1"
       fontWeight={200}
@@ -14,7 +14,7 @@ const Placeholder: FunctionComponent<PageTemplateProps> = ({ data }) => (
       letterSpacing={4}
       fontFamily="Trade Gothic, Helvetica"
     >
-      {data.wp.generalSettings.title}
+      {data.wpCommonSiteSettings.title}
     </Heading>
     <PostBody body={data.page.content} />
   </CenteredLayout>

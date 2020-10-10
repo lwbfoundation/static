@@ -55,7 +55,7 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => (
 
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
   <>
-    <HeadContent title={data.wp.generalSettings.title} />
+    <HeadContent title={data.wpCommonSiteSettings.title} />
     <AspectRatioResponsive width="100%" ratio={[1, 1.85 / 1, null, 2.5 / 1]}>
       <Box
         backgroundColor="gray.type"
@@ -80,9 +80,13 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
                   letterSpacing={4}
                   fontFamily="Trade Gothic, Helvetica"
                 >
-                  {data.wp.generalSettings.title}
+                  {data.wpCommonSiteSettings.title}
                 </Heading>
-                <PostBody body={data.page.customHomepageOptions.subheading} />
+                <PostBody
+                  body={
+                    data.wpCommonSiteSettings.customCommonDataFields.subheading
+                  }
+                />
               </Text>
             </Box>
           </AspectRatioResponsive>
@@ -90,11 +94,14 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
       </Box>
     </AspectRatioResponsive>
     <FormsContainer
-      donateButtonText={data.page.customHomepageOptions.donatebuttontext}
-      emailSignupButtonText={
-        data.page.customHomepageOptions.newslettersignupbuttontext
+      donateButtonText={
+        data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext
       }
-      legalInfo={data.page.customHomepageOptions.legalinfo}
+      emailSignupButtonText={
+        data.wpCommonSiteSettings.customCommonDataFields
+          .newslettersignupbuttontext
+      }
+      legalInfo={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
     />
     <Box marginX={[2, 4]}>
       <Box maxWidth={800} marginX="auto" marginBottom={16}>
@@ -111,8 +118,10 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
       borderColor="blue.brand"
       borderTopWidth={8}
     >
-      <Text color="white" fontSize="sm" textAlign={['left', 'center']}>
-        <PostBody body={data.page.customHomepageOptions.legalinfo} />
+      <Text as="div" color="white" fontSize="sm" textAlign={['left', 'center']}>
+        <PostBody
+          body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
+        />
       </Text>
     </Box>
   </>

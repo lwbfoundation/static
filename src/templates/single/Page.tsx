@@ -16,23 +16,20 @@ const templates: { [key: string]: PageTemplate } = {
   placeholder: Placeholder,
 };
 
-interface GeneralSettings {
-  readonly title: string;
-}
-
-interface Wp {
-  readonly generalSettings: GeneralSettings;
-}
-
 interface CustomDisplaySettings {
   readonly statictemplate: string;
 }
 
-interface CustomHomepageOptions {
+interface CustomCommonDataFields {
   readonly subheading: string;
   readonly donatebuttontext: string;
   readonly newslettersignupbuttontext: string;
   readonly legalinfo: string;
+}
+
+interface CommonSiteSettings {
+  readonly title: string;
+  readonly customCommonDataFields: CustomCommonDataFields;
 }
 
 interface Page {
@@ -42,12 +39,11 @@ interface Page {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly featuredImage: any;
   readonly customDisplaySettings: CustomDisplaySettings;
-  readonly customHomepageOptions: CustomHomepageOptions;
 }
 
 interface PageQueryResult {
-  wp: Wp;
-  page: Page;
+  readonly page: Page;
+  readonly wpCommonSiteSettings: CommonSiteSettings;
   readonly nextPage: Page;
   readonly previousPage: Page;
 }
@@ -63,12 +59,6 @@ export default Page;
 
 export const query = graphql`
   query page($id: String!, $nextPage: String, $previousPage: String) {
-    wp {
-      generalSettings {
-        title
-      }
-    }
-
     page: wpPage(id: { eq: $id }) {
       title
       content
@@ -82,7 +72,11 @@ export const query = graphql`
       customDisplaySettings {
         statictemplate
       }
-      customHomepageOptions {
+    }
+
+    wpCommonSiteSettings {
+      title
+      customCommonDataFields {
         subheading
         donatebuttontext
         newslettersignupbuttontext

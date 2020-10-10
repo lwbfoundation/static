@@ -209,7 +209,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
   return (
     <Form<PaymentFormValues>
-      initialValues={{ amountOption: 2000, coverFees: false }}
+      initialValues={{ amountOption: 20000, coverFees: false }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
         if (!stripe) return { [FORM_ERROR]: genericError };

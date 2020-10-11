@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useRef } from 'react';
 import { Box, Text, Button, ButtonProps } from '@chakra-ui/core';
 import PostBody from './post-body';
 import Donate from './donate/donate';
-import NewsletterSignup from './newsletter-signup';
+import NewsletterSignup from './newsletter-signup/newsletter-signup';
 
 type HeaderButtonProps = ButtonProps & {
   readonly isSelected?: boolean;
@@ -52,6 +52,7 @@ type FormContainerProps = {
   legalInfo: string;
 };
 
+// eslint-disable-next-line no-shadow
 enum FormsState {
   none = 1,
   donate,

@@ -1,5 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { Input, Box, BoxProps, Button, ButtonProps } from '@chakra-ui/core';
+import {
+  Input,
+  Box,
+  BoxProps,
+  Button,
+  ButtonProps,
+  Select,
+} from '@chakra-ui/core';
 import { FORM_ERROR } from 'final-form';
 import { FieldRenderProps } from 'react-final-form';
 
@@ -8,6 +15,12 @@ export const InputControl: FunctionComponent<FieldRenderProps<any>> = ({
   meta,
   ...rest
 }) => <Input {...input} {...rest} />;
+
+export const SelectControl: FunctionComponent<FieldRenderProps<any>> = ({
+  input,
+  meta,
+  ...rest
+}) => <Select {...input} {...rest} />;
 
 export interface ErrorInfo {
   readonly message: JSX.Element | string;

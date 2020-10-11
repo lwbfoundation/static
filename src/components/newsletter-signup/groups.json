@@ -1,0 +1,30 @@
+{
+  "contactType": {
+    "categoryId": 83532,
+    "groups": [
+      {
+        "id": 1,
+        "label": "Design student"
+      },
+      {
+        "id": 2,
+        "label": "Design professional"
+      },
+      {
+        "id": 4,
+        "label": "Design educator"
+      },
+      {
+        "id": 32,
+        "label": "Community member"
+      },
+      {
+        "label": "Other"
+      }
+    ]
+  },
+  "scholarshipOpportunities": {
+    "categoryId": 83532,
+    "id": 16
+  }
+}

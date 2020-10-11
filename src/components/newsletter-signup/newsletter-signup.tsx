@@ -1,11 +1,12 @@
 import React, { useState, FunctionComponent } from 'react';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
-import { Text, Button, Box } from '@chakra-ui/core';
+import { Text, Box, Select } from '@chakra-ui/core';
 import saveMailchimpSignup from 'gatsby-plugin-mailchimp';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 import {
   InputControl,
+  SelectControl,
   SignupFormValues,
   validateSignupFormValues,
   emailError,
@@ -13,7 +14,8 @@ import {
   FormErrorMessage,
   FormSuccessMessage,
   SubmitButton,
-} from './form';
+} from '../form';
+import groups from './groups.json';
 
 const genericError: ErrorInfo = {
   message: (
@@ -55,6 +57,18 @@ interface NewsletterSignupProps {
   readonly signupButtonText: string;
 }
 
+type NewsletterSignupFormValues = SignupFormValues & {
+  contactType: string | undefined;
+  contactAboutScholarshipOpportunities: boolean;
+};
+
+const transformContactTypeField = (
+  contactType: NewsletterSignupFormValues['contactType']
+) =>
+  contactType && {
+    [`group[${groups.contactType.categoryId}][${contactType}]`]: contactType,
+  };
+
 const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
   signupButtonText,
 }) => {
@@ -69,7 +83,10 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
   }
 
   return (
-    <Form<SignupFormValues>
+    <Form<NewsletterSignupFormValues>
+      initialValues={{
+        contactType: groups.contactType.groups[0].id?.toString(),
+      }}
       onSubmit={async (values) => {
         try {
           const validationError = validateSignupFormValues(values);
@@ -81,9 +98,12 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
 
           const { firstName, lastName, email } = values;
 
+          debugger;
+
           const { result, msg: message } = await saveMailchimpSignup(email, {
             FNAME: firstName,
             LNAME: lastName,
+            ...transformContactTypeField(values.contactType),
           });
 
           if (result === 'error') {
@@ -105,8 +125,15 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
         return undefined;
       }}
     >
-      {({ handleSubmit, submitting, dirtySinceLastSubmit, submitError }) => (
+      {({
+        handleSubmit,
+        submitting,
+        values,
+        dirtySinceLastSubmit,
+        submitError,
+      }) => (
         <form onSubmit={handleSubmit}>
+          <pre>{JSON.stringify(values, null, 2)}</pre>
           {submitError && !dirtySinceLastSubmit && (
             <Box marginBottom={8}>
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
@@ -139,6 +166,16 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
               marginTop={1}
               component={InputControl}
             />
+          </Text>
+          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
+            I am a...
+            <Field name="contactType" marginTop={1} component={SelectControl}>
+              {groups.contactType.groups.map((group) => (
+                <option key={group.id} value={group.id || ''}>
+                  {group.label}
+                </option>
+              ))}
+            </Field>
           </Text>
           <Box textAlign="right">
             <SubmitButton marginTop={2} isDisabled={submitting}>

@@ -1,7 +1,7 @@
 import React, { useState, FunctionComponent } from 'react';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
-import { Text, Box, Select } from '@chakra-ui/core';
+import { Text, Box } from '@chakra-ui/core';
 import saveMailchimpSignup from 'gatsby-plugin-mailchimp';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 import {
@@ -14,6 +14,7 @@ import {
   FormErrorMessage,
   FormSuccessMessage,
   SubmitButton,
+  CheckboxControl,
 } from '../form';
 import groups from './groups.json';
 
@@ -59,7 +60,7 @@ interface NewsletterSignupProps {
 
 type NewsletterSignupFormValues = SignupFormValues & {
   contactType: string | undefined;
-  contactAboutScholarshipOpportunities: boolean;
+  interestedInScholarshipOpportunities: boolean;
 };
 
 const transformContactTypeField = (
@@ -67,6 +68,14 @@ const transformContactTypeField = (
 ) =>
   contactType && {
     [`group[${groups.contactType.categoryId}][${contactType}]`]: contactType,
+  };
+
+const transformScholarshipOpportunitiesField = (
+  interestedInScholarshipOpportunities: NewsletterSignupFormValues['interestedInScholarshipOpportunities']
+) =>
+  interestedInScholarshipOpportunities && {
+    [`group[${groups.scholarshipOpportunities.categoryId}][${groups.scholarshipOpportunities.id}]`]: groups
+      .scholarshipOpportunities.id,
   };
 
 const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
@@ -98,12 +107,13 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
 
           const { firstName, lastName, email } = values;
 
-          debugger;
-
           const { result, msg: message } = await saveMailchimpSignup(email, {
             FNAME: firstName,
             LNAME: lastName,
             ...transformContactTypeField(values.contactType),
+            ...transformScholarshipOpportunitiesField(
+              values.interestedInScholarshipOpportunities
+            ),
           });
 
           if (result === 'error') {
@@ -128,12 +138,12 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
       {({
         handleSubmit,
         submitting,
-        values,
+        // values,
         dirtySinceLastSubmit,
         submitError,
       }) => (
         <form onSubmit={handleSubmit}>
-          <pre>{JSON.stringify(values, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
           {submitError && !dirtySinceLastSubmit && (
             <Box marginBottom={8}>
               <FormErrorMessage>{submitError.message}</FormErrorMessage>
@@ -177,9 +187,20 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
               ))}
             </Field>
           </Text>
-          <Box textAlign="right">
+          <Field
+            name="interestedInScholarshipOpportunities"
+            type="checkbox"
+            component={CheckboxControl}
+            size="lg"
+            marginTop={4}
+          >
+            <Text fontSize="md">
+              Keep me in the loop about scholarship opportunities and deadlines.
+            </Text>
+          </Field>
+          <Box textAlign="right" marginTop={2}>
             <SubmitButton marginTop={2} isDisabled={submitting}>
-              {signupButtonText}
+              {submitting ? 'Submitting...' : signupButtonText}
             </SubmitButton>
           </Box>
         </form>

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { mapResponsive } from '@chakra-ui/utils';
 import {
   chakra,

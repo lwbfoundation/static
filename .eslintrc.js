@@ -17,7 +17,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'react', 'prettier'],
+  plugins: ['react', 'prettier'],
   overrides: [
     {
       files: ['*.{ts,tsx}'],
@@ -26,6 +26,10 @@ module.exports = {
       rules: {
         'react/prop-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          { argsIgnorePattern: '^_+$' },
+        ],
       },
     },
   ],
@@ -45,6 +49,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'error',
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_+$' }],
   },
   settings: {
     'import/resolver': {

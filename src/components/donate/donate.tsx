@@ -5,7 +5,7 @@ import React, {
   useEffect,
 } from 'react';
 import { Decorator, FORM_ERROR } from 'final-form';
-import { Form, Field, FieldRenderProps } from 'react-final-form';
+import { Form, Field } from 'react-final-form';
 import createFieldCalculator from 'final-form-calculate';
 import {
   Box,
@@ -13,9 +13,7 @@ import {
   PseudoBoxProps,
   Button,
   Text,
-  RadioButtonGroup,
   RadioProps,
-  Checkbox,
 } from '@chakra-ui/core';
 import type { StripeCardElement } from '@stripe/stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
@@ -37,6 +35,8 @@ import {
   FormErrorMessage,
   FormSuccessMessage,
   SubmitButton,
+  CheckboxControl,
+  RadioButtonGroupControl,
 } from '../form';
 
 const isServer = typeof window === 'undefined';
@@ -48,28 +48,6 @@ const StripeLoader: FunctionComponent = ({ children }) => {
 
   return <Elements stripe={stripePromise}>{children}</Elements>;
 };
-
-const CheckboxControl: FunctionComponent<FieldRenderProps<any>> = ({
-  input,
-  children,
-  meta,
-  ...rest
-}) => (
-  <Checkbox {...input} {...rest}>
-    {children}
-  </Checkbox>
-);
-
-const RadioButtonGroupControl: FunctionComponent<FieldRenderProps<any>> = ({
-  input,
-  children,
-  meta,
-  ...rest
-}) => (
-  <RadioButtonGroup {...input} {...rest}>
-    {children}
-  </RadioButtonGroup>
-);
 
 const AmountButton = forwardRef((props: RadioProps, ref) => {
   const { isChecked, children, ...rest } = props;
@@ -97,7 +75,7 @@ interface FauxInputProps extends PseudoBoxProps {
 
 const fauxInputFocusProps = {
   borderColor: '#3182ce',
-  boxShadow: '0 0 0 1px #3182c',
+  boxShadow: '0 0 0 1px #3182ce',
 };
 
 const FauxInput: FunctionComponent<FauxInputProps> = ({

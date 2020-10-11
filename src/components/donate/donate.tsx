@@ -413,12 +413,14 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               donation.
             </Text>
           </Field>
-          <Box textAlign={['center', 'right']} marginTop={8}>
-            {values.coverFees && values.amount && (
-              <Text display="block" fontWeight="bold" fontSize="lg">
-                Total: {getCurrencyFormatter().format(values.amount / 100)}
-              </Text>
-            )}
+          <Box textAlign={['center', 'right']}>
+            <Box marginTop={4}>
+              {values.coverFees && values.amount && (
+                <Text display="block" fontWeight="bold" fontSize="lg">
+                  Total: {getCurrencyFormatter().format(values.amount / 100)}
+                </Text>
+              )}
+            </Box>
             <SubmitButton marginTop={4} isDisabled={!stripe || submitting}>
               {submitting ? 'Submitting...' : donateButtonText}
             </SubmitButton>

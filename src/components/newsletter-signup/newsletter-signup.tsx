@@ -198,7 +198,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
               Keep me in the loop about scholarship opportunities and deadlines.
             </Text>
           </Field>
-          <Box textAlign="right" marginTop={2}>
+          <Box textAlign="right" marginTop={4}>
             <SubmitButton marginTop={2} isDisabled={submitting}>
               {submitting ? 'Submitting...' : signupButtonText}
             </SubmitButton>

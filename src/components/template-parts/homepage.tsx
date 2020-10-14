@@ -8,6 +8,7 @@ import HeadContent from '../head-content';
 import { PageTemplateProps } from '../../templates/single/Page';
 import AspectRatioResponsive from '../aspect-ratio-responsive';
 import FormsContainer from '../forms-container';
+import Team from '../team';
 
 const BackgroundImage100 = styled(BackgroundImage)`
   width: 100%;
@@ -105,9 +106,12 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
     />
     <Box marginX={[2, 4]}>
       <Box maxWidth={800} marginX="auto" marginBottom={16}>
-        <Text as="div" fontSize="1.4em" textAlign="justify">
+        <Text as="div" fontSize="1.4em" textAlign="justify" marginBottom={16}>
           <PostBody body={data.page.content} />
         </Text>
+      </Box>
+      <Box maxWidth={1024} marginX="auto" marginBottom={16}>
+        <Team />
       </Box>
     </Box>
     <Box

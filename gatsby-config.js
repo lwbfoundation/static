@@ -30,7 +30,7 @@ module.exports = {
       options: {
         url:
           process.env.WPGRAPHQL_URL ||
-          'http://admin.lewiswbutlerfoundation.org/graphql',
+          'https://admin.lewiswbutlerfoundation.org/graphql',
         verbose: true,
         develop: {
           hardCacheMediaFiles: true,

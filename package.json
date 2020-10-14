@@ -49,6 +49,7 @@
     "gatsby-transformer-sharp": "2.5.11",
     "gatsby-wordpress-experimental-inline-images": "^0.0.3",
     "lint-staged": "^10.4.0",
+    "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-final-form": "^6.5.1",

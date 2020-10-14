@@ -181,7 +181,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             I am a...
             <Field name="contactType" marginTop={1} component={SelectControl}>
               {groups.contactType.groups.map((group) => (
-                <option key={group.id} value={group.id || ''}>
+                <option key={group.id || 'Other'} value={group.id || ''}>
                   {group.label}
                 </option>
               ))}

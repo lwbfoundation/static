@@ -288,7 +288,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             />
           </Text>
           <Box marginBottom={4}>
-            <Text fontWeight="bold" display="block" marginBottom={1}>
+            <Text as="div" fontWeight="bold" display="block" marginBottom={1}>
               Donation amount
               <Field
                 name="amountOption"
@@ -347,7 +347,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             )}
           </Box>
 
-          <Text fontWeight="bold" display="block" marginBottom={2}>
+          <Text as="div" fontWeight="bold" display="block" marginBottom={2}>
             Credit card
             {renderClient && (
               <FauxInput

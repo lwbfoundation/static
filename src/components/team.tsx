@@ -3,7 +3,7 @@ import { Box, AspectRatioBox, Heading, Text } from '@chakra-ui/core';
 import { graphql, StaticQuery } from 'gatsby';
 import Img from 'gatsby-image';
 import PostBody from './post-body';
-import useFixedHeights from '../utils/use-fixed-heights';
+import useMatchingHeights from '../utils/use-matching-heights';
 
 type TeamProps = Readonly<{
   team: {
@@ -28,8 +28,8 @@ type TeamProps = Readonly<{
 }>;
 
 const TeamInner: FunctionComponent<TeamProps> = ({ team }) => {
-  const teamMemberNameRefs = useFixedHeights(team.nodes.length);
-  const teamMemberTitleRefs = useFixedHeights(team.nodes.length);
+  const teamMemberNameRefs = useMatchingHeights(team.nodes.length);
+  const teamMemberTitleRefs = useMatchingHeights(team.nodes.length);
 
   return (
     <>

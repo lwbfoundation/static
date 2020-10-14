@@ -27,7 +27,7 @@ type ElementsByOffset = {
   }[];
 };
 
-const useFixedHeights: (numElements: number) => RefObject<HTMLElement>[] = (
+const useMatchingHeights: (numElements: number) => RefObject<HTMLElement>[] = (
   numElements
 ) => {
   const refs = useRefsArray<HTMLElement>(numElements);
@@ -83,4 +83,4 @@ const useFixedHeights: (numElements: number) => RefObject<HTMLElement>[] = (
   return refs;
 };
 
-export default useFixedHeights;
+export default useMatchingHeights;

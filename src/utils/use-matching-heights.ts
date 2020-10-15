@@ -17,18 +17,43 @@ function useRefsArray<T = unknown>(length: number) {
   return refsArrayRef.current;
 }
 
-type ElementsByOffset = {
-  [key: string]: {
-    position: {
-      top: number;
-      height: number;
-    };
-    element: HTMLElement;
-  }[];
+type ElementPosition = {
+  position: {
+    top: number;
+    height: number;
+  };
+  element: HTMLElement;
 };
 
-const useMatchingHeights: (numElements: number) => RefObject<HTMLElement>[] = (
-  numElements
+type GroupedElements = {
+  [key: string]: ElementPosition[];
+};
+
+const groupElementsVertically = (
+  elementPositions: (ElementPosition | null)[]
+) =>
+  elementPositions.reduce((acc, elementPosition) => {
+    if (!elementPosition) return acc;
+    const {
+      element,
+      position: { top, height },
+    } = elementPosition;
+    const elementsAtHeight = acc[`${top}`] || [];
+    elementsAtHeight.push({ element, position: { top, height } });
+    acc[`${top}`] = elementsAtHeight;
+    return acc;
+  }, {} as GroupedElements);
+
+type UseMatchingHeightsOptions = {
+  shouldGroupElementsVertically?: boolean;
+};
+
+const useMatchingHeights: (
+  numElements: number,
+  options?: UseMatchingHeightsOptions
+) => RefObject<HTMLElement>[] = (
+  numElements,
+  { shouldGroupElementsVertically = true } = {}
 ) => {
   const refs = useRefsArray<HTMLElement>(numElements);
 
@@ -36,11 +61,12 @@ const useMatchingHeights: (numElements: number) => RefObject<HTMLElement>[] = (
     const resizeElements = () => {
       refs.forEach((ref) => {
         // eslint-disable-next-line no-param-reassign
-        (ref.current as HTMLElement).style.height = 'auto';
+        if (ref.current) ref.current.style.height = 'auto';
       });
 
-      const clientRects = refs.map((ref) => {
-        const element = ref.current as HTMLElement;
+      const elementPositions = refs.map((ref) => {
+        const element = ref.current;
+        if (!element) return null;
         const rect = element.getBoundingClientRect();
         return {
           position: {
@@ -51,22 +77,16 @@ const useMatchingHeights: (numElements: number) => RefObject<HTMLElement>[] = (
         };
       });
 
-      const elementsByOffset = clientRects.reduce(
-        (acc, { element, position: { top, height } }) => {
-          const elementsAtHeight = acc[`${top}`] || [];
-          elementsAtHeight.push({ element, position: { top, height } });
-          acc[`${top}`] = elementsAtHeight;
-          return acc;
-        },
-        {} as ElementsByOffset
-      );
+      const groupedElements: GroupedElements = shouldGroupElementsVertically
+        ? groupElementsVertically(elementPositions)
+        : ({ all: elementPositions } as GroupedElements);
 
-      Object.keys(elementsByOffset).forEach((heightKey) => {
+      Object.keys(groupedElements).forEach((groupKey) => {
         const maxHeight = Math.max(
-          ...elementsByOffset[heightKey].map(({ position }) => position.height)
+          ...groupedElements[groupKey].map(({ position }) => position.height)
         );
 
-        elementsByOffset[heightKey].forEach(({ element }) => {
+        groupedElements[groupKey].forEach(({ element }) => {
           // eslint-disable-next-line no-param-reassign
           element.style.height = `${maxHeight}px`;
         });

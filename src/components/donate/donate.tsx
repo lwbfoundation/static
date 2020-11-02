@@ -206,7 +206,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           if (error) return { [FORM_ERROR]: genericCardError };
 
           const response = await fetch(
-            'http://localhost:3000/dev/process_payment',
+            `${process.env.GATSBY_API_BASE}/process_payment`,
             {
               method: 'post',
               headers: {

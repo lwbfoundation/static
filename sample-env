@@ -1,3 +1,4 @@
 MAILCHIMP_FORM_URL=[mailchimp url, see https://github.com/benjaminhoffman/gatsby-plugin-mailchimp for how to get it]
 GATSBY_STRIPE_PUBLISHABLE_KEY=[publishable key from stripe]
 GOOGLE_ANALYTICS_TRACKING_ID=UA-XXXXXXXX-X
+GATSBY_API_BASE=http://localhost:3000/dev

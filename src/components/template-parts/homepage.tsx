@@ -3,9 +3,11 @@ import { graphql, StaticQuery } from 'gatsby';
 import BackgroundImage from 'gatsby-background-image';
 import { Heading, Box, Text } from '@chakra-ui/core';
 import styled from '@emotion/styled';
+import striptags from 'striptags';
 import PostBody from '../post-body';
 import HeadContent from '../head-content';
 import { PageTemplateProps } from '../../templates/single/Page';
+import HomepageOpengraph from '../homepage-opengraph';
 import AspectRatioResponsive from '../aspect-ratio-responsive';
 import FormsContainer from '../forms-container';
 import Team from '../team';
@@ -57,6 +59,12 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => (
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
   <>
     <HeadContent title={data.wpCommonSiteSettings.title} />
+    <HomepageOpengraph
+      title={data.wpCommonSiteSettings.title}
+      description={striptags(
+        data.wpCommonSiteSettings.customCommonDataFields.subheading
+      )}
+    />
     <AspectRatioResponsive width="100%" ratio={[1, 1.85 / 1, null, 2.5 / 1]}>
       <Box
         backgroundColor="gray.type"

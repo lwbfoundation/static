@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { graphql, StaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import BackgroundImage from 'gatsby-background-image';
 import { Heading, Box, Text } from '@chakra-ui/core';
 import styled from '@emotion/styled';
@@ -17,44 +17,38 @@ const BackgroundImage100 = styled(BackgroundImage)`
   height: 100%;
 `;
 
-const HeaderBackgroundImage: FunctionComponent = ({ children }) => (
-  <StaticQuery
-    query={graphql`
-      query {
-        mobile: file(
-          relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
-        ) {
-          childImageSharp {
-            fluid(quality: 90, maxWidth: 480) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
-          }
-        }
-        desktop: file(
-          relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
-        ) {
-          childImageSharp {
-            fluid(quality: 90, maxWidth: 1920) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
+const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
+  const data = useStaticQuery(graphql`
+    query {
+      mobile: file(
+        relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
+      ) {
+        childImageSharp {
+          fluid(quality: 90, maxWidth: 480) {
+            ...GatsbyImageSharpFluid_withWebp
           }
         }
       }
-    `}
-    render={(data) => {
-      const sources = [
-        data.mobile.childImageSharp.fluid,
-        {
-          ...data.desktop.childImageSharp.fluid,
-          media: '(min-width: 480px)',
-        },
-      ];
-      return (
-        <BackgroundImage100 fluid={sources}>{children}</BackgroundImage100>
-      );
-    }}
-  />
-);
+      desktop: file(
+        relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
+      ) {
+        childImageSharp {
+          fluid(quality: 90, maxWidth: 1920) {
+            ...GatsbyImageSharpFluid_withWebp
+          }
+        }
+      }
+    }
+  `);
+  const sources = [
+    data.mobile.childImageSharp.fluid,
+    {
+      ...data.desktop.childImageSharp.fluid,
+      media: '(min-width: 480px)',
+    },
+  ];
+  return <BackgroundImage100 fluid={sources}>{children}</BackgroundImage100>;
+};
 
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
   <>

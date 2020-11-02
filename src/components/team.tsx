@@ -1,11 +1,11 @@
 import React, { FunctionComponent, Fragment } from 'react';
 import { Box, AspectRatioBox, Heading, Text } from '@chakra-ui/core';
-import { graphql, StaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import Img from 'gatsby-image';
 import PostBody from './post-body';
 import useMatchingHeights from '../utils/use-matching-heights';
 
-type TeamProps = Readonly<{
+type TeamData = Readonly<{
   team: {
     nodes: {
       id: number;
@@ -27,7 +27,33 @@ type TeamProps = Readonly<{
   };
 }>;
 
-const TeamInner: FunctionComponent<TeamProps> = ({ team }) => {
+const Team: FunctionComponent = () => {
+  const { team }: TeamData = useStaticQuery(graphql`
+    query {
+      team: allWpTeamMember {
+        nodes {
+          id
+          title
+          content
+          customTeamMemberOptions {
+            teammembertitle
+          }
+          featuredImage {
+            node {
+              localFile {
+                childImageSharp {
+                  fluid(quality: 90, maxWidth: 480, maxHeight: 480) {
+                    ...GatsbyImageSharpFluid_withWebp
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `);
+
   const teamMemberNameRefs = useMatchingHeights(team.nodes.length);
   const teamMemberTitleRefs = useMatchingHeights(team.nodes.length);
 
@@ -100,36 +126,5 @@ const TeamInner: FunctionComponent<TeamProps> = ({ team }) => {
     </>
   );
 };
-
-const Team: FunctionComponent = () => (
-  <StaticQuery
-    query={graphql`
-      query {
-        team: allWpTeamMember {
-          nodes {
-            id
-            title
-            content
-            customTeamMemberOptions {
-              teammembertitle
-            }
-            featuredImage {
-              node {
-                localFile {
-                  childImageSharp {
-                    fluid(quality: 90, maxWidth: 480, maxHeight: 480) {
-                      ...GatsbyImageSharpFluid_withWebp
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `}
-    render={TeamInner}
-  />
-);
 
 export default Team;

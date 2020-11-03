@@ -213,8 +213,8 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                amount: 1000,
-                email: 'tobiasab@gmail.com',
+                amount: values.amount,
+                email: values.email,
                 paymentMethod,
               }),
             }

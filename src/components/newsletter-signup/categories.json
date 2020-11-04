@@ -1,0 +1,23 @@
+{
+  "categoryId": 83532,
+  "groups": {
+    "design_student": {
+      "id": 1
+    },
+    "design_professional": {
+      "id": 2
+    },
+    "design_educator": {
+      "id": 4
+    },
+    "scholarship_opportunities": {
+      "id": 8
+    },
+    "donor": {
+      "id": 16
+    },
+    "community_member": {
+      "id": 32
+    }
+  }
+}

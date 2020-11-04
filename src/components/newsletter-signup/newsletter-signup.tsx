@@ -2,7 +2,6 @@ import React, { useState, FunctionComponent } from 'react';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
 import { Text, Box } from '@chakra-ui/core';
-import saveMailchimpSignup from 'gatsby-plugin-mailchimp';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 import {
   InputControl,
@@ -16,7 +15,7 @@ import {
   SubmitButton,
   CheckboxControl,
 } from '../form';
-import groups from './groups.json';
+import signupForNewsletter, { NewsletterGroup } from './signup-for-newsletter';
 
 const genericError: ErrorInfo = {
   message: (
@@ -54,29 +53,36 @@ const getMailchimpError: (mailchimpError: string) => ErrorInfo = (
   return genericError;
 };
 
+const contactTypes: { name?: NewsletterGroup; label: string }[] = [
+  {
+    name: NewsletterGroup.DESIGN_STUDENT,
+    label: 'Design student',
+  },
+  {
+    name: NewsletterGroup.DESIGN_PROFESSIONAL,
+    label: 'Design professional',
+  },
+  {
+    name: NewsletterGroup.DESIGN_EDUCATOR,
+    label: 'Design educator',
+  },
+  {
+    name: NewsletterGroup.COMMUNITY_MEMBER,
+    label: 'Community member',
+  },
+  {
+    label: 'Other',
+  },
+];
+
 interface NewsletterSignupProps {
   readonly signupButtonText: string;
 }
 
 type NewsletterSignupFormValues = SignupFormValues & {
-  contactType: string | undefined;
+  contactType: NewsletterGroup | undefined;
   interestedInScholarshipOpportunities: boolean;
 };
-
-const transformContactTypeField = (
-  contactType: NewsletterSignupFormValues['contactType']
-) =>
-  contactType && {
-    [`group[${groups.contactType.categoryId}][${contactType}]`]: contactType,
-  };
-
-const transformScholarshipOpportunitiesField = (
-  interestedInScholarshipOpportunities: NewsletterSignupFormValues['interestedInScholarshipOpportunities']
-) =>
-  interestedInScholarshipOpportunities && {
-    [`group[${groups.scholarshipOpportunities.categoryId}][${groups.scholarshipOpportunities.id}]`]: groups
-      .scholarshipOpportunities.id,
-  };
 
 const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
   signupButtonText,
@@ -94,7 +100,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
   return (
     <Form<NewsletterSignupFormValues>
       initialValues={{
-        contactType: groups.contactType.groups[0].id?.toString(),
+        contactType: NewsletterGroup.DESIGN_STUDENT,
       }}
       onSubmit={async (values) => {
         try {
@@ -105,15 +111,26 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             };
           }
 
-          const { firstName, lastName, email } = values;
+          const {
+            firstName,
+            lastName,
+            email,
+            contactType,
+            interestedInScholarshipOpportunities,
+          } = values;
 
-          const { result, msg: message } = await saveMailchimpSignup(email, {
-            FNAME: firstName,
-            LNAME: lastName,
-            ...transformContactTypeField(values.contactType),
-            ...transformScholarshipOpportunitiesField(
-              values.interestedInScholarshipOpportunities
-            ),
+          const groups: NewsletterGroup[] = [
+            ...(contactType ? [contactType] : []),
+            ...(interestedInScholarshipOpportunities
+              ? [NewsletterGroup.SCHOLARSHIP_OPPORTUNITIES]
+              : []),
+          ];
+
+          const { result, msg: message } = await signupForNewsletter({
+            firstName,
+            lastName,
+            email,
+            groups,
           });
 
           if (result === 'error') {
@@ -180,9 +197,12 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
             I am a...
             <Field name="contactType" marginTop={1} component={SelectControl}>
-              {groups.contactType.groups.map((group) => (
-                <option key={group.id || 'Other'} value={group.id || ''}>
-                  {group.label}
+              {contactTypes.map((contactType) => (
+                <option
+                  key={contactType.name || 'Other'}
+                  value={contactType.name || ''}
+                >
+                  {contactType.label}
                 </option>
               ))}
             </Field>

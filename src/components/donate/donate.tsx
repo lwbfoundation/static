@@ -38,6 +38,9 @@ import {
   CheckboxControl,
   RadioButtonGroupControl,
 } from '../form';
+import signupForNewsletter, {
+  NewsletterGroup,
+} from '../newsletter-signup/signup-for-newsletter';
 
 const isServer = typeof window === 'undefined';
 
@@ -197,6 +200,13 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           return { [FORM_ERROR]: validationError };
         }
 
+        signupForNewsletter({
+          email: values.email,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          groups: [NewsletterGroup.DONOR],
+        });
+
         try {
           const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
@@ -215,6 +225,8 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               body: JSON.stringify({
                 amount: values.amount,
                 email: values.email,
+                firstName: values.firstName,
+                lastName: values.lastName,
                 paymentMethod,
               }),
             }

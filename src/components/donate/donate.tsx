@@ -221,6 +221,17 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           );
 
           if (!response.ok) {
+            const body = await response.json();
+
+            if (body.error?.type === 'StripeCardError') {
+              return {
+                [FORM_ERROR]: {
+                  message:
+                    'Your card was declined. Please try again with a different card.',
+                },
+              };
+            }
+
             return { [FORM_ERROR]: genericError };
           }
 

@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { useState, useRef, FunctionComponent } from 'react';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
 import { Text, Box } from '@chakra-ui/core';
@@ -88,6 +88,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
   signupButtonText,
 }) => {
   const [isSignupComplete, setIsSignupComplete] = useState(false);
+  const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
 
   if (isSignupComplete) {
     return (
@@ -106,6 +107,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
         try {
           const validationError = validateSignupFormValues(values);
           if (validationError) {
+            formRef.current?.scrollIntoView(true);
             return {
               [FORM_ERROR]: validationError,
             };
@@ -134,11 +136,13 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
           });
 
           if (result === 'error') {
+            formRef.current?.scrollIntoView(true);
             return {
               [FORM_ERROR]: getMailchimpError(message),
             };
           }
 
+          formRef.current?.scrollIntoView(true);
           setIsSignupComplete(true);
 
           trackCustomEvent({
@@ -146,6 +150,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             action: 'Signup Complete',
           });
         } catch (e) {
+          formRef.current?.scrollIntoView(true);
           return { [FORM_ERROR]: genericError };
         }
 
@@ -159,7 +164,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
         dirtySinceLastSubmit,
         submitError,
       }) => (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} ref={formRef}>
           {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
           {submitError && !dirtySinceLastSubmit && (
             <Box marginBottom={8}>

@@ -1,8 +1,9 @@
 import React, {
   FunctionComponent,
   useState,
-  forwardRef,
+  useRef,
   useEffect,
+  forwardRef,
 } from 'react';
 import { Decorator, FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
@@ -175,6 +176,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
   const [isPaymentComplete, setIsPaymentComplete] = useState(false);
   const [renderClient, setRenderClient] = useState(false);
   const [isCardFieldFocused, setIsCardFieldFocused] = useState(false);
+  const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
 
   useEffect(() => {
     setRenderClient(true);
@@ -193,19 +195,24 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
       initialValues={{ amountOption: 20000, coverFees: false }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
-        if (!stripe) return { [FORM_ERROR]: genericError };
+        if (!stripe) {
+          formRef.current?.scrollIntoView(true);
+          return { [FORM_ERROR]: genericError };
+        }
 
         const validationError = validatePaymentFormValues(values);
         if (validationError) {
+          formRef.current?.scrollIntoView(true);
           return { [FORM_ERROR]: validationError };
         }
 
-        signupForNewsletter({
-          email: values.email,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          groups: [NewsletterGroup.DONOR],
-        });
+        if (process.env.GATSBY_PROD_SITE)
+          signupForNewsletter({
+            email: values.email,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            groups: [NewsletterGroup.DONOR],
+          });
 
         try {
           const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -213,7 +220,10 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             card: values.card.element as StripeCardElement,
           });
 
-          if (error) return { [FORM_ERROR]: genericCardError };
+          if (error) {
+            formRef.current?.scrollIntoView(true);
+            return { [FORM_ERROR]: genericCardError };
+          }
 
           const response = await fetch(
             `${process.env.GATSBY_API_BASE}/process_payment`,
@@ -235,6 +245,8 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           if (!response.ok) {
             const body = await response.json();
 
+            formRef.current?.scrollIntoView(true);
+
             if (body.error?.type === 'StripeCardError') {
               return {
                 [FORM_ERROR]: {
@@ -255,9 +267,11 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             value: values.amount,
           });
         } catch (e) {
+          formRef.current?.scrollIntoView(true);
           return { [FORM_ERROR]: genericError };
         }
 
+        formRef.current?.scrollIntoView(true);
         setIsPaymentComplete(true);
         return undefined;
       }}

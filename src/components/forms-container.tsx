@@ -1,9 +1,18 @@
-import React, { FunctionComponent, useState, useRef } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useRef,
+  lazy,
+  Suspense,
+} from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { Box, Text, Button, ButtonProps } from '@chakra-ui/core';
 import PostBody from './post-body';
-import Donate from './donate/donate';
-import NewsletterSignup from './newsletter-signup/newsletter-signup';
+
+const LazyDonate = lazy(() => import('./donate/donate'));
+const LazyNewsletterSignup = lazy(
+  () => import('./newsletter-signup/newsletter-signup')
+);
 
 type HeaderButtonProps = ButtonProps & {
   readonly isSelected?: boolean;
@@ -107,36 +116,41 @@ const FormsContainer: FunctionComponent = () => {
       </Text>
       {openForm === FormsState.donate && (
         <>
-          <Text fontSize="1.4em" marginBottom={4}>
-            <PostBody
-              body={
+          <Suspense fallback={<Box height={600} />}>
+            <Text fontSize="1.4em" marginBottom={4}>
+              <PostBody
+                body={
+                  data.wpCommonSiteSettings.customCommonDataFields
+                    .donateformexplainer
+                }
+              />
+            </Text>
+            <LazyDonate
+              donateButtonText={
                 data.wpCommonSiteSettings.customCommonDataFields
-                  .donateformexplainer
+                  .donatebuttontext
               }
             />
-          </Text>
-          <Donate
-            donateButtonText={
-              data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext
-            }
-          />
-          <PostBody
-            marginTop={8}
-            body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
-          />
+            <PostBody
+              marginTop={8}
+              body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
+            />
+          </Suspense>
         </>
       )}
       {openForm === FormsState.newsletterSignup && (
         <>
-          <Text fontSize="1.4em" marginBottom={4}>
-            <PostBody
-              body={
-                data.wpCommonSiteSettings.customCommonDataFields
-                  .newslettersignupexplainer
-              }
-            />
-          </Text>
-          <NewsletterSignup signupButtonText="Sign up" />
+          <Suspense fallback={<Box height={600} />}>
+            <Text fontSize="1.4em" marginBottom={4}>
+              <PostBody
+                body={
+                  data.wpCommonSiteSettings.customCommonDataFields
+                    .newslettersignupexplainer
+                }
+              />
+            </Text>
+            <LazyNewsletterSignup signupButtonText="Sign up" />
+          </Suspense>
         </>
       )}
     </Box>

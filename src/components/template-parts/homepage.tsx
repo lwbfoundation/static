@@ -1,21 +1,16 @@
 import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
-import BackgroundImage from 'gatsby-background-image';
 import { Heading, Box, Text } from '@chakra-ui/core';
-import styled from '@emotion/styled';
 import striptags from 'striptags';
 import PostBody from '../post-body';
 import HeadContent from '../head-content';
 import { PageTemplateProps } from '../../templates/single/Page';
 import HomepageOpengraph from '../homepage-opengraph';
 import AspectRatioResponsive from '../aspect-ratio-responsive';
+import BackgroundImage100 from '../background-image-100';
 import FormsContainer from '../forms-container';
+import LewisBio from '../lewis-bio';
 import Team from '../team';
-
-const BackgroundImage100 = styled(BackgroundImage)`
-  width: 100%;
-  height: 100%;
-`;
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -112,6 +107,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
           <PostBody body={data.page.content} />
         </Text>
       </Box>
+      <LewisBio />
       <Box maxWidth={1024} marginX="auto" marginBottom={16}>
         <Team />
       </Box>

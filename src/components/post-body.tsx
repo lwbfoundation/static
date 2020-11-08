@@ -10,6 +10,9 @@ const PostBodyInner = styled(Box)`
   p:not(:last-child) {
     margin-bottom: 2rem;
   }
+  img:not(:last-child) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const PostBody: FunctionComponent<PostBodyProps> = ({ body, ...rest }) => (

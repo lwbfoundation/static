@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState, useRef } from 'react';
+import { useStaticQuery, graphql } from 'gatsby';
 import { Box, Text, Button, ButtonProps } from '@chakra-ui/core';
 import PostBody from './post-body';
 import Donate from './donate/donate';
@@ -46,12 +47,6 @@ const HeaderButton: FunctionComponent<HeaderButtonProps> = ({
   );
 };
 
-type FormContainerProps = {
-  donateButtonText: string;
-  emailSignupButtonText: string;
-  legalInfo: string;
-};
-
 // eslint-disable-next-line no-shadow
 enum FormsState {
   none = 1,
@@ -59,11 +54,21 @@ enum FormsState {
   newsletterSignup,
 }
 
-const FormsContainer: FunctionComponent<FormContainerProps> = ({
-  donateButtonText,
-  emailSignupButtonText,
-  legalInfo,
-}) => {
+const FormsContainer: FunctionComponent = () => {
+  const data = useStaticQuery(graphql`
+    query {
+      wpCommonSiteSettings {
+        customCommonDataFields {
+          donatebuttontext
+          donateformexplainer
+          newslettersignupbuttontext
+          newslettersignupexplainer
+          legalinfo
+        }
+      }
+    }
+  `);
+
   const [openForm, setOpenForm] = useState(FormsState.none);
   const formsContainerRef = useRef<HTMLElement>();
   const openFormAndScroll = (form: FormsState) => {
@@ -88,23 +93,51 @@ const FormsContainer: FunctionComponent<FormContainerProps> = ({
           onClick={() => openFormAndScroll(FormsState.donate)}
           isSelected={openForm === FormsState.donate}
         >
-          {donateButtonText}
+          {data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext}
         </HeaderButton>
         <HeaderButton
           onClick={() => openFormAndScroll(FormsState.newsletterSignup)}
           isSelected={openForm === FormsState.newsletterSignup}
         >
-          {emailSignupButtonText}
+          {
+            data.wpCommonSiteSettings.customCommonDataFields
+              .newslettersignupbuttontext
+          }
         </HeaderButton>
       </Text>
       {openForm === FormsState.donate && (
         <>
-          <Donate donateButtonText="Donate now" />
-          <PostBody marginTop={8} body={legalInfo} />
+          <Text fontSize="1.4em" marginBottom={4}>
+            <PostBody
+              body={
+                data.wpCommonSiteSettings.customCommonDataFields
+                  .donateformexplainer
+              }
+            />
+          </Text>
+          <Donate
+            donateButtonText={
+              data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext
+            }
+          />
+          <PostBody
+            marginTop={8}
+            body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
+          />
         </>
       )}
       {openForm === FormsState.newsletterSignup && (
-        <NewsletterSignup signupButtonText="Sign up" />
+        <>
+          <Text fontSize="1.4em" marginBottom={4}>
+            <PostBody
+              body={
+                data.wpCommonSiteSettings.customCommonDataFields
+                  .newslettersignupexplainer
+              }
+            />
+          </Text>
+          <NewsletterSignup signupButtonText="Sign up" />
+        </>
       )}
     </Box>
   );

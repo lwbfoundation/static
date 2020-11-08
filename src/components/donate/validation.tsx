@@ -43,7 +43,7 @@ export const validatePaymentFormValues: (
     };
   }
 
-  if (amount > 500000) {
+  if (amount > 514964) {
     return {
       message: (
         <>

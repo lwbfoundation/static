@@ -6,6 +6,12 @@ import PostBody from './post-body';
 import useMatchingHeights from '../utils/use-matching-heights';
 
 type TeamData = Readonly<{
+  wpCommonSiteSettings: {
+    customCommonDataFields: {
+      boardrecruitmenttitle: string;
+      boardrecruitmentbody: string;
+    };
+  };
   team: {
     nodes: {
       id: number;
@@ -28,8 +34,14 @@ type TeamData = Readonly<{
 }>;
 
 const Team: FunctionComponent = () => {
-  const { team }: TeamData = useStaticQuery(graphql`
+  const { wpCommonSiteSettings, team }: TeamData = useStaticQuery(graphql`
     query {
+      wpCommonSiteSettings {
+        customCommonDataFields {
+          boardrecruitmenttitle
+          boardrecruitmentbody
+        }
+      }
       team: allWpTeamMember {
         nodes {
           id
@@ -122,6 +134,41 @@ const Team: FunctionComponent = () => {
             <PostBody body={teamMember.content} />
           </Box>
         ))}
+        <Box
+          width={['100%', 'calc(50% - 2rem)', 'calc(33% - 2rem)']}
+          marginBottom={16}
+          marginX="auto"
+          display="flex"
+          alignItems="center"
+        >
+          <Box>
+            <Text as="div" textAlign="center">
+              <Heading
+                as="h3"
+                fontSize="lg"
+                textAlign="center"
+                fontWeight={200}
+                textTransform="uppercase"
+                letterSpacing={4}
+                fontFamily="Trade Gothic, Helvetica"
+                marginBottom={2}
+              >
+                {
+                  wpCommonSiteSettings.customCommonDataFields
+                    .boardrecruitmenttitle
+                }
+              </Heading>
+            </Text>
+            <Text as="div" textAlign="center">
+              <PostBody
+                body={
+                  wpCommonSiteSettings.customCommonDataFields
+                    .boardrecruitmentbody
+                }
+              />
+            </Text>
+          </Box>
+        </Box>
       </Box>
     </>
   );

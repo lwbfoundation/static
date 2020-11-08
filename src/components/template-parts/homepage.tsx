@@ -76,6 +76,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
                   fontWeight={200}
                   textTransform="uppercase"
                   letterSpacing={4}
+                  fontSize={['2em', '3em', '4em']}
                   fontFamily="Trade Gothic, Helvetica"
                 >
                   {data.wpCommonSiteSettings.title}
@@ -91,16 +92,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
         </HeaderBackgroundImage>
       </Box>
     </AspectRatioResponsive>
-    <FormsContainer
-      donateButtonText={
-        data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext
-      }
-      emailSignupButtonText={
-        data.wpCommonSiteSettings.customCommonDataFields
-          .newslettersignupbuttontext
-      }
-      legalInfo={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
-    />
+    <FormsContainer />
     <Box marginX={[2, 4]}>
       <Box maxWidth={800} marginX="auto" marginBottom={16}>
         <Text as="div" fontSize="1.4em" textAlign="justify" marginBottom={16}>

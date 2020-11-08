@@ -15,7 +15,7 @@ const HomepageOpengraph: FunctionComponent<HomepageOpengraphProps> = ({
     query {
       file(relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }) {
         childImageSharp {
-          fluid(quality: 90, maxWidth: 1200, maxHeight: 630) {
+          fluid(quality: 70, maxWidth: 1200, maxHeight: 630) {
             src
           }
         }

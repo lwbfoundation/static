@@ -48,14 +48,14 @@ const LewisBio: FunctionComponent = () => {
           lewisbioimage {
             mobile: localFile {
               childImageSharp {
-                fluid(quality: 90, maxWidth: 1280) {
+                fluid(quality: 70, maxWidth: 1280) {
                   ...GatsbyImageSharpFluid_withWebp
                 }
               }
             }
             desktop: localFile {
               childImageSharp {
-                fluid(quality: 90) {
+                fluid(quality: 70) {
                   ...GatsbyImageSharpFluid_withWebp
                 }
               }

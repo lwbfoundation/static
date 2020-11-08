@@ -54,7 +54,7 @@ const Team: FunctionComponent = () => {
             node {
               localFile {
                 childImageSharp {
-                  fluid(quality: 90, maxWidth: 480, maxHeight: 480) {
+                  fluid(quality: 70, maxWidth: 480, maxHeight: 480) {
                     ...GatsbyImageSharpFluid_withWebp
                   }
                 }

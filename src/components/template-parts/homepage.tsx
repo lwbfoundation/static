@@ -19,7 +19,7 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
         relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
       ) {
         childImageSharp {
-          fluid(quality: 90, maxWidth: 480) {
+          fluid(quality: 70, maxWidth: 480) {
             ...GatsbyImageSharpFluid_withWebp
           }
         }
@@ -28,7 +28,7 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
         relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
       ) {
         childImageSharp {
-          fluid(quality: 90, maxWidth: 1920) {
+          fluid(quality: 70, maxWidth: 1920) {
             ...GatsbyImageSharpFluid_withWebp
           }
         }

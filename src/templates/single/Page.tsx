@@ -78,6 +78,7 @@ export const query = graphql`
       title
       customCommonDataFields {
         subheading
+        newslettersignupbuttontext
         legalinfo
       }
     }

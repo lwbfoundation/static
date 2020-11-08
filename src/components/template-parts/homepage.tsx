@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, lazy, Suspense } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { Heading, Box, Text } from '@chakra-ui/core';
 import striptags from 'striptags';
@@ -11,6 +11,10 @@ import BackgroundImage100 from '../background-image-100';
 import FormsContainer from '../forms-container';
 import LewisBio from '../lewis-bio';
 import Team from '../team';
+
+const LazyNewsletterSignup = lazy(
+  () => import('../../components/newsletter-signup/newsletter-signup')
+);
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -102,6 +106,25 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => (
       <LewisBio />
       <Box maxWidth={1024} marginX="auto" marginBottom={16}>
         <Team />
+      </Box>
+      <Box maxWidth={520} marginX="auto" marginBottom={16}>
+        <Suspense fallback={null}>
+          <Heading
+            textAlign="center"
+            as="h2"
+            fontWeight={200}
+            textTransform="uppercase"
+            letterSpacing={4}
+            fontFamily="Trade Gothic, Helvetica"
+            marginBottom={8}
+          >
+            {
+              data.wpCommonSiteSettings.customCommonDataFields
+                .newslettersignupbuttontext
+            }
+          </Heading>
+          <LazyNewsletterSignup signupButtonText="Sign up" />
+        </Suspense>
       </Box>
     </Box>
     <Box

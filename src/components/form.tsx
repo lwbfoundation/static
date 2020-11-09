@@ -30,7 +30,7 @@ export const CheckboxControl: FunctionComponent<FieldRenderProps<any>> = ({
   meta: _,
   ...rest
 }) => (
-  <Checkbox variantColor="gray" {...input} {...rest}>
+  <Checkbox variantColor="gray" borderColor="gray.300" {...input} {...rest}>
     {children}
   </Checkbox>
 );

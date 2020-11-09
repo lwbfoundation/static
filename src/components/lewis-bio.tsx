@@ -96,7 +96,7 @@ const LewisBio: FunctionComponent = () => {
         >
           {data.wpCommonSiteSettings.customCommonDataFields.lewisbiotitle}
         </Heading>
-        <Text as="div" fontSize="1.4em" textAlign="justify" marginBottom={16}>
+        <Text as="div" fontSize="1.4em" marginBottom={16}>
           <ExpandablePostBody
             body={data.wpCommonSiteSettings.customCommonDataFields.lewisbiobody}
           />

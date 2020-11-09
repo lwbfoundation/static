@@ -86,7 +86,7 @@ const Team: FunctionComponent = () => {
         {team.nodes.map((teamMember, index) => (
           <Box
             key={teamMember.id}
-            width={['100%', 'calc(50% - 2rem)', 'calc(33% - 2rem)']}
+            width={['100%', 'calc(50% - 3rem)', 'calc(33% - 3rem)']}
             marginBottom={16}
             marginX="auto"
           >
@@ -131,11 +131,13 @@ const Team: FunctionComponent = () => {
                 {teamMember.customTeamMemberOptions.teammembertitle}
               </Text>
             </Text>
-            <PostBody body={teamMember.content} />
+            <Text textAlign="justify">
+              <PostBody body={teamMember.content} />
+            </Text>
           </Box>
         ))}
         <Box
-          width={['100%', 'calc(50% - 2rem)', 'calc(33% - 2rem)']}
+          width={['100%', 'calc(50% - 3rem)', 'calc(33% - 3rem)']}
           marginBottom={16}
           marginX="auto"
           display="flex"

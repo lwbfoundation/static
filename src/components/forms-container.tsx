@@ -92,7 +92,7 @@ const FormsContainer: FunctionComponent = () => {
       zIndex={2}
       marginTop={-20}
       width="calc(100% - 1rem)"
-      maxWidth={520}
+      maxWidth={600}
       borderRadius={10}
       paddingY={2}
       marginBottom={openForm === FormsState.none ? 0 : 20}
@@ -117,39 +117,55 @@ const FormsContainer: FunctionComponent = () => {
       {openForm === FormsState.donate && (
         <>
           <Suspense fallback={<Box height={600} />}>
-            <Text fontSize="1.4em" marginBottom={4}>
-              <PostBody
-                body={
+            <Box
+              backgroundColor="#F4F9F9"
+              paddingX={8}
+              paddingY={4}
+              borderRadius={10}
+            >
+              <Text fontSize="1.4em" marginBottom={4}>
+                <PostBody
+                  body={
+                    data.wpCommonSiteSettings.customCommonDataFields
+                      .donateformexplainer
+                  }
+                />
+              </Text>
+              <LazyDonate
+                donateButtonText={
                   data.wpCommonSiteSettings.customCommonDataFields
-                    .donateformexplainer
+                    .donatebuttontext
                 }
               />
-            </Text>
-            <LazyDonate
-              donateButtonText={
-                data.wpCommonSiteSettings.customCommonDataFields
-                  .donatebuttontext
-              }
-            />
-            <PostBody
-              marginTop={8}
-              body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
-            />
+              <PostBody
+                marginTop={8}
+                body={
+                  data.wpCommonSiteSettings.customCommonDataFields.legalinfo
+                }
+              />
+            </Box>
           </Suspense>
         </>
       )}
       {openForm === FormsState.newsletterSignup && (
         <>
           <Suspense fallback={<Box height={600} />}>
-            <Text fontSize="1.4em" marginBottom={4}>
-              <PostBody
-                body={
-                  data.wpCommonSiteSettings.customCommonDataFields
-                    .newslettersignupexplainer
-                }
-              />
-            </Text>
-            <LazyNewsletterSignup signupButtonText="Sign up" />
+            <Box
+              backgroundColor="#F4F9F9"
+              paddingX={8}
+              paddingY={4}
+              borderRadius={10}
+            >
+              <Text fontSize="1.4em" marginBottom={4}>
+                <PostBody
+                  body={
+                    data.wpCommonSiteSettings.customCommonDataFields
+                      .newslettersignupexplainer
+                  }
+                />
+              </Text>
+              <LazyNewsletterSignup signupButtonText="Sign up" />
+            </Box>
           </Suspense>
         </>
       )}

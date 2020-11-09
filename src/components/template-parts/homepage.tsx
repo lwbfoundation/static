@@ -112,7 +112,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
       <FormsContainer />
       <Box marginX={[2, 4]}>
         <Box maxWidth={800} marginX="auto" marginBottom={16}>
-          <Text as="div" fontSize="1.4em" textAlign="justify" marginBottom={16}>
+          <Text as="div" fontSize="1.4em" marginBottom={16}>
             <PostBody body={data.page.content} />
           </Text>
         </Box>

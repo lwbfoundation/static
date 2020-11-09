@@ -206,14 +206,6 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           return { [FORM_ERROR]: validationError };
         }
 
-        if (process.env.GATSBY_PROD_SITE)
-          signupForNewsletter({
-            email: values.email,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            groups: [NewsletterGroup.DONOR],
-          });
-
         try {
           const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
@@ -266,6 +258,14 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
             action: 'Payment Complete',
             value: values.amount,
           });
+
+          if (process.env.GATSBY_PROD_SITE)
+            signupForNewsletter({
+              email: values.email,
+              firstName: values.firstName,
+              lastName: values.lastName,
+              groups: [NewsletterGroup.DONOR],
+            });
         } catch (e) {
           formRef.current?.scrollIntoView(true);
           return { [FORM_ERROR]: genericError };
@@ -342,20 +342,20 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
                   typeof value === 'undefined' ? '' : value.toString()
                 }
               >
+                <AmountButton marginBottom={1} value="2500">
+                  $25
+                </AmountButton>
+                <AmountButton marginBottom={1} value="5000">
+                  $50
+                </AmountButton>
                 <AmountButton marginBottom={1} value="10000">
                   $100
-                </AmountButton>
-                <AmountButton marginBottom={1} value="20000">
-                  $200
                 </AmountButton>
                 <AmountButton marginBottom={1} value="50000">
                   $500
                 </AmountButton>
                 <AmountButton marginBottom={1} value="100000">
                   $1,000
-                </AmountButton>
-                <AmountButton marginBottom={1} value="500000">
-                  $5,000
                 </AmountButton>
                 <AmountButton marginBottom={1} value="">
                   Other

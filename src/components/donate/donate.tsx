@@ -244,7 +244,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               return {
                 [FORM_ERROR]: {
                   message:
-                    'Your card was declined. Please try again with a different card.',
+                    'Your card was declined. Please double-check your card details or try again with a different card.',
                 },
               };
             }

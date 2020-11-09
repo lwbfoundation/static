@@ -97,12 +97,14 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
                   >
                     {data.wpCommonSiteSettings.title}
                   </Heading>
-                  <PostBody
-                    body={
-                      data.wpCommonSiteSettings.customCommonDataFields
-                        .subheading
-                    }
-                  />
+                  <Text fontSize={[null, null, '1.4em']}>
+                    <PostBody
+                      body={
+                        data.wpCommonSiteSettings.customCommonDataFields
+                          .subheading
+                      }
+                    />
+                  </Text>
                 </Text>
               </Box>
             </AspectRatioResponsive>

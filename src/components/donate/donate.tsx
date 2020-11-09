@@ -92,6 +92,7 @@ const FauxInput: FunctionComponent<FauxInputProps> = ({
     paddingX={4}
     borderRadius={4}
     minHeight="40px"
+    backgroundColor="white"
     {...(isFocused && fauxInputFocusProps)}
     _focusWithin={fauxInputFocusProps}
     {...props}

@@ -25,7 +25,7 @@ const ExpandablePostBody: FunctionComponent<ExpandablePostBodyProps> = ({
         <Text textAlign="center">
           <SubmitButton
             type="button"
-            marginTop={4}
+            marginTop={8}
             onClick={() => {
               setIsExpanded(true);
             }}

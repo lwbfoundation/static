@@ -1,9 +1,9 @@
 import React, {
   FunctionComponent,
-  // lazy,
-  // Suspense,
-  // useState,
-  // useEffect,
+  lazy,
+  Suspense,
+  useState,
+  useEffect,
 } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { Heading, Box, Text } from '@chakra-ui/core';
@@ -18,9 +18,9 @@ import FormsContainer from '../forms-container';
 import LewisBio from '../lewis-bio';
 import Team from '../team';
 
-// const LazyNewsletterSignup = lazy(
-//   () => import('../../components/newsletter-signup/newsletter-signup')
-// );
+const LazyNewsletterSignup = lazy(
+  () => import('../../components/newsletter-signup/newsletter-signup')
+);
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -56,10 +56,10 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
 };
 
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
-  // const [isClient, setIsClient] = useState(false);
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, [setIsClient]);
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, [setIsClient]);
 
   return (
     <>
@@ -117,10 +117,10 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           </Text>
         </Box>
         <LewisBio />
-        <Box maxWidth={1024} marginX="auto" marginBottom={16}>
+        <Box maxWidth={1024} marginX="auto" marginBottom={8}>
           <Team />
         </Box>
-        {/* <Box maxWidth={520} marginX="auto" marginBottom={16}>
+        <Box maxWidth={520} marginX="auto" marginBottom={24}>
           {isClient && (
             <Suspense fallback={null}>
               <Heading
@@ -129,18 +129,21 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
                 fontWeight={200}
                 textTransform="uppercase"
                 letterSpacing={4}
-                fontFamily="Trade Gothic, Helvetica"
                 marginBottom={8}
+                fontFamily="Trade Gothic, Helvetica"
               >
                 {
                   data.wpCommonSiteSettings.customCommonDataFields
                     .newslettersignupbuttontext
                 }
               </Heading>
-              <LazyNewsletterSignup signupButtonText="Sign up" />
+              <LazyNewsletterSignup
+                signupButtonText="Sign up"
+                autofocus={false}
+              />
             </Suspense>
           )}
-        </Box> */}
+        </Box>
       </Box>
       <Box
         width="100%"

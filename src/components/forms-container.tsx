@@ -120,10 +120,10 @@ const FormsContainer: FunctionComponent = () => {
             <Box
               backgroundColor="#F4F9F9"
               paddingX={8}
-              paddingY={4}
+              paddingY={6}
               borderRadius={10}
             >
-              <Text fontSize="1.4em" marginBottom={4}>
+              <Text fontSize="1.4em" marginBottom={8}>
                 <PostBody
                   body={
                     data.wpCommonSiteSettings.customCommonDataFields
@@ -153,7 +153,7 @@ const FormsContainer: FunctionComponent = () => {
             <Box
               backgroundColor="#F4F9F9"
               paddingX={8}
-              paddingY={4}
+              paddingY={6}
               borderRadius={10}
             >
               <Text fontSize="1.4em" marginBottom={4}>

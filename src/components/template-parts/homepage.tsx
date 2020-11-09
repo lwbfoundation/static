@@ -38,7 +38,7 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
         relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
       ) {
         childImageSharp {
-          fluid(quality: 70, maxWidth: 1920) {
+          fluid(quality: 70, maxWidth: 1920, maxHeight: 768, cropFocus: NORTH) {
             ...GatsbyImageSharpFluid_withWebp
           }
         }

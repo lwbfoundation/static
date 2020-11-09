@@ -13,9 +13,9 @@ const HomepageOpengraph: FunctionComponent<HomepageOpengraphProps> = ({
 }) => {
   const data = useStaticQuery(graphql`
     query {
-      file(relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }) {
+      file(relativePath: { eq: "share-image.png" }) {
         childImageSharp {
-          fluid(quality: 70, maxWidth: 1200, maxHeight: 630) {
+          fluid(quality: 90) {
             src
           }
         }

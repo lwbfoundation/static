@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Box, AspectRatioBox, Heading, Text } from '@chakra-ui/core';
 import { graphql, useStaticQuery } from 'gatsby';
 import Img from 'gatsby-image';
@@ -131,7 +131,7 @@ const Team: FunctionComponent = () => {
                 {teamMember.customTeamMemberOptions.teammembertitle}
               </Text>
             </Text>
-            <Text textAlign="justify">
+            <Text as="div" textAlign="justify">
               <PostBody body={teamMember.content} />
             </Text>
           </Box>

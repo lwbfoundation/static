@@ -91,7 +91,7 @@ const FormsContainer: FunctionComponent = () => {
       marginX="auto"
       zIndex={2}
       marginTop={-20}
-      width="calc(100% - 1rem)"
+      width={['auto', 'calc(100% - 1rem)']}
       maxWidth={600}
       borderRadius={10}
       paddingY={2}
@@ -119,11 +119,11 @@ const FormsContainer: FunctionComponent = () => {
           <Suspense fallback={<Box height={600} />}>
             <Box
               backgroundColor="#F4F9F9"
-              paddingX={8}
+              paddingX={[2, 8]}
               paddingY={6}
-              borderRadius={10}
+              borderRadius={[0, 10]}
             >
-              <Text fontSize="1.4em" marginBottom={8}>
+              <Text as="div" fontSize={['1em', '1.4em']} marginBottom={8}>
                 <PostBody
                   body={
                     data.wpCommonSiteSettings.customCommonDataFields
@@ -152,11 +152,11 @@ const FormsContainer: FunctionComponent = () => {
           <Suspense fallback={<Box height={600} />}>
             <Box
               backgroundColor="#F4F9F9"
-              paddingX={8}
+              paddingX={[2, 8]}
               paddingY={6}
-              borderRadius={10}
+              borderRadius={[0, 10]}
             >
-              <Text fontSize="1.4em" marginBottom={4}>
+              <Text as="div" fontSize={['1em', '1.4em']} marginBottom={4}>
                 <PostBody
                   body={
                     data.wpCommonSiteSettings.customCommonDataFields

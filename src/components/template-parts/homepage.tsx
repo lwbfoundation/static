@@ -97,7 +97,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
                   >
                     {data.wpCommonSiteSettings.title}
                   </Heading>
-                  <Text fontSize={[null, null, '1.4em']}>
+                  <Text as="div" fontSize={[null, null, '1.4em']}>
                     <PostBody
                       body={
                         data.wpCommonSiteSettings.customCommonDataFields

@@ -15,7 +15,7 @@ const HomepageOpengraph: FunctionComponent<HomepageOpengraphProps> = ({
     query {
       file(relativePath: { eq: "share-image.png" }) {
         childImageSharp {
-          fluid(quality: 90) {
+          fluid(quality: 90, toFormat: JPG) {
             src
           }
         }
@@ -28,11 +28,7 @@ const HomepageOpengraph: FunctionComponent<HomepageOpengraphProps> = ({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta
-        property="og:image:url"
-        content={`${process.env.GATSBY_BASE_URL}${data.file.childImageSharp.fluid.src}`}
-      />
-      <meta
-        property="og:image:secure_url"
+        property="og:image"
         content={`${process.env.GATSBY_BASE_URL}${data.file.childImageSharp.fluid.src}`}
       />
       <meta property="og:image:width" content="1200" />

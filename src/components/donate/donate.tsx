@@ -193,7 +193,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
   return (
     <Form<PaymentFormValues>
-      initialValues={{ amountOption: 10000, coverFees: false }}
+      initialValues={{ amountOption: 5000, coverFees: false }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
         if (!stripe) {

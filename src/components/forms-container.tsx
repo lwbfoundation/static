@@ -1,9 +1,10 @@
 import React, {
   FunctionComponent,
+  Suspense,
   useState,
   useRef,
   lazy,
-  Suspense,
+  useEffect,
 } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { Box, Text, Button, ButtonProps } from '@chakra-ui/core';
@@ -57,13 +58,19 @@ const HeaderButton: FunctionComponent<HeaderButtonProps> = ({
 };
 
 // eslint-disable-next-line no-shadow
-enum FormsState {
-  none = 1,
+export enum FormsState {
+  none = 0,
   donate,
   newsletterSignup,
 }
 
-const FormsContainer: FunctionComponent = () => {
+type FormsContainerProps = {
+  initialState?: FormsState;
+};
+
+const FormsContainer: FunctionComponent<FormsContainerProps> = ({
+  initialState = FormsState.none,
+}) => {
   const data = useStaticQuery(graphql`
     query {
       wpCommonSiteSettings {
@@ -78,12 +85,17 @@ const FormsContainer: FunctionComponent = () => {
     }
   `);
 
-  const [openForm, setOpenForm] = useState(FormsState.none);
+  const [openForm, setOpenForm] = useState(initialState);
   const formsContainerRef = useRef<HTMLElement>();
-  const openFormAndScroll = (form: FormsState) => {
-    setOpenForm(form);
-    formsContainerRef.current?.scrollIntoView(true);
-  };
+  useEffect(() => {
+    setOpenForm(initialState);
+  }, [initialState]);
+
+  useEffect(() => {
+    if (openForm !== FormsState.none)
+      formsContainerRef.current?.scrollIntoView(true);
+  }, [openForm, formsContainerRef]);
+
   return (
     <Box
       ref={formsContainerRef}
@@ -99,13 +111,13 @@ const FormsContainer: FunctionComponent = () => {
     >
       <Text as="div" textAlign="center" marginBottom={16}>
         <HeaderButton
-          onClick={() => openFormAndScroll(FormsState.donate)}
+          onClick={() => setOpenForm(FormsState.donate)}
           isSelected={openForm === FormsState.donate}
         >
           {data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext}
         </HeaderButton>
         <HeaderButton
-          onClick={() => openFormAndScroll(FormsState.newsletterSignup)}
+          onClick={() => setOpenForm(FormsState.newsletterSignup)}
           isSelected={openForm === FormsState.newsletterSignup}
         >
           {
@@ -115,59 +127,59 @@ const FormsContainer: FunctionComponent = () => {
         </HeaderButton>
       </Text>
       {openForm === FormsState.donate && (
-        <>
-          <Suspense fallback={<Box height={600} />}>
-            <Box
-              backgroundColor="#F4F9F9"
-              paddingX={[2, 8]}
-              paddingY={6}
-              borderRadius={[0, 10]}
-            >
-              <Text as="div" fontSize={['1em', '1.4em']} marginBottom={8}>
-                <PostBody
-                  body={
-                    data.wpCommonSiteSettings.customCommonDataFields
-                      .donateformexplainer
-                  }
-                />
-              </Text>
-              <LazyDonate
-                donateButtonText={
-                  data.wpCommonSiteSettings.customCommonDataFields
-                    .donatebuttontext
-                }
-              />
+        <Suspense fallback={<Box height={600} />}>
+          <Box
+            backgroundColor="#F4F9F9"
+            paddingX={[2, 8]}
+            paddingY={6}
+            borderRadius={[0, 10]}
+          >
+            <Text as="div" fontSize={['1em', '1.4em']} marginBottom={8}>
               <PostBody
-                marginTop={8}
                 body={
-                  data.wpCommonSiteSettings.customCommonDataFields.legalinfo
+                  data.wpCommonSiteSettings.customCommonDataFields
+                    .donateformexplainer
                 }
               />
-            </Box>
-          </Suspense>
-        </>
+            </Text>
+            <LazyDonate
+              donateButtonText={
+                data.wpCommonSiteSettings.customCommonDataFields
+                  .donatebuttontext
+              }
+            />
+            <Text marginTop={8} marginBottom={4}>
+              Secure payments provided by{' '}
+              <a href="https://www.stripe.com" rel="noreferrer" target="_blank">
+                Stripe
+              </a>
+              .
+            </Text>
+            <PostBody
+              body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
+            />
+          </Box>
+        </Suspense>
       )}
       {openForm === FormsState.newsletterSignup && (
-        <>
-          <Suspense fallback={<Box height={600} />}>
-            <Box
-              backgroundColor="#F4F9F9"
-              paddingX={[2, 8]}
-              paddingY={6}
-              borderRadius={[0, 10]}
-            >
-              <Text as="div" fontSize={['1em', '1.4em']} marginBottom={4}>
-                <PostBody
-                  body={
-                    data.wpCommonSiteSettings.customCommonDataFields
-                      .newslettersignupexplainer
-                  }
-                />
-              </Text>
-              <LazyNewsletterSignup signupButtonText="Sign up" />
-            </Box>
-          </Suspense>
-        </>
+        <Suspense fallback={<Box height={600} />}>
+          <Box
+            backgroundColor="#F4F9F9"
+            paddingX={[2, 8]}
+            paddingY={6}
+            borderRadius={[0, 10]}
+          >
+            <Text as="div" fontSize={['1em', '1.4em']} marginBottom={4}>
+              <PostBody
+                body={
+                  data.wpCommonSiteSettings.customCommonDataFields
+                    .newslettersignupexplainer
+                }
+              />
+            </Text>
+            <LazyNewsletterSignup signupButtonText="Sign up" />
+          </Box>
+        </Suspense>
       )}
     </Box>
   );

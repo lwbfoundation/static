@@ -77,7 +77,6 @@ const contactTypes: { name?: NewsletterGroup; label: string }[] = [
 
 type NewsletterSignupProps = Readonly<{
   signupButtonText: string;
-  autofocus?: boolean;
 }>;
 
 type NewsletterSignupFormValues = SignupFormValues & {
@@ -87,7 +86,6 @@ type NewsletterSignupFormValues = SignupFormValues & {
 
 const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
   signupButtonText,
-  autofocus = false,
 }) => {
   const [isSignupComplete, setIsSignupComplete] = useState(false);
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
@@ -180,7 +178,6 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
               autocomplete="given-name"
               marginTop={1}
               component={InputControl}
-              autoFocus={autofocus}
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>

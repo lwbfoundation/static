@@ -14,7 +14,7 @@ import { PageTemplateProps } from '../../templates/single/Page';
 import HomepageOpengraph from '../homepage-opengraph';
 import AspectRatioResponsive from '../aspect-ratio-responsive';
 import BackgroundImage100 from '../background-image-100';
-import FormsContainer from '../forms-container';
+import FormsContainer, { FormsState } from '../forms-container';
 import LewisBio from '../lewis-bio';
 import Team from '../team';
 
@@ -111,7 +111,13 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           </HeaderBackgroundImage>
         </Box>
       </AspectRatioResponsive>
-      <FormsContainer />
+      <FormsContainer
+        initialState={
+          isClient && window.location.hash === '#donate'
+            ? FormsState.donate
+            : FormsState.none
+        }
+      />
       <Box marginX={[2, 4]}>
         <Box maxWidth={800} marginX="auto" marginBottom={16}>
           <Text as="div" fontSize="1.4em" marginBottom={16}>
@@ -139,10 +145,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
                     .newslettersignupbuttontext
                 }
               </Heading>
-              <LazyNewsletterSignup
-                signupButtonText="Sign up"
-                autofocus={false}
-              />
+              <LazyNewsletterSignup signupButtonText="Sign up" />
             </Suspense>
           )}
         </Box>

@@ -304,7 +304,6 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               autocomplete="given-name"
               marginTop={1}
               component={InputControl}
-              autoFocus
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>

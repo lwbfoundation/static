@@ -29,21 +29,25 @@ const genericError: ErrorInfo = {
   ),
 };
 
-const getMailchimpError: (mailchimpError: string) => ErrorInfo = (
+const getMailchimpError: (mailchimpError: string) => ErrorInfo | null = (
   mailchimpError
 ) => {
   if (mailchimpError.match('is already subscribed')) {
-    return {
-      message: (
-        <>
-          You are already subscribed to our mailing list. Please email{' '}
-          <a href="mailto:info@lewiswbutlerfoundation.org">
-            info@lewiswbutlerfoundation.org
-          </a>{' '}
-          if you need assistance.
-        </>
-      ),
-    };
+    // For now, just show success message if they are already subscribed.
+    // In the future, merge their signup groups.
+    return null;
+
+    // return {
+    //   message: (
+    //     <>
+    //       You are already subscribed to our mailing list. Please email{' '}
+    //       <a href="mailto:info@lewiswbutlerfoundation.org">
+    //         info@lewiswbutlerfoundation.org
+    //       </a>{' '}
+    //       if you need assistance.
+    //     </>
+    //   ),
+    // };
   }
 
   if (mailchimpError === 'The email you entered is not valid.') {
@@ -137,9 +141,15 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
 
           if (result === 'error') {
             formRef.current?.scrollIntoView(true);
-            return {
-              [FORM_ERROR]: getMailchimpError(message),
-            };
+            const mailchimpError = getMailchimpError(message);
+            if (mailchimpError) {
+              return {
+                [FORM_ERROR]: getMailchimpError(message),
+              };
+            }
+
+            // Some errors may be suppressed
+            return undefined;
           }
 
           formRef.current?.scrollIntoView(true);

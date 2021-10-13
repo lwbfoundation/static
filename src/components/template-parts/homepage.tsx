@@ -19,7 +19,7 @@ import LewisBio from '../lewis-bio';
 import Team from '../team';
 
 const LazyNewsletterSignup = lazy(
-  () => import('../../components/newsletter-signup/newsletter-signup')
+  () => import('../newsletter-signup/newsletter-signup')
 );
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {

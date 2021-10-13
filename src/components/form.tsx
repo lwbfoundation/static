@@ -35,13 +35,12 @@ export const CheckboxControl: FunctionComponent<FieldRenderProps<any>> = ({
   </Checkbox>
 );
 
-export const RadioButtonGroupControl: FunctionComponent<FieldRenderProps<
-  any
->> = ({ input, children, meta: _, ...rest }) => (
-  <RadioButtonGroup {...input} {...rest}>
-    {children}
-  </RadioButtonGroup>
-);
+export const RadioButtonGroupControl: FunctionComponent<FieldRenderProps<any>> =
+  ({ input, children, meta: _, ...rest }) => (
+    <RadioButtonGroup {...input} {...rest}>
+      {children}
+    </RadioButtonGroup>
+  );
 
 export interface ErrorInfo {
   readonly message: JSX.Element | string;

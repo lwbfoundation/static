@@ -8,7 +8,6 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb',
     'plugin:prettier/recommended',
-    'prettier/react',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -47,6 +46,7 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 'off',
+    'react/require-default-props': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'error',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_+$' }],

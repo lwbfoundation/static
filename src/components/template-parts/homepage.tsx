@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
-import { Heading, Box, Text } from '@chakra-ui/core';
+import { Heading, Box, Text } from '@chakra-ui/react';
 import striptags from 'striptags';
 import PostBody from '../post-body';
 import HeadContent from '../head-content';

@@ -58,12 +58,7 @@ module.exports = {
         },
       },
     },
-    {
-      resolve: 'gatsby-plugin-chakra-ui',
-      options: {
-        isUsingColorMode: false,
-      },
-    },
+    '@chakra-ui/gatsby-plugin',
     'gatsby-transformer-sharp',
     'gatsby-background-image',
     {

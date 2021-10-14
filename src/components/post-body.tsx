@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Box, BoxProps } from '@chakra-ui/core';
+import { Box, BoxProps } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 type PostBodyProps = BoxProps & {

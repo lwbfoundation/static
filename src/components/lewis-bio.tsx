@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
-import { Box, Heading, Text } from '@chakra-ui/core';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import AspectRatioResponsive from './aspect-ratio-responsive';
 import BackgroundImage100 from './background-image-100';
 import PostBody from './post-body';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, Box, Grid } from '@chakra-ui/core';
+import { Heading, Box, Grid } from '@chakra-ui/react';
 import { Link } from 'gatsby';
 import GatsbyLogo from '../assets/svg/gatsby.inline.svg';
 

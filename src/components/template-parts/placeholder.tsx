@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Heading } from '@chakra-ui/core';
+import { Heading } from '@chakra-ui/react';
 import PostBody from '../post-body';
 import CenteredLayout from '../centered-layout';
 import { PageTemplateProps } from '../../templates/single/Page';

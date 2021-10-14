@@ -10,12 +10,13 @@ import { Form, Field } from 'react-final-form';
 import createFieldCalculator from 'final-form-calculate';
 import {
   Box,
-  PseudoBox,
-  PseudoBoxProps,
+  BoxProps,
   Button,
   Text,
   RadioProps,
-} from '@chakra-ui/core';
+  ButtonProps,
+  useRadio,
+} from '@chakra-ui/react';
 import type { StripeCardElement } from '@stripe/stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import {
@@ -53,27 +54,40 @@ const StripeLoader: FunctionComponent = ({ children }) => {
   return <Elements stripe={stripePromise}>{children}</Elements>;
 };
 
-const AmountButton = forwardRef((props: RadioProps, ref) => {
-  const { isChecked, children, ...rest } = props;
-  return (
-    <Button
-      ref={ref}
-      backgroundColor={isChecked ? 'gray.type' : 'white'}
-      color={isChecked ? 'white' : 'gray.type'}
-      _hover={{ backgroundColor: isChecked ? 'gray.type' : 'gray.100' }}
-      borderWidth={1}
-      borderColor={isChecked ? 'white' : 'gray.brand'}
-      aria-checked={isChecked}
-      role="radio"
-      width="calc(33% - 0.5rem)"
-      {...rest}
-    >
-      {children}
-    </Button>
-  );
-});
+const AmountButton = forwardRef<HTMLButtonElement, RadioProps & ButtonProps>(
+  (props, ref) => {
+    const { getCheckboxProps, getInputProps } = useRadio(props);
+    const checkbox = getCheckboxProps();
+    const input = getInputProps();
+    const { isChecked, children, ...rest } = props;
+    return (
+      <Button
+        ref={ref}
+        as="label"
+        backgroundColor="white"
+        cursor="pointer"
+        borderColor="gray.brand"
+        _checked={{
+          backgroundColor: 'gray.type',
+          color: 'white',
+          borderColor: 'white',
+        }}
+        _hover={{
+          backgroundColor: isChecked ? 'gray.type' : 'gray.100',
+        }}
+        borderWidth={1}
+        width="calc(33% - 0.5rem)"
+        {...checkbox}
+        {...rest}
+      >
+        {children}
+        <input {...input} />
+      </Button>
+    );
+  }
+);
 
-interface FauxInputProps extends PseudoBoxProps {
+interface FauxInputProps extends BoxProps {
   isFocused?: boolean;
 }
 
@@ -86,7 +100,7 @@ const FauxInput: FunctionComponent<FauxInputProps> = ({
   isFocused,
   ...props
 }) => (
-  <PseudoBox
+  <Box
     borderWidth={1}
     borderColor="#E2E8F0"
     paddingX={4}
@@ -304,6 +318,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               autocomplete="given-name"
               marginTop={1}
               component={InputControl}
+              backgroundColor="white"
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
@@ -313,6 +328,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               autocomplete="family-name"
               marginTop={1}
               component={InputControl}
+              backgroundColor="white"
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={4}>
@@ -322,6 +338,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
               autocomplete="email"
               marginTop={1}
               component={InputControl}
+              backgroundColor="white"
             />
           </Text>
           <Box marginBottom={4}>

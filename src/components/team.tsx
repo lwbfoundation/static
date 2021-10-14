@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Box, AspectRatioBox, Heading, Text } from '@chakra-ui/core';
 import { graphql, useStaticQuery } from 'gatsby';
-import Img from 'gatsby-image';
+import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
 import PostBody from './post-body';
 import useMatchingHeights from '../utils/use-matching-heights';
 
@@ -24,7 +24,7 @@ type TeamData = Readonly<{
         node: {
           localFile: {
             childImageSharp: {
-              fluid: any;
+              gatsbyImageData: IGatsbyImageData;
             };
           };
         };
@@ -35,7 +35,7 @@ type TeamData = Readonly<{
 
 const Team: FunctionComponent = () => {
   const { wpCommonSiteSettings, team }: TeamData = useStaticQuery(graphql`
-    query {
+    {
       wpCommonSiteSettings {
         customCommonDataFields {
           boardrecruitmenttitle
@@ -54,9 +54,12 @@ const Team: FunctionComponent = () => {
             node {
               localFile {
                 childImageSharp {
-                  fluid(quality: 70, maxWidth: 480, maxHeight: 480) {
-                    ...GatsbyImageSharpFluid_withWebp
-                  }
+                  gatsbyImageData(
+                    quality: 70
+                    width: 480
+                    height: 480
+                    layout: CONSTRAINED
+                  )
                 }
               }
             }
@@ -99,10 +102,11 @@ const Team: FunctionComponent = () => {
                 overflow="hidden"
               >
                 {teamMember.featuredImage && (
-                  <Img
-                    fluid={
+                  <GatsbyImage
+                    alt=""
+                    image={
                       teamMember.featuredImage.node.localFile.childImageSharp
-                        .fluid
+                        .gatsbyImageData
                     }
                   />
                 )}

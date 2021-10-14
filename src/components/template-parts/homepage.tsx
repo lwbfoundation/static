@@ -24,35 +24,38 @@ const LazyNewsletterSignup = lazy(
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
-    query {
+    {
       mobile: file(
         relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
       ) {
         childImageSharp {
-          fluid(quality: 70, maxWidth: 480) {
-            ...GatsbyImageSharpFluid_withWebp
-          }
+          gatsbyImageData(quality: 70, width: 480, layout: CONSTRAINED)
         }
       }
       desktop: file(
         relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
       ) {
         childImageSharp {
-          fluid(quality: 70, maxWidth: 1920, maxHeight: 768, cropFocus: NORTH) {
-            ...GatsbyImageSharpFluid_withWebp
-          }
+          gatsbyImageData(
+            quality: 70
+            transformOptions: { cropFocus: NORTH }
+            aspectRatio: 2.5
+            layout: FULL_WIDTH
+          )
         }
       }
     }
   `);
   const sources = [
-    data.mobile.childImageSharp.fluid,
+    data.mobile.childImageSharp.gatsbyImageData,
     {
-      ...data.desktop.childImageSharp.fluid,
+      ...data.desktop.childImageSharp.gatsbyImageData,
       media: '(min-width: 480px)',
     },
   ];
-  return <BackgroundImage100 fluid={sources}>{children}</BackgroundImage100>;
+  return (
+    <BackgroundImage100 image={sources as any}>{children}</BackgroundImage100>
+  );
 };
 
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {

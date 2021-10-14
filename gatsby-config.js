@@ -11,13 +11,18 @@ module.exports = {
   plugins: [
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
-    {
-      resolve: 'gatsby-plugin-google-analytics',
-      options: {
-        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
-        // respectDNT: true,
-      },
-    },
+    ...(process.env.GOOGLE_ANALYTICS_TRACKING_ID
+      ? [
+          {
+            resolve: 'gatsby-plugin-google-analytics',
+            options: {
+              trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
+              // respectDNT: true,
+            },
+          },
+        ]
+      : []),
+    'gatsby-plugin-image',
     'gatsby-plugin-sharp',
     {
       resolve: 'gatsby-source-filesystem',
@@ -27,7 +32,7 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-source-wordpress-experimental',
+      resolve: 'gatsby-source-wordpress',
       options: {
         url:
           process.env.WPGRAPHQL_URL ||
@@ -75,6 +80,6 @@ module.exports = {
         endpoint: process.env.MAILCHIMP_FORM_URL,
       },
     },
-    'gatsby-plugin-netlify-cache',
+    // 'gatsby-plugin-netlify-cache',
   ],
 };

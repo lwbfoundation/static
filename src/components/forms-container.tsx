@@ -7,7 +7,7 @@ import React, {
   useEffect,
 } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
-import { Box, Text, Button, ButtonProps } from '@chakra-ui/core';
+import { Box, Text, Button, ButtonProps } from '@chakra-ui/react';
 import PostBody from './post-body';
 
 const LazyDonate = lazy(() => import('./donate/donate'));
@@ -86,7 +86,7 @@ const FormsContainer: FunctionComponent<FormsContainerProps> = ({
   `);
 
   const [openForm, setOpenForm] = useState(initialState);
-  const formsContainerRef = useRef<HTMLElement>();
+  const formsContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     setOpenForm(initialState);
   }, [initialState]);

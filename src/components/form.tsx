@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { cloneElement, FunctionComponent, ReactElement } from 'react';
 import {
   Input,
   Box,
@@ -6,9 +6,9 @@ import {
   Button,
   ButtonProps,
   Checkbox,
-  RadioButtonGroup,
   Select,
-} from '@chakra-ui/core';
+  useRadioGroup,
+} from '@chakra-ui/react';
 import { FORM_ERROR } from 'final-form';
 import { FieldRenderProps } from 'react-final-form';
 
@@ -30,17 +30,31 @@ export const CheckboxControl: FunctionComponent<FieldRenderProps<any>> = ({
   meta: _,
   ...rest
 }) => (
-  <Checkbox variantColor="gray" borderColor="gray.300" {...input} {...rest}>
+  <Checkbox colorScheme="gray" borderColor="gray.300" {...input} {...rest}>
     {children}
   </Checkbox>
 );
 
-export const RadioButtonGroupControl: FunctionComponent<FieldRenderProps<any>> =
-  ({ input, children, meta: _, ...rest }) => (
-    <RadioButtonGroup {...input} {...rest}>
-      {children}
-    </RadioButtonGroup>
+export const RadioButtonGroupControl: FunctionComponent<
+  FieldRenderProps<any> & { children: ReactElement[] }
+> = ({ input, children, meta: _, ...rest }) => {
+  const { getRootProps, getRadioProps } = useRadioGroup(input);
+
+  return (
+    <Box {...getRootProps} {...rest}>
+      {children.map((child) => {
+        const radioProps = getRadioProps({
+          value: String(child.props.value),
+        } as any);
+        return cloneElement(child, {
+          ...child.props,
+          ...radioProps,
+          key: String(child.props.value),
+        });
+      })}
+    </Box>
   );
+};
 
 export interface ErrorInfo {
   readonly message: JSX.Element | string;

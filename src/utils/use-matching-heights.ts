@@ -48,14 +48,11 @@ type UseMatchingHeightsOptions = {
   shouldGroupElementsVertically?: boolean;
 };
 
-const useMatchingHeights: (
+function useMatchingHeights<ElementType extends HTMLElement = HTMLDivElement>(
   numElements: number,
-  options?: UseMatchingHeightsOptions
-) => RefObject<HTMLElement>[] = (
-  numElements,
-  { shouldGroupElementsVertically = true } = {}
-) => {
-  const refs = useRefsArray<HTMLElement>(numElements);
+  { shouldGroupElementsVertically = true }: UseMatchingHeightsOptions = {}
+): RefObject<ElementType>[] {
+  const refs = useRefsArray<ElementType>(numElements);
 
   useEffect(() => {
     const resizeElements = () => {
@@ -101,6 +98,6 @@ const useMatchingHeights: (
   }, [refs]);
 
   return refs;
-};
+}
 
 export default useMatchingHeights;

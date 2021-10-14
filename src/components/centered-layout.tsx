@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import { Flex, Box } from '@chakra-ui/core';
-import { Global, css } from '@emotion/core';
+import { Flex, Box } from '@chakra-ui/react';
+import { Global, css } from '@emotion/react';
 import HeadContent from './head-content';
 
 interface CenteredLayoutProps {

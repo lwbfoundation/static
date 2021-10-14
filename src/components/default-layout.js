@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { Box, Grid } from '@chakra-ui/core';
+import { Box, Grid } from '@chakra-ui/react';
 import Header from './header';
 import Menu from './menu';
 

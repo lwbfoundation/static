@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Box, AspectRatioBox, Heading, Text } from '@chakra-ui/core';
+import { Box, AspectRatio, Heading, Text } from '@chakra-ui/react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
 import PostBody from './post-body';
@@ -69,8 +69,12 @@ const Team: FunctionComponent = () => {
     }
   `);
 
-  const teamMemberNameRefs = useMatchingHeights(team.nodes.length);
-  const teamMemberTitleRefs = useMatchingHeights(team.nodes.length);
+  const teamMemberNameRefs = useMatchingHeights<HTMLHeadingElement>(
+    team.nodes.length
+  );
+  const teamMemberTitleRefs = useMatchingHeights<HTMLHeadingElement>(
+    team.nodes.length
+  );
 
   return (
     <>
@@ -93,7 +97,7 @@ const Team: FunctionComponent = () => {
             marginBottom={16}
             marginX="auto"
           >
-            <AspectRatioBox ratio={1} marginBottom={4}>
+            <AspectRatio ratio={1} marginBottom={4}>
               <Box
                 backgroundColor="gray.600"
                 width="100%"
@@ -111,7 +115,7 @@ const Team: FunctionComponent = () => {
                   />
                 )}
               </Box>
-            </AspectRatioBox>
+            </AspectRatio>
             <Text as="div" textAlign="center">
               <Heading
                 as="h3"

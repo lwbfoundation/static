@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { Global, css } from '@emotion/core';
+import { Global, css } from '@emotion/react';
 import { Helmet } from 'react-helmet';
-import theme from '../gatsby-plugin-chakra-ui/theme';
+import theme from '../@chakra-ui/gatsby-plugin/theme';
 
 interface HeadContentProps {
   title: string;

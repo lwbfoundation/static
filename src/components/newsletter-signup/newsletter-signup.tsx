@@ -1,7 +1,7 @@
 import React, { useState, useRef, FunctionComponent } from 'react';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
-import { Text, Box } from '@chakra-ui/core';
+import { Text, Box } from '@chakra-ui/react';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 import {
   InputControl,
@@ -188,6 +188,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
               autocomplete="given-name"
               marginTop={1}
               component={InputControl}
+              backgroundColor="white"
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
@@ -197,6 +198,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
               autocomplete="family-name"
               marginTop={1}
               component={InputControl}
+              backgroundColor="white"
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
@@ -206,11 +208,17 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
               autocomplete="email"
               marginTop={1}
               component={InputControl}
+              backgroundColor="white"
             />
           </Text>
           <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
             I am a...
-            <Field name="contactType" marginTop={1} component={SelectControl}>
+            <Field
+              name="contactType"
+              marginTop={1}
+              component={SelectControl}
+              backgroundColor="white"
+            >
               {contactTypes.map((contactType) => (
                 <option
                   key={contactType.name || 'Other'}

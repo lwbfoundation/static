@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'gatsby';
-import { Box, Heading } from '@chakra-ui/core';
+import { Box, Heading } from '@chakra-ui/react';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import Layout from '../default-layout';
 import { normalizePath } from '../../utils/get-url-path';

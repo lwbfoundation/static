@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'gatsby';
 import { Box, Heading } from '@chakra-ui/core';
-import Img from 'gatsby-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
 import Layout from '../default-layout';
 import { normalizePath } from '../../utils/get-url-path';
 import { PageTemplateProps } from '../../templates/single/Page';
@@ -18,7 +18,12 @@ const BlogPost: FunctionComponent<PageTemplateProps> = ({ data }) => {
 
       {!!featuredImage?.node?.remoteFile?.childImageSharp && (
         <Box mb={5}>
-          <Img fluid={featuredImage.node.remoteFile.childImageSharp.fluid} />
+          <GatsbyImage
+            alt=""
+            image={
+              featuredImage.node.remoteFile.childImageSharp.gatsbyImageData
+            }
+          />
         </Box>
       )}
 

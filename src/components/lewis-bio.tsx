@@ -40,7 +40,7 @@ const ExpandablePostBody: FunctionComponent<ExpandablePostBodyProps> = ({
 
 const LewisBio: FunctionComponent = () => {
   const data = useStaticQuery(graphql`
-    query {
+    {
       wpCommonSiteSettings {
         customCommonDataFields {
           lewisbiotitle
@@ -48,16 +48,12 @@ const LewisBio: FunctionComponent = () => {
           lewisbioimage {
             mobile: localFile {
               childImageSharp {
-                fluid(quality: 70, maxWidth: 1280) {
-                  ...GatsbyImageSharpFluid_withWebp
-                }
+                gatsbyImageData(quality: 70, layout: FULL_WIDTH)
               }
             }
             desktop: localFile {
               childImageSharp {
-                fluid(quality: 70) {
-                  ...GatsbyImageSharpFluid_withWebp
-                }
+                gatsbyImageData(quality: 70, layout: FULL_WIDTH)
               }
             }
           }
@@ -68,10 +64,10 @@ const LewisBio: FunctionComponent = () => {
 
   const sources = [
     data.wpCommonSiteSettings.customCommonDataFields.lewisbioimage.mobile
-      .childImageSharp.fluid,
+      .childImageSharp.gatsbyImageData,
     {
       ...data.wpCommonSiteSettings.customCommonDataFields.lewisbioimage.desktop
-        .childImageSharp.fluid,
+        .childImageSharp.gatsbyImageData,
       media: '(min-width: 480px)',
     },
   ];
@@ -80,7 +76,7 @@ const LewisBio: FunctionComponent = () => {
       <Box maxWidth={1024} marginX="auto" marginBottom={16}>
         <AspectRatioResponsive width="100%" ratio={[4 / 3]}>
           <Box>
-            <BackgroundImage100 fluid={sources} />
+            <BackgroundImage100 image={sources as any} />
           </Box>
         </AspectRatioResponsive>
       </Box>

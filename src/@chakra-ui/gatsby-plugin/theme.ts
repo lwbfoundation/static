@@ -1,4 +1,4 @@
-import { extendTheme, theme as baseTheme } from '@chakra-ui/react';
+import { extendTheme } from '@chakra-ui/react';
 
 const theme = {
   colors: {
@@ -7,7 +7,19 @@ const theme = {
       type: '#474747',
     },
     blue: {
-      brand: baseTheme.colors.blue['300'],
+      brand: '#185B78',
+    },
+    mint: {
+      brand: '#B7D4C0',
+    },
+    green: {
+      brand: '#54622B',
+    },
+    orange: {
+      brand: '#F26742',
+    },
+    tan: {
+      brand: '#D9C2B6',
     },
   },
 };

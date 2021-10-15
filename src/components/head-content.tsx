@@ -16,7 +16,22 @@ const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
       styles={css`
         @font-face {
           font-family: 'Trade Gothic';
-          src: url('/fonts/TradeGothicLTStd-Bd2.otf');
+          src: url('/fonts/Edmondsans-Bold.otf');
+          font-weight: 600;
+          font-display: fallback;
+        }
+
+        @font-face {
+          font-family: 'Trade Gothic';
+          src: url('/fonts/Edmondsans-Medium.otf');
+          font-weight: 400;
+          font-display: fallback;
+        }
+
+        @font-face {
+          font-family: 'Trade Gothic';
+          src: url('/fonts/Edmondsans-Regular.otf');
+          font-weight: 200;
           font-display: fallback;
         }
 
@@ -26,6 +41,7 @@ const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
 
         body {
           color: ${theme.colors.gray.type};
+          font-family: 'Trade Gothic';
         }
       `}
     />

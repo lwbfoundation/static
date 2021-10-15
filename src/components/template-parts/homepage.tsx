@@ -4,10 +4,21 @@ import React, {
   Suspense,
   useState,
   useEffect,
+  PropsWithChildren,
+  ReactElement,
+  ComponentProps,
 } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
-import { Heading, Box, Text } from '@chakra-ui/react';
+import {
+  Heading,
+  Box,
+  Text,
+  Container,
+  Flex,
+  AspectRatio,
+} from '@chakra-ui/react';
 import striptags from 'striptags';
+import styled from '@emotion/styled';
 import PostBody from '../post-body';
 import HeadContent from '../head-content';
 import { PageTemplateProps } from '../../templates/single/Page';
@@ -17,6 +28,9 @@ import BackgroundImage100 from '../background-image-100';
 import FormsContainer, { FormsState } from '../forms-container';
 import LewisBio from '../lewis-bio';
 import Team from '../team';
+import Logo from '../../assets/svg/logo.inline.svg';
+import HorizontalLogo from '../../assets/svg/logo-horizontal.inline.svg';
+import { PageContainer } from '../styleguide/page-container';
 
 const LazyNewsletterSignup = lazy(
   () => import('../newsletter-signup/newsletter-signup')
@@ -58,6 +72,26 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   );
 };
 
+const CustomHeadingStyle = styled.div`
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.6rem;
+`;
+
+function CustomHeading(props: ComponentProps<typeof PostBody>): ReactElement {
+  return (
+    <CustomHeadingStyle>
+      <PostBody
+        color="orange.brand"
+        textDecoration="underline"
+        fontSize="6xl"
+        fontWeight={400}
+        lineHeight={1.25}
+        {...props}
+      />
+    </CustomHeadingStyle>
+  );
+}
+
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
@@ -73,104 +107,138 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           data.wpCommonSiteSettings.customCommonDataFields.subheading
         )}
       />
-      <AspectRatioResponsive width="100%" ratio={[1, 1.85 / 1, null, 2.5 / 1]}>
-        <Box
-          backgroundColor="gray.type"
-          backgroundSize="cover"
-          overflow="visible"
-        >
-          <HeaderBackgroundImage>
-            <AspectRatioResponsive
-              width="100%"
-              ratio={[1, 1.85 / 1, null, 2.5 / 1]}
-            >
-              <Box
-                backgroundColor="blackAlpha.700"
-                borderColor="blue.brand"
-                borderBottomWidth={8}
-              >
-                <Text as="div" textAlign="center" color="white" paddingX="1rem">
-                  <Heading
-                    as="h1"
-                    fontWeight={200}
-                    textTransform="uppercase"
-                    letterSpacing={4}
-                    fontSize={['2em', '3em', '4em']}
-                    fontFamily="Trade Gothic, Helvetica"
-                  >
-                    {data.wpCommonSiteSettings.title}
-                  </Heading>
-                  <Text as="div" fontSize={[null, null, '1.4em']}>
-                    <PostBody
-                      body={
-                        data.wpCommonSiteSettings.customCommonDataFields
-                          .subheading
-                      }
-                    />
-                  </Text>
-                </Text>
-              </Box>
-            </AspectRatioResponsive>
-          </HeaderBackgroundImage>
+      <PageContainer marginTop={[4, 8]}>
+        <Box display={['none', 'block']}>
+          <Logo
+            alt={data.wpCommonSiteSettings.title}
+            height={84}
+            width={84 * 1.85}
+            shapeRendering="geometricPrecision"
+          />
         </Box>
-      </AspectRatioResponsive>
-      <FormsContainer
+        <Box display={['block', 'none']}>
+          <HorizontalLogo alt={data.wpCommonSiteSettings.title} />
+        </Box>
+      </PageContainer>
+      <PageContainer
+        marginTop={['1rem', null, 8]}
+        display={['none', 'none', 'block']}
+      >
+        <Flex flexDirection={['column', 'column', 'row']} alignItems="center">
+          <Box width={['100%', null, '40%']}>
+            <CustomHeading
+              body={data.wpCommonSiteSettings.customCommonDataFields.subheading}
+            />
+          </Box>
+          <Box width={['100%', null, '60%']}>
+            <HeaderBackgroundImage>
+              <AspectRatio ratio={4 / 3}>
+                <div />
+              </AspectRatio>
+            </HeaderBackgroundImage>
+          </Box>
+        </Flex>
+      </PageContainer>
+      <Box display={['block', 'block', 'none']} width="100%" marginTop={4}>
+        <HeaderBackgroundImage>
+          <AspectRatio ratio={16 / 9}>
+            <div />
+          </AspectRatio>
+        </HeaderBackgroundImage>
+      </Box>
+      <PageContainer display={['block', 'block', 'none']} marginTop={4}>
+        <CustomHeading
+          body={data.wpCommonSiteSettings.customCommonDataFields.subheading}
+          fontSize="4xl"
+        />
+      </PageContainer>
+      <Container maxWidth="container.lg">
+        <PostBody
+          body={data.page.content}
+          fontSize="lg"
+          textAlign="center"
+          marginTop={[4, 8, 16]}
+        />
+      </Container>
+
+      {/* <FormsContainer
         initialState={
           isClient && window.location.hash === '#donate'
             ? FormsState.donate
             : FormsState.none
         }
-      />
-      <Box marginX={[2, 4]}>
-        <Box maxWidth={800} marginX="auto" marginBottom={16}>
-          <Text as="div" fontSize="1.4em" marginBottom={16}>
-            <PostBody body={data.page.content} />
-          </Text>
-        </Box>
-        <LewisBio />
-        <Box maxWidth={1024} marginX="auto" marginBottom={8}>
-          <Team />
-        </Box>
-        <Box maxWidth={520} marginX="auto" marginBottom={24}>
-          {isClient && (
-            <Suspense fallback={null}>
-              <Heading
-                textAlign="center"
-                as="h2"
-                fontWeight={200}
-                textTransform="uppercase"
-                letterSpacing={4}
-                marginBottom={8}
-                fontFamily="Trade Gothic, Helvetica"
-              >
-                {
-                  data.wpCommonSiteSettings.customCommonDataFields
-                    .newslettersignupbuttontext
-                }
-              </Heading>
-              <LazyNewsletterSignup signupButtonText="Sign up" />
-            </Suspense>
-          )}
-        </Box>
-      </Box>
-      <Box
-        width="100%"
-        backgroundColor="gray.type"
-        paddingX={[2, 4]}
-        paddingY={6}
-        borderColor="blue.brand"
-        borderTopWidth={8}
-      >
-        <Text
-          as="div"
-          color="white"
-          fontSize="sm"
-          textAlign={['left', 'center']}
+      /> */}
+
+      {/* <LewisBio /> */}
+      {/* <Team /> */}
+      {/* {isClient && (
+        <Suspense fallback={null}>
+          <Heading
+            textAlign="center"
+            as="h2"
+            fontWeight={200}
+            textTransform="uppercase"
+            letterSpacing={4}
+            marginBottom={8}
+            fontFamily="Trade Gothic, Helvetica"
+          >
+            {
+              data.wpCommonSiteSettings.customCommonDataFields
+                .newslettersignupbuttontext
+            }
+          </Heading>
+          <LazyNewsletterSignup signupButtonText="Sign up" />
+        </Suspense>
+      )} */}
+
+      <Box backgroundColor="orange.brand" color="white">
+        <Container
+          maxWidth="container.lg"
+          marginTop={[4, 8, 16]}
+          paddingTop={[4, 8, 16]}
+          paddingBottom={4}
         >
+          <Flex marginBottom={[4, 8, 16]} alignItems="center" flexWrap="wrap">
+            <Box height={['60px', '100px']} width={[60 * 1.85, 100 * 1.85]}>
+              <Logo
+                alt={data.wpCommonSiteSettings.title}
+                width="100%"
+                shapeRendering="geometricPrecision"
+              />
+            </Box>
+            <Box flexBasis={1} flexGrow={1} marginLeft={4}>
+              <Text fontSize={['smaller', 'initial']}>
+                <PostBody
+                  body={
+                    data.wpCommonSiteSettings.customCommonDataFields.address
+                  }
+                />
+                {data.wpCommonSiteSettings.customCommonDataFields.contactemail}
+              </Text>
+            </Box>
+            <Box
+              width={['100%', 'auto']}
+              flexBasis={[null, 1]}
+              flexGrow={1}
+              marginLeft={[0, 8]}
+            >
+              SUBSCRIBE
+            </Box>
+            <Box
+              width={['100%', 'auto']}
+              flexBasis={[null, 1]}
+              flexGrow={1}
+              marginLeft={[0, 8]}
+            >
+              Social
+            </Box>
+          </Flex>
           <PostBody
+            fontSize="xs"
+            textAlign="center"
             body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
           />
-        </Text>
+        </Container>
       </Box>
     </>
   );

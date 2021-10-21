@@ -12,7 +12,7 @@ const Placeholder: FunctionComponent<PageTemplateProps> = ({ data }) => (
       textAlign="center"
       textTransform="uppercase"
       letterSpacing={4}
-      fontFamily="Trade Gothic, Helvetica"
+      fontFamily="Edmond Sans, Helvetica"
     >
       {data.wpCommonSiteSettings.title}
     </Heading>

@@ -84,6 +84,7 @@ export const query = graphql`
         legalinfo
         address
         contactemail
+        donatebuttontext
       }
     }
 

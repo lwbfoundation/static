@@ -68,13 +68,14 @@ const AmountButton = forwardRef<HTMLButtonElement, RadioProps & ButtonProps>(
         cursor="pointer"
         borderColor="gray.brand"
         _checked={{
-          backgroundColor: 'gray.type',
+          backgroundColor: 'orange.brand',
           color: 'white',
-          borderColor: 'white',
         }}
         _hover={{
           backgroundColor: isChecked ? 'gray.type' : 'gray.100',
         }}
+        height={7}
+        paddingTop={1}
         borderWidth={1}
         width="calc(33% - 0.5rem)"
         {...checkbox}

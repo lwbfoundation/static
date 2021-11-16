@@ -8,6 +8,7 @@ import {
   Checkbox,
   Select,
   useRadioGroup,
+  ComponentWithAs,
 } from '@chakra-ui/react';
 import { FORM_ERROR } from 'final-form';
 import { FieldRenderProps } from 'react-final-form';
@@ -142,7 +143,7 @@ export const FormSuccessMessage: FunctionComponent = ({ children }) => {
   );
 };
 
-export const SubmitButton: FunctionComponent<ButtonProps> = (props) => (
+export const SubmitButton: ComponentWithAs<'button', ButtonProps> = (props) => (
   <Button
     type="submit"
     backgroundColor="mint.brand"

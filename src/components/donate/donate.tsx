@@ -44,6 +44,33 @@ import signupForNewsletter, {
   NewsletterGroup,
 } from '../newsletter-signup/signup-for-newsletter';
 
+const AMOUNTS: { value: string; label: string }[] = [
+  {
+    label: '$50',
+    value: '2500',
+  },
+  {
+    label: '$100',
+    value: '10000',
+  },
+  {
+    label: '$500',
+    value: '50000',
+  },
+  {
+    label: '$1000',
+    value: '100000',
+  },
+  {
+    label: '$2,500',
+    value: '250000',
+  },
+  {
+    label: 'Other',
+    value: '',
+  },
+];
+
 const isServer = typeof window === 'undefined';
 
 const StripeLoader: FunctionComponent = ({ children }) => {
@@ -208,7 +235,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
   return (
     <Form<PaymentFormValues>
-      initialValues={{ amountOption: 5000, coverFees: false }}
+      initialValues={{ amountOption: 10000, coverFees: false }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
         if (!stripe) {
@@ -360,24 +387,11 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
                   typeof value === 'undefined' ? '' : value.toString()
                 }
               >
-                <AmountButton marginBottom={1} value="2500">
-                  $25
-                </AmountButton>
-                <AmountButton marginBottom={1} value="5000">
-                  $50
-                </AmountButton>
-                <AmountButton marginBottom={1} value="10000">
-                  $100
-                </AmountButton>
-                <AmountButton marginBottom={1} value="50000">
-                  $500
-                </AmountButton>
-                <AmountButton marginBottom={1} value="100000">
-                  $1,000
-                </AmountButton>
-                <AmountButton marginBottom={1} value="">
-                  Other
-                </AmountButton>
+                {AMOUNTS.map(({ label, value }) => (
+                  <AmountButton marginBottom={1} value={value}>
+                    {label}
+                  </AmountButton>
+                ))}
               </Field>
             </Text>
             {typeof values.amountOption === 'undefined' && (

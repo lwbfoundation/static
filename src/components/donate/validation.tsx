@@ -43,14 +43,14 @@ export const validatePaymentFormValues: (
     };
   }
 
-  if (amount > 514964) {
+  if (amount > 99999999) {
     return {
       message: (
         <>
-          We only accept donations less than $1,000 online. To donate $1,000 or
-          more, please email us at{' '}
+          We only accept donations less than $999,999.99 online. To donate more,
+          please email{' '}
           <a href="mailto:info@lewiswbutlerfoundation.org">
-            info@lewiswbutlerfoundation.org
+            chandra@lewiswbutlerfoundation.org
           </a>{' '}
           and we&lsquo;ll give you the information you need.
         </>

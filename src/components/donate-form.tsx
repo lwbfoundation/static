@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import { graphql, useStaticQuery } from 'gatsby';
 import React, { lazy, ReactElement, Suspense } from 'react';
 import PostBody from './post-body';
+import { SubmitButton } from './form';
 
 const LazyDonate = lazy(() => import('./donate/donate'));
 
@@ -34,13 +35,27 @@ export function DonateForm(): ReactElement {
             }
           />
         </Text>
+        <Text textAlign="center">
+          <SubmitButton
+            as="a"
+            href="https://www.paypal.com/donate/?hosted_button_id=AZY2NCNCK4UAL"
+            textDecoration="none"
+            fontSize="2xl"
+            paddingY="1em"
+          >
+            Donate with PayPal
+          </SubmitButton>
+          <Text marginTop="8" fontSize="xl">
+            ...or donate with a credit/debit card:
+          </Text>
+        </Text>
         <LazyDonate
           donateButtonText={
             data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext
           }
         />
         <Text marginTop={8} marginBottom={4}>
-          Secure payments provided by{' '}
+          Secure credit card payments provided by{' '}
           <a href="https://www.stripe.com" rel="noreferrer" target="_blank">
             Stripe
           </a>

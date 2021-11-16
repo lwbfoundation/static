@@ -173,6 +173,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
               spacing={[4, null, 8]}
               textAlign={['center', null, 'left']}
               textTransform="uppercase"
+              textUnderlineOffset="0.25rem"
               fontWeight={600}
               width={['100%', null, 'auto']}
               display={[isMenuOpen ? 'flex' : 'none', null, 'flex']}

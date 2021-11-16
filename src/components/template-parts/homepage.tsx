@@ -1,10 +1,7 @@
 import React, {
   FunctionComponent,
-  lazy,
-  Suspense,
   useState,
   useEffect,
-  PropsWithChildren,
   ReactElement,
   ComponentProps,
 } from 'react';
@@ -26,31 +23,37 @@ import PostBody from '../post-body';
 import HeadContent from '../head-content';
 import { PageTemplateProps } from '../../templates/single/Page';
 import HomepageOpengraph from '../homepage-opengraph';
-import AspectRatioResponsive from '../aspect-ratio-responsive';
 import BackgroundImage100 from '../background-image-100';
 import FormsContainer, { FormsState, HeaderButton } from '../forms-container';
 import LewisBio from '../lewis-bio';
 import Team from '../team';
 import Logo from '../../assets/svg/logo.inline.svg';
-import HorizontalLogo from '../../assets/svg/logo-horizontal.inline.svg';
 import Instagram from '../../assets/svg/social/instagram.inline.svg';
 import { PageContainer } from '../styleguide/page-container';
-import { DonateForm } from '../donate-form';
-
-const LazyNewsletterSignup = lazy(
-  () => import('../newsletter-signup/newsletter-signup')
-);
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
     {
       mobile: file(
-        relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
+        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
       ) {
         childImageSharp {
           gatsbyImageData(
             quality: 70
-            width: 480
+            width: 960
+            layout: CONSTRAINED
+            aspectRatio: 1.7778
+            transformOptions: { cropFocus: NORTH }
+          )
+        }
+      }
+      tablet: file(
+        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
+      ) {
+        childImageSharp {
+          gatsbyImageData(
+            quality: 70
+            width: 1536
             layout: CONSTRAINED
             aspectRatio: 1.7778
             transformOptions: { cropFocus: NORTH }
@@ -58,13 +61,13 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
         }
       }
       desktop: file(
-        relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
+        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
       ) {
         childImageSharp {
           gatsbyImageData(
             quality: 70
             transformOptions: { cropFocus: NORTH }
-            aspectRatio: 2.5
+            aspectRatio: 1.333
             layout: FULL_WIDTH
           )
         }
@@ -74,8 +77,12 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const sources = [
     data.mobile.childImageSharp.gatsbyImageData,
     {
-      ...data.desktop.childImageSharp.gatsbyImageData,
+      ...data.tablet.childImageSharp.gatsbyImageData,
       media: '(min-width: 480px)',
+    },
+    {
+      ...data.desktop.childImageSharp.gatsbyImageData,
+      media: '(min-width: 768px)',
     },
   ];
   return (

@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Global, css } from '@emotion/react';
 import { Helmet } from 'react-helmet';
 import theme from '../@chakra-ui/gatsby-plugin/theme';
+import favicon from '../assets/images/favicon.png';
 
 interface HeadContentProps {
   title: string;
@@ -11,6 +12,7 @@ const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
   <>
     <Helmet>
       <title>{title}</title>
+      <link rel="icon" href={favicon} />
     </Helmet>
     <Global
       styles={css`

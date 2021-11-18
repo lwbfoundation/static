@@ -47,7 +47,7 @@ import signupForNewsletter, {
 const AMOUNTS: { value: string; label: string }[] = [
   {
     label: '$50',
-    value: '2500',
+    value: '5000',
   },
   {
     label: '$100',

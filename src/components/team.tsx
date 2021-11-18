@@ -78,22 +78,15 @@ const Team: FunctionComponent = () => {
 
   return (
     <>
-      <Heading
-        textAlign="center"
-        as="h2"
-        fontWeight={200}
-        textTransform="uppercase"
-        letterSpacing={4}
-        fontFamily="Trade Gothic, Helvetica"
-        marginBottom={8}
-      >
+      <Heading textAlign="center" as="h2" marginBottom={8}>
         Our Board
       </Heading>
       <Box display="flex" flexWrap="wrap" justifyContent="space-between">
         {team.nodes.map((teamMember, index) => (
           <Box
             key={teamMember.id}
-            width={['100%', 'calc(50% - 3rem)', 'calc(33% - 3rem)']}
+            width={['100%', null, 'calc(33% - 3rem)']}
+            maxWidth={80}
             marginBottom={16}
             marginX="auto"
           >
@@ -119,12 +112,9 @@ const Team: FunctionComponent = () => {
             <Text as="div" textAlign="center">
               <Heading
                 as="h3"
+                variant="h3"
                 fontSize="lg"
                 textAlign="center"
-                fontWeight={200}
-                textTransform="uppercase"
-                letterSpacing={4}
-                fontFamily="Trade Gothic, Helvetica"
                 marginBottom={2}
                 ref={teamMemberNameRefs[index]}
               >
@@ -139,13 +129,24 @@ const Team: FunctionComponent = () => {
                 {teamMember.customTeamMemberOptions.teammembertitle}
               </Text>
             </Text>
-            <Text as="div" textAlign="justify">
+            <Text as="div" textAlign={['left', null, 'justify']}>
               <PostBody body={teamMember.content} />
             </Text>
           </Box>
         ))}
         <Box
-          width={['100%', 'calc(50% - 3rem)', 'calc(33% - 3rem)']}
+          width={[
+            '100%',
+            null,
+            'calc(50% - 3rem)',
+            null,
+            null,
+            null,
+            null,
+            null,
+            'calc(33% - 3rem)',
+          ]}
+          maxWidth={80}
           marginBottom={16}
           marginX="auto"
           display="flex"
@@ -155,12 +156,9 @@ const Team: FunctionComponent = () => {
             <Text as="div" textAlign="center">
               <Heading
                 as="h3"
+                variant="h3"
                 fontSize="lg"
                 textAlign="center"
-                fontWeight={200}
-                textTransform="uppercase"
-                letterSpacing={4}
-                fontFamily="Trade Gothic, Helvetica"
                 marginBottom={2}
               >
                 {

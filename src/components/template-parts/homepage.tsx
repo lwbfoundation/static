@@ -1,45 +1,73 @@
 import React, {
   FunctionComponent,
-  lazy,
-  Suspense,
   useState,
   useEffect,
+  ReactElement,
+  ComponentProps,
 } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
-import { Heading, Box, Text } from '@chakra-ui/react';
+import {
+  Heading,
+  Box,
+  Text,
+  Container,
+  Flex,
+  AspectRatio,
+  Stack,
+  Link,
+} from '@chakra-ui/react';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import striptags from 'striptags';
+import styled from '@emotion/styled';
 import PostBody from '../post-body';
 import HeadContent from '../head-content';
 import { PageTemplateProps } from '../../templates/single/Page';
 import HomepageOpengraph from '../homepage-opengraph';
-import AspectRatioResponsive from '../aspect-ratio-responsive';
 import BackgroundImage100 from '../background-image-100';
-import FormsContainer, { FormsState } from '../forms-container';
+import FormsContainer, { FormsState, HeaderButton } from '../forms-container';
 import LewisBio from '../lewis-bio';
 import Team from '../team';
-
-const LazyNewsletterSignup = lazy(
-  () => import('../newsletter-signup/newsletter-signup')
-);
+import Logo from '../../assets/svg/logo.inline.svg';
+import Instagram from '../../assets/svg/social/instagram.inline.svg';
+import { PageContainer } from '../styleguide/page-container';
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
     {
       mobile: file(
-        relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
+        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
       ) {
         childImageSharp {
-          gatsbyImageData(quality: 70, width: 480, layout: CONSTRAINED)
+          gatsbyImageData(
+            quality: 70
+            width: 960
+            layout: CONSTRAINED
+            aspectRatio: 1.7778
+            transformOptions: { cropFocus: NORTH }
+          )
+        }
+      }
+      tablet: file(
+        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
+      ) {
+        childImageSharp {
+          gatsbyImageData(
+            quality: 70
+            width: 1536
+            layout: CONSTRAINED
+            aspectRatio: 1.7778
+            transformOptions: { cropFocus: NORTH }
+          )
         }
       }
       desktop: file(
-        relativePath: { eq: "javier-trueba-iQPr1XkF5F0-unsplash.jpg" }
+        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
       ) {
         childImageSharp {
           gatsbyImageData(
             quality: 70
             transformOptions: { cropFocus: NORTH }
-            aspectRatio: 2.5
+            aspectRatio: 1.333
             layout: FULL_WIDTH
           )
         }
@@ -49,8 +77,12 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const sources = [
     data.mobile.childImageSharp.gatsbyImageData,
     {
-      ...data.desktop.childImageSharp.gatsbyImageData,
+      ...data.tablet.childImageSharp.gatsbyImageData,
       media: '(min-width: 480px)',
+    },
+    {
+      ...data.desktop.childImageSharp.gatsbyImageData,
+      media: '(min-width: 768px)',
     },
   ];
   return (
@@ -58,11 +90,38 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   );
 };
 
+const SkipInk = styled.div`
+  text-decoration-skip-ink: none;
+`;
+
+function CustomHeading(props: ComponentProps<typeof PostBody>): ReactElement {
+  return (
+    <SkipInk>
+      <PostBody
+        as={Heading}
+        color="orange.brand"
+        fontSize={['4xl', null, '4xl', '5xl', '6xl']}
+        lineHeight={1.25}
+        textDecoration={['none', null, 'underline']}
+        {...props}
+      />
+    </SkipInk>
+  );
+}
+
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
   }, [setIsClient]);
+  const [initialFormState, setInitialFormState] = useState(FormsState.none);
+  useEffect(() => {
+    if (isClient && window.location.hash === '#donate') {
+      setInitialFormState(FormsState.donate);
+    }
+  }, [isClient]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const MenuIcon = isMenuOpen ? CloseIcon : HamburgerIcon;
 
   return (
     <>
@@ -73,104 +132,268 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           data.wpCommonSiteSettings.customCommonDataFields.subheading
         )}
       />
-      <AspectRatioResponsive width="100%" ratio={[1, 1.85 / 1, null, 2.5 / 1]}>
-        <Box
-          backgroundColor="gray.type"
-          backgroundSize="cover"
-          overflow="visible"
-        >
-          <HeaderBackgroundImage>
-            <AspectRatioResponsive
-              width="100%"
-              ratio={[1, 1.85 / 1, null, 2.5 / 1]}
+      <PageContainer
+        marginTop={[0, null, 8]}
+        backgroundColor={['blue.brand', null, 'transparent']}
+      >
+        <Flex alignItems="center">
+          <Box display={['none', null, 'block']}>
+            <Logo
+              alt={data.wpCommonSiteSettings.title}
+              height={84}
+              width={84 * 1.85}
+            />
+          </Box>
+          <Box
+            width={['100%', null, 'auto']}
+            backgroundColor={['blue.brand', null, 'transparent']}
+            color={['white', null, 'black']}
+          >
+            <Box
+              textAlign="right"
+              marginBottom={[isMenuOpen ? 0 : -12, null, 0]}
             >
-              <Box
-                backgroundColor="blackAlpha.700"
-                borderColor="blue.brand"
-                borderBottomWidth={8}
-              >
-                <Text as="div" textAlign="center" color="white" paddingX="1rem">
-                  <Heading
-                    as="h1"
-                    fontWeight={200}
-                    textTransform="uppercase"
-                    letterSpacing={4}
-                    fontSize={['2em', '3em', '4em']}
-                    fontFamily="Trade Gothic, Helvetica"
-                  >
-                    {data.wpCommonSiteSettings.title}
-                  </Heading>
-                  <Text as="div" fontSize={[null, null, '1.4em']}>
-                    <PostBody
-                      body={
-                        data.wpCommonSiteSettings.customCommonDataFields
-                          .subheading
-                      }
-                    />
-                  </Text>
-                </Text>
+              <MenuIcon
+                as="button"
+                color="white"
+                fontSize={isMenuOpen ? 'xs' : 'xl'}
+                display={['inline-block', null, 'none']}
+                marginY={2}
+                position="absolute"
+                top={isMenuOpen ? 1 : 0}
+                right={isMenuOpen ? 3 : 2}
+                zIndex={1}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              />
+            </Box>
+            <Stack
+              direction={['column', null, 'row']}
+              marginLeft={[0, null, 16]}
+              marginY={[4, null, 0]}
+              spacing={[4, null, 8]}
+              textAlign={['center', null, 'left']}
+              textTransform="uppercase"
+              textUnderlineOffset="0.25rem"
+              fontWeight={600}
+              width={['100%', null, 'auto']}
+              display={[isMenuOpen ? 'flex' : 'none', null, 'flex']}
+            >
+              <Box>
+                <Link
+                  href="#forms"
+                  onClick={() => {
+                    setInitialFormState(FormsState.donate);
+                  }}
+                >
+                  Donate
+                </Link>
               </Box>
-            </AspectRatioResponsive>
-          </HeaderBackgroundImage>
-        </Box>
-      </AspectRatioResponsive>
-      <FormsContainer
-        initialState={
-          isClient && window.location.hash === '#donate'
-            ? FormsState.donate
-            : FormsState.none
-        }
-      />
-      <Box marginX={[2, 4]}>
-        <Box maxWidth={800} marginX="auto" marginBottom={16}>
-          <Text as="div" fontSize="1.4em" marginBottom={16}>
-            <PostBody body={data.page.content} />
-          </Text>
-        </Box>
-        <LewisBio />
-        <Box maxWidth={1024} marginX="auto" marginBottom={8}>
-          <Team />
-        </Box>
-        <Box maxWidth={520} marginX="auto" marginBottom={24}>
-          {isClient && (
-            <Suspense fallback={null}>
-              <Heading
-                textAlign="center"
-                as="h2"
-                fontWeight={200}
-                textTransform="uppercase"
-                letterSpacing={4}
-                marginBottom={8}
-                fontFamily="Trade Gothic, Helvetica"
+              <Box>
+                <Link
+                  href="#forms"
+                  onClick={() => {
+                    setInitialFormState(FormsState.newsletterSignup);
+                  }}
+                >
+                  Newsletter
+                </Link>
+              </Box>
+              <Box>
+                <Link href="#about">About</Link>
+              </Box>
+              <Box>
+                <Link href="#board">Board</Link>
+              </Box>
+            </Stack>
+          </Box>
+        </Flex>
+      </PageContainer>
+      <PageContainer
+        marginTop={[0, null, 8]}
+        display={['none', 'none', 'block']}
+      >
+        <Flex flexDirection={['column', 'column', 'row']} alignItems="stretch">
+          <Flex
+            width={['100%', null, '40%']}
+            position="relative"
+            alignItems="center"
+          >
+            <CustomHeading
+              body={data.wpCommonSiteSettings.customCommonDataFields.subheading}
+            />
+            <Box position="absolute" bottom={0}>
+              <HeaderButton
+                onClick={() => setInitialFormState(FormsState.donate)}
+                isSelected={initialFormState === FormsState.donate}
+                marginBottom={[2, null, null, 0]}
+              >
+                {
+                  data.wpCommonSiteSettings.customCommonDataFields
+                    .donatebuttontext
+                }
+              </HeaderButton>
+              <HeaderButton
+                onClick={() => setInitialFormState(FormsState.newsletterSignup)}
+                isSelected={initialFormState === FormsState.newsletterSignup}
               >
                 {
                   data.wpCommonSiteSettings.customCommonDataFields
                     .newslettersignupbuttontext
                 }
-              </Heading>
-              <LazyNewsletterSignup signupButtonText="Sign up" />
-            </Suspense>
-          )}
-        </Box>
+              </HeaderButton>
+            </Box>
+          </Flex>
+          <Box width={['100%', null, '60%']}>
+            <HeaderBackgroundImage>
+              <AspectRatio ratio={4 / 3}>
+                <Box display={['none', 'block']}>
+                  <div />
+                </Box>
+              </AspectRatio>
+            </HeaderBackgroundImage>
+          </Box>
+        </Flex>
+      </PageContainer>
+      <Box display={['block', 'block', 'none']} width="100%">
+        <HeaderBackgroundImage>
+          <AspectRatio ratio={16 / 9}>
+            <div>
+              <Box position="absolute" bottom={0} right={0}>
+                <Logo
+                  alt={data.wpCommonSiteSettings.title}
+                  height={120}
+                  width={120 * 1.85}
+                  shapeRendering="geometricPrecision"
+                />
+              </Box>
+            </div>
+          </AspectRatio>
+        </HeaderBackgroundImage>
       </Box>
-      <Box
-        width="100%"
-        backgroundColor="gray.type"
-        paddingX={[2, 4]}
-        paddingY={6}
-        borderColor="blue.brand"
-        borderTopWidth={8}
-      >
-        <Text
-          as="div"
-          color="white"
-          fontSize="sm"
-          textAlign={['left', 'center']}
+      <PageContainer display={['block', 'block', 'none']} marginTop={4}>
+        <CustomHeading
+          body={data.wpCommonSiteSettings.customCommonDataFields.subheading}
+          marginBottom={4}
+          fontSize="4xl"
+        />
+        <HeaderButton
+          onClick={() => setInitialFormState(FormsState.donate)}
+          isSelected={initialFormState === FormsState.donate}
         >
+          {data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext}
+        </HeaderButton>
+        <HeaderButton
+          onClick={() => setInitialFormState(FormsState.newsletterSignup)}
+          isSelected={initialFormState === FormsState.newsletterSignup}
+        >
+          {
+            data.wpCommonSiteSettings.customCommonDataFields
+              .newslettersignupbuttontext
+          }
+        </HeaderButton>
+      </PageContainer>
+      <Container maxWidth="container.lg">
+        <PostBody
+          body={data.page.content}
+          fontSize="lg"
+          textAlign={['left', null, 'center']}
+          marginTop={[4, 8, 16]}
+        />
+      </Container>
+
+      <div id="forms" />
+      <FormsContainer initialState={initialFormState} />
+
+      <Box
+        marginTop={[4, 8, 16]}
+        paddingTop={[4, 8, 16]}
+        paddingBottom={[8, null, 16]}
+        backgroundColor="blue.brand"
+        color="white"
+      >
+        <PageContainer>
+          <div id="about" />
+          <LewisBio />
+        </PageContainer>
+      </Box>
+
+      <Box marginTop={[4, 8, 16]}>
+        <PageContainer>
+          <div id="board" />
+          <Team />
+        </PageContainer>
+      </Box>
+
+      <Box backgroundColor="orange.brand" color="white">
+        <Container
+          maxWidth="container.lg"
+          marginTop={[4, 8, 16]}
+          paddingTop={[4, 8, 16]}
+          paddingBottom={4}
+        >
+          <Flex marginBottom={[4, 8, 16]} alignItems="center" flexWrap="wrap">
+            <Box height={['60px', '100px']} width={[60 * 1.85, 100 * 1.85]}>
+              <Logo
+                alt={data.wpCommonSiteSettings.title}
+                width="100%"
+                shapeRendering="geometricPrecision"
+              />
+            </Box>
+            <Box flexBasis={1} flexGrow={1} marginLeft={4}>
+              <Text fontSize={['smaller', 'initial']}>
+                <PostBody
+                  body={
+                    data.wpCommonSiteSettings.customCommonDataFields.address
+                  }
+                />
+                <Link
+                  href={`mailto:${data.wpCommonSiteSettings.customCommonDataFields.contactemail}`}
+                  textDecoration="none"
+                >
+                  {
+                    data.wpCommonSiteSettings.customCommonDataFields
+                      .contactemail
+                  }
+                </Link>
+              </Text>
+            </Box>
+            {/* <Box
+              width={['100%', 'auto']}
+              flexBasis={[null, 1]}
+              flexGrow={1}
+              marginLeft={[0, 8]}
+            >
+              SUBSCRIBE
+            </Box> */}
+            <Box
+              width={['100%', 'auto']}
+              flexBasis={[null, 1]}
+              flexGrow={1}
+              marginTop={4}
+              marginLeft={[0, 8]}
+              textAlign={['center', 'center', 'right']}
+            >
+              <Link
+                href="https://www.instagram.com/lewiswbutlerfdn/"
+                target="_blank"
+                rel="nofollow noreferrer"
+              >
+                <Instagram
+                  width="40"
+                  height="40"
+                  fill="white"
+                  alt="Lewis W. Butler Foundation on Instagram"
+                  style={{ display: 'inline' }}
+                />
+              </Link>
+            </Box>
+          </Flex>
           <PostBody
+            fontSize="xs"
+            textAlign="center"
             body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
           />
-        </Text>
+        </Container>
       </Box>
     </>
   );

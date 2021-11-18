@@ -25,6 +25,8 @@ interface CustomCommonDataFields {
   readonly donatebuttontext: string;
   readonly newslettersignupbuttontext: string;
   readonly legalinfo: string;
+  readonly address: string;
+  readonly contactemail: string;
 }
 
 interface CommonSiteSettings {
@@ -80,6 +82,9 @@ export const query = graphql`
         subheading
         newslettersignupbuttontext
         legalinfo
+        address
+        contactemail
+        donatebuttontext
       }
     }
 

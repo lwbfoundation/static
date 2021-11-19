@@ -46,24 +46,24 @@ import signupForNewsletter, {
 
 const AMOUNTS: { value: string; label: string }[] = [
   {
-    label: '$50',
-    value: '5000',
+    label: '$10,000',
+    value: '1000000',
   },
   {
-    label: '$100',
-    value: '10000',
-  },
-  {
-    label: '$500',
-    value: '50000',
-  },
-  {
-    label: '$1000',
-    value: '100000',
+    label: '$5,000',
+    value: '500000',
   },
   {
     label: '$2,500',
     value: '250000',
+  },
+  {
+    label: '$1,000',
+    value: '100000',
+  },
+  {
+    label: '$500',
+    value: '50000',
   },
   {
     label: 'Other',

@@ -152,6 +152,7 @@ const parseCustomAmount = (customAmount: string | undefined) => {
 };
 
 const updateBaseAmount = (_: any, { amountOption, customAmount }: any) => {
+  if (amountOption === 0) return 0;
   return amountOption || parseCustomAmount(customAmount);
 };
 
@@ -235,7 +236,7 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
 
   return (
     <Form<PaymentFormValues>
-      initialValues={{ amountOption: 10000, coverFees: false }}
+      initialValues={{ amountOption: 0, coverFees: false }}
       decorators={[fieldCalculator]}
       onSubmit={async (values) => {
         if (!stripe) {
@@ -470,24 +471,27 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           >
             <Text fontSize="md">
               I would like to cover the{' '}
-              {values.baseAmount &&
-                values.amountWithFeesCovered &&
-                getCurrencyFormatter().format(
-                  (values.amountWithFeesCovered - values.baseAmount) / 100
-                )}{' '}
+              {values.baseAmount && values.amountWithFeesCovered
+                ? getCurrencyFormatter().format(
+                    (values.amountWithFeesCovered - values.baseAmount) / 100
+                  )
+                : ''}{' '}
               transaction fee so that the Lewis W. Butler Foundation gets my
               full{' '}
-              {values.baseAmount &&
-                getCurrencyFormatter().format(values.baseAmount / 100)}{' '}
+              {values.baseAmount
+                ? getCurrencyFormatter().format(values.baseAmount / 100)
+                : ''}{' '}
               donation.
             </Text>
           </Field>
           <Box textAlign={['center', 'right']}>
             <Box marginTop={4}>
-              {values.coverFees && values.amount && (
+              {values.coverFees && values.amount ? (
                 <Text display="block" fontWeight="bold" fontSize="lg">
                   Total: {getCurrencyFormatter().format(values.amount / 100)}
                 </Text>
+              ) : (
+                ''
               )}
             </Box>
             <SubmitButton marginTop={4} isDisabled={!stripe || submitting}>

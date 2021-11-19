@@ -388,11 +388,13 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
               </Link>
             </Box>
           </Flex>
-          <PostBody
-            fontSize="xs"
-            textAlign="center"
-            body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
-          />
+          <Box maxWidth={680} marginX="auto">
+            <PostBody
+              fontSize="xs"
+              textAlign="center"
+              body={data.wpCommonSiteSettings.customCommonDataFields.legalinfo}
+            />
+          </Box>
         </Container>
       </Box>
     </>

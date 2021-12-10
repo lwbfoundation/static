@@ -9,6 +9,10 @@ const getTemplates = () => {
   return glob.sync('./src/templates/**/*.{js,tsx}', { cwd: sitePath });
 };
 
+const nodeRedirects = {
+  '/thank-you/': '/',
+};
+
 //
 // @todo move this to gatsby-theme-wordpress
 exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
@@ -41,6 +45,16 @@ exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
   await Promise.all(
     contentNodes.map(async (node, i) => {
       const { nodeType, uri, id } = node;
+
+      if (nodeRedirects[uri]) {
+        actions.createRedirect({
+          fromPath: uri,
+          toPath: nodeRedirects[uri],
+        });
+
+        return;
+      }
+
       // this is a super super basic template hierarchy
       // this doesn't reflect what our hierarchy will look like.
       // this is for testing/demo purposes
@@ -103,9 +117,4 @@ exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
       });
     })
   );
-
-  actions.createRedirect({
-    fromPath: '/thank-you/',
-    toPath: '/',
-  });
 };

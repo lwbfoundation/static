@@ -9,6 +9,7 @@ require('dotenv').config({
 
 module.exports = {
   plugins: [
+    'gatsby-plugin-gatsby-cloud',
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
     ...(process.env.GOOGLE_ANALYTICS_TRACKING_ID

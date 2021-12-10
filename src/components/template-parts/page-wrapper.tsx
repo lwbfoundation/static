@@ -22,11 +22,13 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageTemplateProps>> = ({
       >
         <Flex alignItems="center">
           <Box display={['none', null, 'block']}>
-            <Logo
-              alt={data.wpCommonSiteSettings.title}
-              height={84}
-              width={84 * 1.85}
-            />
+            <Link href="/">
+              <Logo
+                alt={data.wpCommonSiteSettings.title}
+                height={84}
+                width={84 * 1.85}
+              />
+            </Link>
           </Box>
           <Box
             width={['100%', null, 'auto']}

@@ -315,8 +315,8 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           return { [FORM_ERROR]: genericError };
         }
 
-        formRef.current?.scrollIntoView(true);
-        setIsPaymentComplete(true);
+        window.location.assign('/thank-you/stripe');
+
         return undefined;
       }}
     >

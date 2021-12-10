@@ -4,6 +4,7 @@ import React, {
   useEffect,
   ReactElement,
   ComponentProps,
+  useCallback,
 } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import {
@@ -13,14 +14,11 @@ import {
   Container,
   Flex,
   AspectRatio,
-  Stack,
   Link,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import striptags from 'striptags';
 import styled from '@emotion/styled';
 import PostBody from '../post-body';
-import HeadContent from '../head-content';
 import { PageTemplateProps } from '../../templates/single/Page';
 import HomepageOpengraph from '../homepage-opengraph';
 import BackgroundImage100 from '../background-image-100';
@@ -30,6 +28,7 @@ import Team from '../team';
 import Logo from '../../assets/svg/logo.inline.svg';
 import Instagram from '../../assets/svg/social/instagram.inline.svg';
 import { PageContainer } from '../styleguide/page-container';
+import PageWrapper from './page-wrapper';
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -115,99 +114,32 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
     setIsClient(true);
   }, [setIsClient]);
   const [initialFormState, setInitialFormState] = useState(FormsState.none);
-  useEffect(() => {
-    if (isClient && window.location.hash === '#donate') {
+  const setStateFromHash = useCallback(() => {
+    if (window.location.hash === '#donate') {
       setInitialFormState(FormsState.donate);
+    } else if (window.location.hash === '#sign-up') {
+      setInitialFormState(FormsState.newsletterSignup);
     }
+  }, [setInitialFormState]);
+
+  useEffect(() => {
+    if (!isClient) return undefined;
+    setStateFromHash();
+
+    window.addEventListener('hashchange', setStateFromHash);
+    return () => {
+      window.removeEventListener('hashchange', setStateFromHash);
+    };
   }, [isClient]);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const MenuIcon = isMenuOpen ? CloseIcon : HamburgerIcon;
 
   return (
-    <>
-      <HeadContent title={data.wpCommonSiteSettings.title} />
+    <PageWrapper data={data}>
       <HomepageOpengraph
         title={data.wpCommonSiteSettings.title}
         description={striptags(
           data.wpCommonSiteSettings.customCommonDataFields.subheading
         )}
       />
-      <PageContainer
-        marginTop={[0, null, 8]}
-        backgroundColor={['blue.brand', null, 'transparent']}
-      >
-        <Flex alignItems="center">
-          <Box display={['none', null, 'block']}>
-            <Logo
-              alt={data.wpCommonSiteSettings.title}
-              height={84}
-              width={84 * 1.85}
-            />
-          </Box>
-          <Box
-            width={['100%', null, 'auto']}
-            backgroundColor={['blue.brand', null, 'transparent']}
-            color={['white', null, 'black']}
-          >
-            <Box
-              textAlign="right"
-              marginBottom={[isMenuOpen ? 0 : -12, null, 0]}
-            >
-              <MenuIcon
-                as="button"
-                color="white"
-                fontSize={isMenuOpen ? 'xs' : 'xl'}
-                display={['inline-block', null, 'none']}
-                marginY={2}
-                position="absolute"
-                top={isMenuOpen ? 1 : 0}
-                right={isMenuOpen ? 3 : 2}
-                zIndex={1}
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              />
-            </Box>
-            <Stack
-              direction={['column', null, 'row']}
-              marginLeft={[0, null, 16]}
-              marginY={[4, null, 0]}
-              spacing={[4, null, 8]}
-              textAlign={['center', null, 'left']}
-              textTransform="uppercase"
-              textUnderlineOffset="0.25rem"
-              fontWeight={600}
-              width={['100%', null, 'auto']}
-              display={[isMenuOpen ? 'flex' : 'none', null, 'flex']}
-            >
-              <Box>
-                <Link
-                  href="#forms"
-                  onClick={() => {
-                    setInitialFormState(FormsState.donate);
-                  }}
-                >
-                  Donate
-                </Link>
-              </Box>
-              <Box>
-                <Link
-                  href="#forms"
-                  onClick={() => {
-                    setInitialFormState(FormsState.newsletterSignup);
-                  }}
-                >
-                  Newsletter
-                </Link>
-              </Box>
-              <Box>
-                <Link href="#about">About</Link>
-              </Box>
-              <Box>
-                <Link href="#board">Board</Link>
-              </Box>
-            </Stack>
-          </Box>
-        </Flex>
-      </PageContainer>
       <PageContainer
         marginTop={[0, null, 8]}
         display={['none', 'none', 'block']}
@@ -223,8 +155,8 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
             />
             <Box position="absolute" bottom={0}>
               <HeaderButton
-                onClick={() => setInitialFormState(FormsState.donate)}
-                isSelected={initialFormState === FormsState.donate}
+                as={Link}
+                href="/#donate"
                 marginBottom={[2, null, null, 0]}
               >
                 {
@@ -232,10 +164,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
                     .donatebuttontext
                 }
               </HeaderButton>
-              <HeaderButton
-                onClick={() => setInitialFormState(FormsState.newsletterSignup)}
-                isSelected={initialFormState === FormsState.newsletterSignup}
-              >
+              <HeaderButton as={Link} href="/#sign-up">
                 {
                   data.wpCommonSiteSettings.customCommonDataFields
                     .newslettersignupbuttontext
@@ -302,6 +231,8 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
       </Container>
 
       <div id="forms" />
+      <div id="donate" />
+      <div id="sign-up" />
       <FormsContainer initialState={initialFormState} />
 
       <Box
@@ -397,7 +328,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           </Box>
         </Container>
       </Box>
-    </>
+    </PageWrapper>
   );
 };
 

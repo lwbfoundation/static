@@ -103,4 +103,9 @@ exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
       });
     })
   );
+
+  actions.createRedirect({
+    fromPath: '/thank-you/',
+    toPath: '/',
+  });
 };

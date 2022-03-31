@@ -4,6 +4,7 @@ import BlogPost from '../../components/template-parts/blog-post';
 import Placeholder from '../../components/template-parts/placeholder';
 import Homepage from '../../components/template-parts/homepage';
 import ThankYouPage from '../../components/template-parts/thank-you-page';
+import ScholarshipPage from '../../components/template-parts/scholarship';
 
 export interface PageTemplateProps {
   data: PageQueryResult;
@@ -16,6 +17,7 @@ const templates: { [key: string]: PageTemplate } = {
   homepage: Homepage,
   placeholder: Placeholder,
   'thank-you': ThankYouPage,
+  scholarship: ScholarshipPage,
 };
 
 interface CustomDisplaySettings {

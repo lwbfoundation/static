@@ -68,6 +68,9 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageTemplateProps>> = ({
                 <Link href="/#donate">Donate</Link>
               </Box>
               <Box>
+                <Link href="/scholarship">Apply</Link>
+              </Box>
+              <Box>
                 <Link href="/#sign-up">Newsletter</Link>
               </Box>
               <Box>

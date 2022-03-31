@@ -159,16 +159,10 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
                 href="/#donate"
                 marginBottom={[2, null, null, 0]}
               >
-                {
-                  data.wpCommonSiteSettings.customCommonDataFields
-                    .donatebuttontext
-                }
+                Donate
               </HeaderButton>
-              <HeaderButton as={Link} href="/#sign-up">
-                {
-                  data.wpCommonSiteSettings.customCommonDataFields
-                    .newslettersignupbuttontext
-                }
+              <HeaderButton as={Link} href="/scholarship">
+                Apply
               </HeaderButton>
             </Box>
           </Flex>

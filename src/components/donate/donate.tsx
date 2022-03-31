@@ -35,7 +35,6 @@ import {
 import {
   InputControl,
   FormErrorMessage,
-  FormSuccessMessage,
   SubmitButton,
   CheckboxControl,
   RadioButtonGroupControl,
@@ -217,7 +216,6 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [isPaymentComplete, setIsPaymentComplete] = useState(false);
   const [renderClient, setRenderClient] = useState(false);
   const [isCardFieldFocused, setIsCardFieldFocused] = useState(false);
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
@@ -225,14 +223,6 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
   useEffect(() => {
     setRenderClient(true);
   }, []);
-
-  if (isPaymentComplete)
-    return (
-      <FormSuccessMessage>
-        Thank you for supporting the Lewis W. Butler Foundation! You will
-        receive an email receipt for your records.
-      </FormSuccessMessage>
-    );
 
   return (
     <Form<PaymentFormValues>
@@ -315,8 +305,8 @@ const PaymentForm: FunctionComponent<DonateProps> = ({ donateButtonText }) => {
           return { [FORM_ERROR]: genericError };
         }
 
-        formRef.current?.scrollIntoView(true);
-        setIsPaymentComplete(true);
+        window.location.assign('/thank-you/stripe');
+
         return undefined;
       }}
     >

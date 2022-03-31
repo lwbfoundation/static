@@ -7,7 +7,13 @@ import React, {
   useEffect,
 } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
-import { Box, Text, Button, ButtonProps } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Button,
+  ButtonProps,
+  ComponentWithAs,
+} from '@chakra-ui/react';
 import { DonateForm } from './donate-form';
 import PostBody from './post-body';
 
@@ -15,21 +21,11 @@ const LazyNewsletterSignup = lazy(
   () => import('./newsletter-signup/newsletter-signup')
 );
 
-type HeaderButtonProps = ButtonProps & {
-  readonly isSelected?: boolean;
-};
-
-const selectedStyle = {
-  borderColor: 'gray.200',
-};
-
-export const HeaderButton: FunctionComponent<HeaderButtonProps> = ({
-  isSelected,
+export const HeaderButton: ComponentWithAs<'button', ButtonProps> = ({
   ...rest
 }) => {
   return (
     <Button
-      {...(isSelected && selectedStyle)}
       fontSize={[12, 16]}
       backgroundColor="mint.brand"
       _hover={{
@@ -39,13 +35,14 @@ export const HeaderButton: FunctionComponent<HeaderButtonProps> = ({
         backgroundColor: 'mint.branddark',
       }}
       borderRadius={0}
-      paddingTop={1}
       height={7}
+      paddingY="0.4em"
       marginX={1}
       display="inline-block"
       minWidth={[null, 150]}
       textTransform="uppercase"
       fontFamily="Edmond Sans, Helvetica"
+      textAlign="center"
       {...rest}
     />
   );

@@ -3,6 +3,7 @@ import { graphql } from 'gatsby';
 import BlogPost from '../../components/template-parts/blog-post';
 import Placeholder from '../../components/template-parts/placeholder';
 import Homepage from '../../components/template-parts/homepage';
+import ThankYouPage from '../../components/template-parts/thank-you-page';
 
 export interface PageTemplateProps {
   data: PageQueryResult;
@@ -14,6 +15,7 @@ const templates: { [key: string]: PageTemplate } = {
   default: BlogPost,
   homepage: Homepage,
   placeholder: Placeholder,
+  'thank-you': ThankYouPage,
 };
 
 interface CustomDisplaySettings {
@@ -41,6 +43,9 @@ interface Page {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly featuredImage: any;
   readonly customDisplaySettings: CustomDisplaySettings;
+  readonly wpParent: {
+    node: Page;
+  } | null;
 }
 
 interface PageQueryResult {
@@ -73,6 +78,14 @@ export const query = graphql`
       }
       customDisplaySettings {
         statictemplate
+      }
+      wpParent {
+        node {
+          ... on WpPage {
+            title
+            content
+          }
+        }
       }
     }
 

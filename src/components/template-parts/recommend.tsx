@@ -18,7 +18,7 @@ const RecommendPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
           <SubmitButton
             as="a"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSf8vwwN4v1ZJcLWWM1WNyUL88WswcoG8yghaYC7nScCmemeZw/viewform?usp=sf_link"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSehXwwgTHGTb99U3tmUx7Q-W8aauPuQEbjO7FVRdhTpkWpMUA/viewform"
             marginTop={4}
           >
             View recommender form

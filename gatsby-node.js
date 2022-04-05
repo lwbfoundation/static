@@ -11,6 +11,10 @@ const getTemplates = () => {
 
 const nodeRedirects = {
   '/thank-you/': '/',
+  '/application-form':
+    'https://docs.google.com/forms/d/e/1FAIpQLSf8vwwN4v1ZJcLWWM1WNyUL88WswcoG8yghaYC7nScCmemeZw/viewform',
+  '/recommender-form':
+    'https://docs.google.com/forms/d/e/1FAIpQLSehXwwgTHGTb99U3tmUx7Q-W8aauPuQEbjO7FVRdhTpkWpMUA/viewform',
 };
 
 //

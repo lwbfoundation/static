@@ -18,7 +18,15 @@ const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
 
           <Text textAlign="center">
-            <SubmitButton as="a" href="/application-form" marginTop={4}>
+            <SubmitButton
+              as="a"
+              href="/application-form"
+              marginTop={4}
+              fontSize="xl"
+              display="inline-block"
+              paddingTop="0.7em"
+              height={12}
+            >
               View application form
             </SubmitButton>
             <Box marginTop={16} marginBottom={16}>

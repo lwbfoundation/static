@@ -17,7 +17,15 @@ const RecommendPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         <Text fontSize="xl">
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
           <Text textAlign="center">
-            <SubmitButton as="a" href="/recommender-form" marginTop={4}>
+            <SubmitButton
+              as="a"
+              href="/recommender-form"
+              marginTop={4}
+              fontSize="xl"
+              display="inline-block"
+              paddingTop="0.7em"
+              height={12}
+            >
               View recommender form
             </SubmitButton>
             <Box marginTop={16} marginBottom={16}>

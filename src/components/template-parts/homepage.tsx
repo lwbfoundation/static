@@ -29,6 +29,7 @@ import Logo from '../../assets/svg/logo.inline.svg';
 import Instagram from '../../assets/svg/social/instagram.inline.svg';
 import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
+import theme from '../../@chakra-ui/gatsby-plugin/theme';
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -221,6 +222,36 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           }
         </HeaderButton>
       </PageContainer>
+      <Box width={1080} marginX="auto" marginY={16}>
+        <Box width={1080} height={1440} backgroundColor="rgb(235,238,230)" position="relative" marginBottom={16}>
+          <Box paddingY={12} paddingX={12}>
+            <CustomHeading fontSize={["6xl", "6xl", "150px", "150px", "80px"]}  body="Coming soon from the Lewis W. Butler Foundation" />
+          </Box>
+          <Box width="100%">
+            <HeaderBackgroundImage>
+              <AspectRatio ratio={4/3}>
+                <div />
+              </AspectRatio>
+            </HeaderBackgroundImage>
+          </Box>
+          <Box paddingY="70px" paddingX={12}>
+            <CustomHeading fontSize={["6xl", "6xl", "150px", "150px", "80px"]}  body="Our first application for design scholarships!" />
+          </Box>
+          <Box position="absolute" bottom={0} right={0} width="280px">
+            <Logo />
+          </Box>
+        </Box>
+        <Box width={1080} height={1440} backgroundColor={theme.colors.orange.brand} position="relative" marginBottom={16}>
+          <Box paddingY={12} paddingX={12}>
+            <CustomHeading fontSize={["6xl", "6xl", "150px", "150px", "150px"]} marginTop="150px" marginBottom="150px" color="white"  body="LWBF design scholarships:" />
+            <CustomHeading fontSize={["6xl", "6xl", "150px", "150px", "150px"]} color="white"  body="Application is live!" />
+          </Box>
+
+          <Box position="absolute" bottom={0} right={0} width="280px">
+            <Logo />
+          </Box>
+        </Box>
+      </Box>
       <Container maxWidth="container.lg">
         <PostBody
           body={data.page.content}

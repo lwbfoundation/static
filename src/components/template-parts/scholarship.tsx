@@ -23,7 +23,7 @@ const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           >
             View application form
           </SubmitButton>
-          <Box marginTop={16}>
+          <Box marginTop={16} marginBottom={16}>
             <LogoHorizontal />
           </Box>
         </Text>

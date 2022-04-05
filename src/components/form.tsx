@@ -155,6 +155,7 @@ export const SubmitButton: ComponentWithAs<'button', ButtonProps> = (props) => (
     width={['100%', 'auto']}
     textTransform="uppercase"
     fontFamily="Edmond Sans, Helvetica"
+    textDecoration="none"
     {...props}
   />
 );

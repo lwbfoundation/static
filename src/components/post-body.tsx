@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import theme from '../@chakra-ui/gatsby-plugin/theme';
 
 type PostBodyProps = BoxProps & {
   body: string;
@@ -12,6 +13,9 @@ const PostBodyInner = styled(Box)`
   }
   img:not(:last-child) {
     margin-bottom: 2rem;
+  }
+  a {
+    color: ${theme.colors.orange.brand};
   }
 `;
 

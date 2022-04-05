@@ -14,18 +14,17 @@ const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         <Heading marginY={16} as="h1" color="orange.brand" textAlign="center">
           {data.page.title}
         </Heading>
-        <Text textAlign="center" fontSize="xl">
+        <Text fontSize="xl">
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
-          <SubmitButton
-            as="a"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSf8vwwN4v1ZJcLWWM1WNyUL88WswcoG8yghaYC7nScCmemeZw/viewform?usp=sf_link"
-            marginTop={4}
-          >
-            View application form
-          </SubmitButton>
-          <Box marginTop={16} marginBottom={16}>
-            <LogoHorizontal />
-          </Box>
+
+          <Text textAlign="center">
+            <SubmitButton as="a" href="/application-form" marginTop={4}>
+              View application form
+            </SubmitButton>
+            <Box marginTop={16} marginBottom={16}>
+              <LogoHorizontal />
+            </Box>
+          </Text>
         </Text>
       </PageContainer>
     </PageWrapper>

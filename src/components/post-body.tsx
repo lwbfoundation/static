@@ -17,6 +17,10 @@ const PostBodyInner = styled(Box)`
   a {
     color: ${theme.colors.orange.brand};
   }
+  ul,
+  ol {
+    margin-bottom: 2rem;
+  }
 `;
 
 const PostBody: FunctionComponent<PostBodyProps> = ({ body, ...rest }) => (

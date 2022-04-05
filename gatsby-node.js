@@ -46,16 +46,18 @@ exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
     contentTypeTemplatePath.includes(contentTypeTemplateDirectory)
   );
 
+  Object.keys(nodeRedirects).forEach((redirectPath) => {
+    actions.createRedirect({
+      fromPath: redirectPath,
+      toPath: nodeRedirects[redirectPath],
+    });
+  });
+
   await Promise.all(
     contentNodes.map(async (node, i) => {
       const { nodeType, uri, id } = node;
 
       if (nodeRedirects[uri]) {
-        actions.createRedirect({
-          fromPath: uri,
-          toPath: nodeRedirects[uri],
-        });
-
         return;
       }
 

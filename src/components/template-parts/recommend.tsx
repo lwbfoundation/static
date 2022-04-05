@@ -14,14 +14,16 @@ const RecommendPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         <Heading marginY={16} as="h1" color="orange.brand" textAlign="center">
           {data.page.title}
         </Heading>
-        <Text textAlign="center" fontSize="xl">
+        <Text fontSize="xl">
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
-          <SubmitButton as="a" href="/recommender-form" marginTop={4}>
-            View recommender form
-          </SubmitButton>
-          <Box marginTop={16} marginBottom={16}>
-            <LogoHorizontal />
-          </Box>
+          <Text textAlign="center">
+            <SubmitButton as="a" href="/recommender-form" marginTop={4}>
+              View recommender form
+            </SubmitButton>
+            <Box marginTop={16} marginBottom={16}>
+              <LogoHorizontal />
+            </Box>
+          </Text>
         </Text>
       </PageContainer>
     </PageWrapper>

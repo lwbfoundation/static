@@ -225,12 +225,12 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
       <Box width={1080} marginX="auto" marginY={16}>
         <Box
           width={1080}
-          height={1440}
+          height={1350}
           backgroundColor="rgb(235,238,230)"
           position="relative"
           marginBottom={16}
         >
-          <Box paddingY={12} paddingX={12}>
+          <Box paddingY={10} paddingX={12}>
             <CustomHeading
               fontSize={['6xl', '6xl', '150px', '150px', '80px']}
               body="Coming soon from the Lewis W. Butler Foundation"
@@ -243,7 +243,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
               </AspectRatio>
             </HeaderBackgroundImage>
           </Box>
-          <Box paddingY="70px" paddingX={12}>
+          <Box paddingY={10} paddingX={12}>
             <CustomHeading
               fontSize={['6xl', '6xl', '150px', '150px', '80px']}
               body="Our first application for design scholarships!"
@@ -255,7 +255,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         </Box>
         <Box
           width={1080}
-          height={1440}
+          height={1350}
           backgroundColor={theme.colors.orange.brand}
           position="relative"
           marginBottom={16}

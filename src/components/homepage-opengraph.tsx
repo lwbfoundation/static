@@ -27,7 +27,7 @@ const HomepageOpengraph: FunctionComponent<HomepageOpengraphProps> = ({
       <meta property="og:description" content={description} />
       <meta
         property="og:image"
-        content={`${process.env.GATSBY_BASE_URL}${data.file.childImageSharp.gatsbyImageData.src}`}
+        content={`${process.env.GATSBY_BASE_URL}${data.file.childImageSharp.gatsbyImageData.images.fallback.src}`}
       />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />

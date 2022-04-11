@@ -6,10 +6,15 @@ import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
 import LogoHorizontal from '../../assets/svg/logo-horizontal.inline.svg';
 import { SubmitButton } from '../form';
+import HomepageOpengraph from '../homepage-opengraph';
 
 const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
   return (
     <PageWrapper data={data}>
+      <HomepageOpengraph
+        title={data.page.title}
+        description="Now accepting applications for students in architecture, design, and related fields."
+      />
       <PageContainer maxWidth={600}>
         <Heading marginY={16} as="h1" color="orange.brand" textAlign="center">
           {data.page.title}

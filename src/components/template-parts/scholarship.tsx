@@ -21,6 +21,7 @@ const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
             <SubmitButton
               as="a"
               href="/application-form"
+              target="_blank"
               marginTop={4}
               fontSize="xl"
               display="inline-block"

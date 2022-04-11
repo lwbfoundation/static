@@ -20,6 +20,7 @@ const RecommendPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
             <SubmitButton
               as="a"
               href="/recommender-form"
+              target="_blank"
               marginTop={4}
               fontSize="xl"
               display="inline-block"

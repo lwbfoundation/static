@@ -6,9 +6,14 @@ import HeadContent from '../head-content';
 import { PageContainer } from '../styleguide/page-container';
 import Logo from '../../assets/svg/logo.inline.svg';
 
-const PageWrapper: FunctionComponent<PropsWithChildren<PageTemplateProps>> = ({
+type PageWrapperProps = PageTemplateProps & {
+  invertMenuIconColor?: boolean;
+};
+
+const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
   data,
   children,
+  invertMenuIconColor: invertIconColor = false,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const MenuIcon = isMenuOpen ? CloseIcon : HamburgerIcon;
@@ -41,7 +46,7 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageTemplateProps>> = ({
             >
               <MenuIcon
                 as="button"
-                color="white"
+                color={invertIconColor || isMenuOpen ? 'white' : 'blue.brand'}
                 fontSize={isMenuOpen ? 'xs' : 'xl'}
                 display={['inline-block', null, 'none']}
                 marginY={2}

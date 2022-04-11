@@ -133,7 +133,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
   }, [isClient]);
 
   return (
-    <PageWrapper data={data}>
+    <PageWrapper data={data} invertMenuIconColor>
       <HomepageOpengraph
         title={data.wpCommonSiteSettings.title}
         description={striptags(

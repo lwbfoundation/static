@@ -8,12 +8,14 @@ import Logo from '../../assets/svg/logo.inline.svg';
 
 type PageWrapperProps = PageTemplateProps & {
   invertMenuIconColor?: boolean;
+  showHomeLink?: boolean;
 };
 
 const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
   data,
   children,
-  invertMenuIconColor: invertIconColor = false,
+  showHomeLink = true,
+  invertMenuIconColor = false,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const MenuIcon = isMenuOpen ? CloseIcon : HamburgerIcon;
@@ -46,7 +48,9 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
             >
               <MenuIcon
                 as="button"
-                color={invertIconColor || isMenuOpen ? 'white' : 'blue.brand'}
+                color={
+                  invertMenuIconColor || isMenuOpen ? 'white' : 'blue.brand'
+                }
                 fontSize={isMenuOpen ? 'xs' : 'xl'}
                 display={['inline-block', null, 'none']}
                 marginY={2}
@@ -57,34 +61,71 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               />
             </Box>
-            <Stack
-              direction={['column', null, 'row']}
-              marginLeft={[0, null, 16]}
-              marginY={[4, null, 0]}
-              spacing={[4, null, 8]}
-              textAlign={['center', null, 'left']}
-              textTransform="uppercase"
-              textUnderlineOffset="0.25rem"
-              fontWeight={600}
-              width={['100%', null, 'auto']}
-              display={[isMenuOpen ? 'flex' : 'none', null, 'flex']}
-            >
-              <Box>
-                <Link href="/#donate">Donate</Link>
-              </Box>
-              <Box>
-                <Link href="/scholarship">For Students</Link>
-              </Box>
-              <Box>
-                <Link href="/#sign-up">Newsletter</Link>
-              </Box>
-              <Box>
-                <Link href="/#about">About</Link>
-              </Box>
-              <Box>
-                <Link href="/#board">Board</Link>
-              </Box>
-            </Stack>
+            {/* Desktop menu */}
+            <Box display={['none', null, 'block']}>
+              <Stack
+                direction="row"
+                marginLeft={16}
+                marginY={0}
+                spacing={8}
+                textAlign="left"
+                textTransform="uppercase"
+                textUnderlineOffset="0.25rem"
+                fontWeight={600}
+                width="auto"
+              >
+                <Box>
+                  <Link href="/#donate">Donate</Link>
+                </Box>
+                <Box>
+                  <Link href="/scholarship">For Students</Link>
+                </Box>
+                <Box>
+                  <Link href="/#sign-up">Newsletter</Link>
+                </Box>
+                <Box>
+                  <Link href="/#about">About</Link>
+                </Box>
+                <Box>
+                  <Link href="/#board">Board</Link>
+                </Box>
+              </Stack>
+            </Box>
+            {/* Mobile menu */}
+            <Box display={[isMenuOpen ? 'flex' : 'none', null, 'none']}>
+              <Stack
+                direction="column"
+                marginLeft={0}
+                marginY={4}
+                spacing={4}
+                textAlign="center"
+                textTransform="uppercase"
+                textUnderlineOffset="0.25rem"
+                fontWeight={600}
+                width="100%"
+              >
+                {showHomeLink && (
+                  <Box>
+                    <Link href="/">Home</Link>
+                  </Box>
+                )}
+                <Box>
+                  <Link href="/#donate">Donate</Link>
+                </Box>
+                <Box>
+                  <Link href="/scholarship">For Students</Link>
+                </Box>
+                <Box>
+                  <Link href="/#sign-up">Newsletter</Link>
+                </Box>
+                <Box>
+                  <Link href="/#about">About</Link>
+                </Box>
+                <Box>
+                  <Link href="/#board">Board</Link>
+                </Box>
+              </Stack>
+            </Box>
           </Box>
         </Flex>
       </PageContainer>

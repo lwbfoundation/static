@@ -154,11 +154,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
               body={data.wpCommonSiteSettings.customCommonDataFields.subheading}
             />
             <Box position="absolute" bottom={0}>
-              <HeaderButton
-                as={Link}
-                href="/#donate"
-                marginBottom={[2, null, null, 0]}
-              >
+              <HeaderButton as={Link} href="/#donate">
                 Donate
               </HeaderButton>
               <HeaderButton as={Link} href="/scholarship">
@@ -199,20 +195,11 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           marginBottom={4}
           fontSize="4xl"
         />
-        <HeaderButton
-          onClick={() => setInitialFormState(FormsState.donate)}
-          isSelected={initialFormState === FormsState.donate}
-        >
-          {data.wpCommonSiteSettings.customCommonDataFields.donatebuttontext}
+        <HeaderButton as={Link} href="/#donate">
+          Donate
         </HeaderButton>
-        <HeaderButton
-          onClick={() => setInitialFormState(FormsState.newsletterSignup)}
-          isSelected={initialFormState === FormsState.newsletterSignup}
-        >
-          {
-            data.wpCommonSiteSettings.customCommonDataFields
-              .newslettersignupbuttontext
-          }
+        <HeaderButton as={Link} href="/scholarship">
+          Apply
         </HeaderButton>
       </PageContainer>
       <Container maxWidth="container.lg">

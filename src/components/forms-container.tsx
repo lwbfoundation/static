@@ -26,7 +26,7 @@ export const HeaderButton: ComponentWithAs<'button', ButtonProps> = ({
 }) => {
   return (
     <Button
-      fontSize={[12, 16]}
+      fontSize={16}
       backgroundColor="mint.brand"
       _hover={{
         backgroundColor: 'mint.brandlight',

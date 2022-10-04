@@ -24,6 +24,7 @@ type ScholarData = Readonly<{
         school: string;
         graduationyear: string;
         major: string;
+        isanonymous: boolean;
       };
       featuredImage: {
         node: {
@@ -51,6 +52,7 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
             school
             graduationyear
             major
+            isanonymous
           }
           featuredImage {
             node {
@@ -71,25 +73,44 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
     }
   `);
 
-  const scholarsAsPeople = scholars.nodes.map((scholar) => ({
-    id: scholar.id,
-    imageData:
-      scholar.featuredImage &&
-      scholar.featuredImage.node.localFile.childImageSharp.gatsbyImageData,
-    heading: scholar.title,
-    subheading: `${scholar.scholarshipRecipientDetails.major}, ${scholar.scholarshipRecipientDetails.school} ${scholar.scholarshipRecipientDetails.graduationyear}`,
-    description: null,
-  }));
-
-  const sortedPeople = scholarsAsPeople.sort((a, b) => {
-    const splitA = a.heading.split(' ');
-    const splitB = b.heading.split(' ');
+  const sortedScholars = scholars.nodes.sort((a, b) => {
+    if (
+      !a.scholarshipRecipientDetails.isanonymous &&
+      b.scholarshipRecipientDetails.isanonymous
+    ) {
+      return -1;
+    }
+    if (
+      a.scholarshipRecipientDetails.isanonymous &&
+      !b.scholarshipRecipientDetails.isanonymous
+    ) {
+      return 1;
+    }
+    const splitA = a.title.split(' ');
+    const splitB = b.title.split(' ');
     const lastA = splitA[splitA.length - 1];
     const lastB = splitB[splitB.length - 1];
     return lastA === lastB
       ? compareStrings(splitA[0], splitB[0])
       : compareStrings(lastA, lastB);
   });
+
+  const people = sortedScholars.map((scholar) => ({
+    id: scholar.id,
+    imageData:
+      scholar.featuredImage &&
+      scholar.featuredImage.node.localFile.childImageSharp.gatsbyImageData,
+    heading: scholar.title,
+    subheading: (
+      <>
+        {scholar.scholarshipRecipientDetails.major}
+        <br />
+        {scholar.scholarshipRecipientDetails.school},{' '}
+        {scholar.scholarshipRecipientDetails.graduationyear}
+      </>
+    ),
+    description: null,
+  }));
 
   return (
     <PageWrapper data={data}>
@@ -99,7 +120,7 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
         </Heading>
       </PageContainer>
       <PageContainer>
-        <PeopleList people={sortedPeople} />
+        <PeopleList people={people} />
       </PageContainer>
       <Footer data={data} />
     </PageWrapper>

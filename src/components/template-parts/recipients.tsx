@@ -1,14 +1,14 @@
-import { Heading } from '@chakra-ui/react';
 import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
+import { IGatsbyImageData } from 'gatsby-plugin-image';
 import { PageTemplateProps } from '../../templates/single/Page';
 import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
 import Footer from './footer';
-import { IGatsbyImageData } from 'gatsby-plugin-image';
 import PeopleList from '../peoplelist';
+import CustomHeading from '../custom-heading';
 
-const compareStrings = (a, b) => {
+const compareStrings = (a: string, b: string): number => {
   if (a < b) return -1;
   if (a > b) return 1;
 
@@ -115,9 +115,12 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
   return (
     <PageWrapper data={data}>
       <PageContainer maxWidth={600}>
-        <Heading marginY={16} as="h1" color="orange.brand" textAlign="center">
-          {data.page.title}
-        </Heading>
+        <CustomHeading
+          as="h1"
+          marginY={16}
+          textAlign="center"
+          body={data.page.title}
+        />
       </PageContainer>
       <PageContainer>
         <PeopleList people={people} />

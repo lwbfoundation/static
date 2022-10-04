@@ -67,7 +67,7 @@ const PeopleList: FunctionComponent<PeopleListProps> = ({
             </Text>
           </Text>
           <Text as="div" textAlign={['left', null, 'justify']}>
-            <PostBody body={person.description} />
+            {person.description && <PostBody body={person.description} />}
           </Text>
         </Box>
       ))}

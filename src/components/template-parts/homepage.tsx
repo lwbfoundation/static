@@ -2,13 +2,10 @@ import React, {
   FunctionComponent,
   useState,
   useEffect,
-  ReactElement,
-  ComponentProps,
   useCallback,
 } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import {
-  Heading,
   Box,
   Container,
   Flex,
@@ -17,7 +14,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import striptags from 'striptags';
-import styled from '@emotion/styled';
 import PostBody from '../post-body';
 import { PageTemplateProps } from '../../templates/single/Page';
 import HomepageOpengraph from '../homepage-opengraph';
@@ -29,6 +25,7 @@ import Logo from '../../assets/svg/logo.inline.svg';
 import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
 import Footer from './footer';
+import CustomHeading from '../custom-heading';
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -88,25 +85,6 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
     <BackgroundImage100 image={sources as any}>{children}</BackgroundImage100>
   );
 };
-
-const SkipInk = styled.div`
-  text-decoration-skip-ink: none;
-`;
-
-function CustomHeading(props: ComponentProps<typeof PostBody>): ReactElement {
-  return (
-    <SkipInk>
-      <PostBody
-        as={Heading}
-        color="orange.brand"
-        fontSize={['4xl', null, '4xl', '5xl', '6xl']}
-        lineHeight={1.25}
-        textDecoration={['none', null, 'underline']}
-        {...props}
-      />
-    </SkipInk>
-  );
-}
 
 const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
   const [isClient, setIsClient] = useState(false);
@@ -210,7 +188,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           <HeaderButton
             textAlign="center"
             as={Link}
-            href="/scholarship-recipients"
+            href="/scholarship/recipients"
           >
             See the 2022 Recipients
           </HeaderButton>

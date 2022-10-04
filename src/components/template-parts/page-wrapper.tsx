@@ -29,7 +29,7 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
       >
         <Flex alignItems="center">
           <Box display={['none', null, 'block']}>
-            <Link href="/">
+            <Link href="/" userSelect="none">
               <Logo
                 alt={data.wpCommonSiteSettings.title}
                 height={84}

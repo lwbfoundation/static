@@ -30,7 +30,7 @@ const RecommendPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         <Text fontSize="xl">
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
           <Text textAlign="center">
-            <SubmitButton
+            {/* <SubmitButton
               as="a"
               href="/recommender-form"
               target="_blank"
@@ -41,7 +41,7 @@ const RecommendPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
               height={12}
             >
               View recommender form
-            </SubmitButton>
+            </SubmitButton> */}
             <Box marginTop={16} marginBottom={16}>
               <LogoHorizontal />
             </Box>

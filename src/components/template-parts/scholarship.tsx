@@ -36,7 +36,7 @@ const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
 
           <Text textAlign="center">
-            <SubmitButton
+            {/* <SubmitButton
               as="a"
               href="/application-form"
               target="_blank"
@@ -47,7 +47,7 @@ const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
               height={12}
             >
               View application form
-            </SubmitButton>
+            </SubmitButton> */}
             <Box marginTop={16} marginBottom={16}>
               <LogoHorizontal />
             </Box>

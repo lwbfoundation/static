@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React, { FunctionComponent } from 'react';
 import { PageTemplateProps } from '../../templates/single/Page';
 import PostBody from '../post-body';
@@ -7,6 +7,7 @@ import PageWrapper from './page-wrapper';
 import LogoHorizontal from '../../assets/svg/logo-horizontal.inline.svg';
 import { SubmitButton } from '../form';
 import HomepageOpengraph from '../homepage-opengraph';
+import CustomHeading from '../custom-heading';
 
 const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
   return (
@@ -16,9 +17,12 @@ const ScholarshipPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         description="Now accepting applications for students in architecture, design, and related fields."
       />
       <PageContainer maxWidth={600}>
-        <Heading marginY={16} as="h1" color="orange.brand" textAlign="center">
-          {data.page.title}
-        </Heading>
+        <CustomHeading
+          as="h1"
+          marginY={16}
+          textAlign="center"
+          body={data.page.title}
+        />
         <Text fontSize="xl">
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
 

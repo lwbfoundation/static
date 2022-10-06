@@ -79,6 +79,7 @@ function useMatchingHeights<ElementType extends HTMLElement = HTMLDivElement>(
         : ({ all: elementPositions } as GroupedElements);
 
       Object.keys(groupedElements).forEach((groupKey) => {
+        if (groupedElements[groupKey].length <= 1) return;
         const maxHeight = Math.max(
           ...groupedElements[groupKey].map(({ position }) => position.height)
         );

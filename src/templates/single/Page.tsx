@@ -6,6 +6,7 @@ import Homepage from '../../components/template-parts/homepage';
 import ThankYouPage from '../../components/template-parts/thank-you-page';
 import ScholarshipPage from '../../components/template-parts/scholarship';
 import RecommendPage from '../../components/template-parts/recommend';
+import Recipients from '../../components/template-parts/recipients';
 
 export interface PageTemplateProps {
   data: PageQueryResult;
@@ -20,6 +21,7 @@ const templates: { [key: string]: PageTemplate } = {
   'thank-you': ThankYouPage,
   scholarship: ScholarshipPage,
   recommend: RecommendPage,
+  recipients: Recipients,
 };
 
 interface CustomDisplaySettings {

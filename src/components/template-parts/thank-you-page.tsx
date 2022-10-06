@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Divider, Text } from '@chakra-ui/react';
 import React, { FunctionComponent } from 'react';
 import { PageTemplateProps } from '../../templates/single/Page';
 import PostBody from '../post-body';
@@ -17,6 +17,15 @@ const ThankYouPage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           textAlign="center"
           body={data.page.wpParent?.node.title || ''}
         />
+      </PageContainer>
+      <PageContainer>
+        <Divider
+          borderColor="mint.brand"
+          marginBottom={16}
+          display={['none', null, 'block']}
+        />
+      </PageContainer>
+      <PageContainer maxWidth={600}>
         <Text textAlign="center" fontSize="xl">
           <PostBody marginBottom={8} fontSize="l" body={data.page.content} />
           <PostBody

@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { IGatsbyImageData } from 'gatsby-plugin-image';
+import { Divider } from '@chakra-ui/react';
 import { PageTemplateProps } from '../../templates/single/Page';
 import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
@@ -120,6 +121,13 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
           marginY={16}
           textAlign="center"
           body={data.page.title}
+        />
+      </PageContainer>
+      <PageContainer>
+        <Divider
+          borderColor="mint.brand"
+          marginBottom={16}
+          display={['none', null, 'block']}
         />
       </PageContainer>
       <PageContainer>

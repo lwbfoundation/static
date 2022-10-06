@@ -24,17 +24,23 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
     <>
       <HeadContent title={data.wpCommonSiteSettings.title} />
       <PageContainer
-        marginTop={[0, null, 8]}
-        backgroundColor={['blue.brand', null, 'transparent']}
+        marginTop={[2, null, 8]}
+        paddingX={[2, null, 4]}
+        backgroundColor="transparent"
       >
         <Flex alignItems="center">
-          <Box display={['none', null, 'block']}>
+          <Box display="block">
             <Link href="/" userSelect="none">
-              <Logo
-                alt={data.wpCommonSiteSettings.title}
-                height={84}
-                width={84 * 1.85}
-              />
+              <Box
+                height={[`${60}px`, null, `${84}px`]}
+                width={[`${60 * 1.85}px`, null, `${84 * 1.85}px`]}
+              >
+                <Logo
+                  alt={data.wpCommonSiteSettings.title}
+                  height="100%"
+                  width="100%"
+                />
+              </Box>
             </Link>
           </Box>
           <Box

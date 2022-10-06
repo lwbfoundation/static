@@ -5,6 +5,7 @@ import PostBody from './post-body';
 
 const CustomUnderlineStyles = styled.div`
   text-decoration-skip-ink: none;
+  -webkit-text-decoration-skip: none;
 `;
 
 const CustomHeading: FunctionComponent<ComponentProps<typeof PostBody>> = (

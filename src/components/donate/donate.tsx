@@ -141,7 +141,7 @@ const FauxInput: FunctionComponent<FauxInputProps> = ({
 );
 
 const calculateAmountWithFeesCovered = (amount: number) =>
-  Math.ceil((amount + 30) / (1 - 0.029));
+  Math.ceil((amount + 30) / (1 - 0.022));
 
 const parseCustomAmount = (customAmount: string | undefined) => {
   if (!customAmount) return null;

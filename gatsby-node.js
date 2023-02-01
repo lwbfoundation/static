@@ -12,9 +12,9 @@ const getTemplates = () => {
 const nodeRedirects = {
   '/thank-you/': '/',
   '/application-form':
-    'https://docs.google.com/forms/d/e/1FAIpQLSf8vwwN4v1ZJcLWWM1WNyUL88WswcoG8yghaYC7nScCmemeZw/viewform',
+    'https://docs.google.com/forms/d/e/1FAIpQLSdkPAel_o8wk9obnVdgCwy-V37XKDR_QrdiZzQUpREL2y-W_Q/viewform',
   '/recommender-form':
-    'https://docs.google.com/forms/d/e/1FAIpQLSehXwwgTHGTb99U3tmUx7Q-W8aauPuQEbjO7FVRdhTpkWpMUA/viewform',
+    'https://docs.google.com/forms/d/e/1FAIpQLSfQdbinjFJiqVniRMiIujfsPq4bSGrK0iuZykddupEQcFERGA/viewform',
 };
 
 //

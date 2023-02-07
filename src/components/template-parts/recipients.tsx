@@ -21,6 +21,7 @@ type ScholarData = Readonly<{
     nodes: {
       id: string;
       title: string;
+      content: string;
       scholarshipRecipientDetails: {
         school: string;
         graduationyear: string;
@@ -49,6 +50,7 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
         nodes {
           id
           title
+          content
           scholarshipRecipientDetails {
             school
             graduationyear
@@ -110,7 +112,7 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
         {scholar.scholarshipRecipientDetails.graduationyear}
       </>
     ),
-    description: null,
+    description: scholar.content,
   }));
 
   return (

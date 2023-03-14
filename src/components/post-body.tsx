@@ -20,6 +20,7 @@ const PostBodyInner = styled(Box)`
   ul,
   ol {
     margin-bottom: 2rem;
+    margin-left: 1rem;
   }
 `;
 

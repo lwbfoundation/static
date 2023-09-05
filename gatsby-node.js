@@ -58,8 +58,9 @@ exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
   await Promise.all(
     contentNodes.map(async (node, i) => {
       const { nodeType, uri, id } = node;
-
+      console.log('creating page', uri);
       if (nodeRedirects[uri]) {
+        console.log('page matches redirect uri, skipping');
         return;
       }
 

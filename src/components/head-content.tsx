@@ -13,6 +13,7 @@ const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
     <Helmet>
       <title>{title}</title>
       <link rel="icon" href={favicon} />
+      <meta name="x-built-at" content={new Date().toISOString()} />
     </Helmet>
     <Global
       styles={css`

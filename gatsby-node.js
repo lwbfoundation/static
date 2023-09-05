@@ -31,7 +31,7 @@ exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
     query ALL_CONTENT_NODES {
       allWpContentNode(
         sort: { fields: modifiedGmt, order: DESC }
-        filter: { nodeType: { ne: "MediaItem" } }
+        filter: { nodeType: { eq: "Page" } }
       ) {
         nodes {
           nodeType

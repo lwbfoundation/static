@@ -187,15 +187,15 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
       </PageContainer>
       <Box backgroundColor="orange.brand" marginY={8} padding={8}>
         <Text fontSize="2em" textAlign="center" color="white">
-          2022 Scholarship recipients have been annnounced!
+          2023 Scholarship recipients have been annnounced!
         </Text>
         <Text textAlign="center">
           <HeaderButton
             textAlign="center"
             as={Link}
-            href="/scholarship/recipients"
+            href="/scholarship/recipients/2023-recipients"
           >
-            See the 2022 Recipients
+            See the 2023 Recipients
           </HeaderButton>
         </Text>
       </Box>

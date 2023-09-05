@@ -46,6 +46,7 @@ interface Page {
   readonly uri: string;
   readonly title: string;
   readonly content: string;
+  readonly date: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly featuredImage: any;
   readonly customDisplaySettings: CustomDisplaySettings;
@@ -75,6 +76,7 @@ export const query = graphql`
     page: wpPage(id: { eq: $id }) {
       title
       content
+      date
       featuredImage {
         node {
           remoteFile {

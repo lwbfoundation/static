@@ -22,6 +22,7 @@ type ScholarData = Readonly<{
       id: string;
       title: string;
       content: string;
+      date: string;
       scholarshipRecipientDetails: {
         school: string;
         graduationyear: string;
@@ -42,15 +43,16 @@ type ScholarData = Readonly<{
 }>;
 
 const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
+  const pageDate = new Date(data.page.date);
+  const scholarshipYear = pageDate.getFullYear();
   const { scholars }: ScholarData = useStaticQuery(graphql`
     {
-      scholars: allWpScholarshipRecipient(
-        filter: { date: { gt: "2022-01-01", lt: "2023-01-01" } }
-      ) {
+      scholars: allWpScholarshipRecipient(limit: 999) {
         nodes {
           id
           title
           content
+          date
           scholarshipRecipientDetails {
             school
             graduationyear
@@ -76,7 +78,13 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
     }
   `);
 
-  const sortedScholars = scholars.nodes.sort((a, b) => {
+  const filteredScholars = scholars.nodes.filter((scholar) => {
+    const scholarDate = new Date(scholar.date);
+    const scholarYear = scholarDate.getFullYear();
+    return scholarYear === scholarshipYear;
+  });
+
+  const sortedScholars = filteredScholars.sort((a, b) => {
     if (
       !a.scholarshipRecipientDetails.isanonymous &&
       b.scholarshipRecipientDetails.isanonymous

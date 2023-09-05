@@ -43,12 +43,31 @@ const Footer: FunctionComponent<PageTemplateProps> = ({ data }) => {
       >
         SUBSCRIBE
       </Box> */}
+          <Box width={['100%', '100%', 'auto']} marginTop={['auto', 4, 'auto']}>
+            <a
+              href="https://www.guidestar.org/profile/shared/824b931a-4cc6-4cf5-a440-8ce32f01a524"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
+              <img
+                src="https://widgets.guidestar.org/TransparencySeal/9955646"
+                alt="Guidestar Transparency Seal"
+                style={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+              />
+            </a>
+          </Box>
           <Box
-            width={['100%', 'auto']}
-            flexBasis={[null, 1]}
-            flexGrow={1}
+            width={['100%', '100%', 'auto']}
             marginTop={4}
-            marginLeft={[0, 8]}
+            marginLeft={[0, 0, 8]}
             textAlign={['center', 'center', 'right']}
           >
             <Link

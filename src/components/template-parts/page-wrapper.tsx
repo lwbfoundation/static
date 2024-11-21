@@ -60,6 +60,9 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
           <Box>
             <Link href="/#board">Board</Link>
           </Box>
+          <Box>
+            <Link href="/mentors">Mentors</Link>
+          </Box>
         </Stack>
       </Box>
       <PageContainer
@@ -148,6 +151,9 @@ const PageWrapper: FunctionComponent<PropsWithChildren<PageWrapperProps>> = ({
                 </Box>
                 <Box>
                   <Link href="/#board">Board</Link>
+                </Box>
+                <Box>
+                  <Link href="/mentors">Mentors</Link>
                 </Box>
               </Stack>
             </Box>

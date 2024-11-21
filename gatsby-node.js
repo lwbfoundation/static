@@ -15,7 +15,7 @@ const nodeRedirects = {
     'https://docs.google.com/forms/d/e/1FAIpQLSf5f4QpAnvFpRsZzWyJHGFJ7CMGOmMwnSw3oB2G_IeJ1_3Kzg/viewform',
   '/recommender-form':
     'https://docs.google.com/forms/d/e/1FAIpQLSc6euJ9h8tapyR5QxFOgG7euJDKidrlVFJBS8yZZ2vQlT6mUg/viewform',
-  '/scholarship/recipients/': '/scholarship/recipients/2023-recipients',
+  '/scholarship/recipients/': '/scholarship/recipients/2024-recipients',
 };
 
 //

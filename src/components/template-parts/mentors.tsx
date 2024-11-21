@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { IGatsbyImageData } from 'gatsby-plugin-image';
-import { Center, Divider, Text } from '@chakra-ui/react';
+import { Divider } from '@chakra-ui/react';
 import { PageTemplateProps } from '../../templates/single/Page';
 import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
@@ -16,18 +16,17 @@ const compareStrings = (a: string, b: string): number => {
   return 0;
 };
 
-type ScholarData = Readonly<{
-  scholars: {
+type MentorData = Readonly<{
+  mentors: {
     nodes: {
       id: string;
       title: string;
       content: string;
       date: string;
-      scholarshipRecipientDetails: {
-        school: string;
-        graduationyear: string;
-        major: string;
-        isanonymous: boolean;
+      mentorDetails: {
+        areaofexpertise: string;
+        organization: string;
+        organizationurl: string;
       };
       featuredImage: {
         node: {
@@ -37,27 +36,26 @@ type ScholarData = Readonly<{
             };
           };
         };
-      };
+      } | null;
     }[];
   };
 }>;
 
-const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
-  const pageDate = new Date(data.page.date);
-  const scholarshipYear = pageDate.getFullYear();
-  const { scholars }: ScholarData = useStaticQuery(graphql`
+const Mentors: FunctionComponent<PageTemplateProps> = ({ data }) => {
+  const {
+    mentors: { nodes: mentors },
+  }: MentorData = useStaticQuery(graphql`
     {
-      scholars: allWpScholarshipRecipient(limit: 999) {
+      mentors: allWpMentor(limit: 999) {
         nodes {
           id
           title
           content
           date
-          scholarshipRecipientDetails {
-            school
-            graduationyear
-            major
-            isanonymous
+          mentorDetails {
+            areaofexpertise
+            organization
+            organizationurl
           }
           featuredImage {
             node {
@@ -78,33 +76,7 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
     }
   `);
 
-  const otherYears = [
-    ...new Set(
-      scholars.nodes.map((scholar) => {
-        return new Date(scholar.date).getFullYear();
-      }, [])
-    ),
-  ].filter((year) => year !== scholarshipYear);
-
-  const filteredScholars = scholars.nodes.filter((scholar) => {
-    const scholarDate = new Date(scholar.date);
-    const scholarYear = scholarDate.getFullYear();
-    return scholarYear === scholarshipYear;
-  });
-
-  const sortedScholars = filteredScholars.sort((a, b) => {
-    if (
-      !a.scholarshipRecipientDetails.isanonymous &&
-      b.scholarshipRecipientDetails.isanonymous
-    ) {
-      return -1;
-    }
-    if (
-      a.scholarshipRecipientDetails.isanonymous &&
-      !b.scholarshipRecipientDetails.isanonymous
-    ) {
-      return 1;
-    }
+  const sortedMentors = mentors.sort((a, b) => {
     const splitA = a.title.split(' ');
     const splitB = b.title.split(' ');
     const lastA = splitA[splitA.length - 1];
@@ -114,21 +86,30 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
       : compareStrings(lastA, lastB);
   });
 
-  const people = sortedScholars.map((scholar) => ({
-    id: scholar.id,
+  const people = sortedMentors.map((mentor) => ({
+    id: mentor.id,
     imageData:
-      scholar.featuredImage &&
-      scholar.featuredImage.node.localFile.childImageSharp.gatsbyImageData,
-    heading: scholar.title,
+      mentor.featuredImage &&
+      mentor.featuredImage.node.localFile.childImageSharp.gatsbyImageData,
+    heading: mentor.title,
     subheading: (
       <>
-        {scholar.scholarshipRecipientDetails.major}
-        <br />
-        {scholar.scholarshipRecipientDetails.school},{' '}
-        {scholar.scholarshipRecipientDetails.graduationyear}
+        {mentor.mentorDetails.areaofexpertise}
+        {mentor.mentorDetails.organization && (
+          <>
+            <br />
+            <a
+              href={mentor.mentorDetails.organizationurl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {mentor.mentorDetails.organization}
+            </a>
+          </>
+        )}
       </>
     ),
-    description: scholar.content,
+    description: mentor.content,
   }));
 
   return (
@@ -151,22 +132,9 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
       <PageContainer>
         <PeopleList people={people} />
       </PageContainer>
-      <PageContainer>
-        <Text textAlign="center">
-          More scholars:{` `}
-          {otherYears.map((year) => (
-            <>
-              <a key={year} href={`/scholarship/recipients/${year}-recipients`}>
-                {year}
-              </a>
-              {` `}
-            </>
-          ))}
-        </Text>
-      </PageContainer>
       <Footer data={data} />
     </PageWrapper>
   );
 };
 
-export default Recipients;
+export default Mentors;

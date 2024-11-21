@@ -35,7 +35,7 @@ const PeopleList: FunctionComponent<PeopleListProps> = ({
         >
           <AspectRatio ratio={1} marginBottom={4}>
             <Box
-              backgroundColor="gray.600"
+              backgroundColor={person.imageData ? 'gray.600' : 'transparent'}
               width="100%"
               height="100%"
               borderRadius="100%"

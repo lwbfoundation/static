@@ -12,9 +12,9 @@ const getTemplates = () => {
 const nodeRedirects = {
   '/thank-you/': '/',
   '/application-form':
-    'https://docs.google.com/forms/d/e/1FAIpQLSf5f4QpAnvFpRsZzWyJHGFJ7CMGOmMwnSw3oB2G_IeJ1_3Kzg/viewform',
+    'https://docs.google.com/forms/d/e/1FAIpQLSe2tfh5uiLYgBLfa_Z2fDdJLeRG3Y76PJALAkCVM3lI-xe8Vg/viewform',
   '/recommender-form':
-    'https://docs.google.com/forms/d/e/1FAIpQLSc6euJ9h8tapyR5QxFOgG7euJDKidrlVFJBS8yZZ2vQlT6mUg/viewform',
+    'https://docs.google.com/forms/d/1iPFzZl70wCIZzVokjlY7vsdM8L77Hl6HlxRaN6HZw5A/viewform',
   '/scholarship/recipients/': '/scholarship/recipients/2024-recipients',
 };
 

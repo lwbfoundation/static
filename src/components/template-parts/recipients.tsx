@@ -124,7 +124,9 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
       <>
         {scholar.scholarshipRecipientDetails.major}
         <br />
-        {scholar.scholarshipRecipientDetails.school},{' '}
+        {scholar.scholarshipRecipientDetails.school
+          ? `${scholar.scholarshipRecipientDetails.school}, `
+          : 'Class of '}
         {scholar.scholarshipRecipientDetails.graduationyear}
       </>
     ),

@@ -11,10 +11,8 @@ const getTemplates = () => {
 
 const nodeRedirects = {
   '/thank-you/': '/',
-  '/application-form':
-    'https://docs.google.com/forms/d/e/1FAIpQLSe2tfh5uiLYgBLfa_Z2fDdJLeRG3Y76PJALAkCVM3lI-xe8Vg/viewform',
-  '/recommender-form':
-    'https://docs.google.com/forms/d/1iPFzZl70wCIZzVokjlY7vsdM8L77Hl6HlxRaN6HZw5A/viewform',
+  '/application-form': 'https://forms.gle/4RjsgBBcQ7MvaeVy5',
+  '/recommender-form': 'https://forms.gle/Lbvz3nLTZAQiqeGn6',
   '/scholarship/recipients/': '/scholarship/recipients/2025-recipients',
 };
 

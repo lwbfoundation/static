@@ -133,10 +133,13 @@ export const FormErrorMessage: FunctionComponent = ({ children }) => {
 
 export const FormSuccessMessage: FunctionComponent = ({ children }) => {
   return (
+    // The brand mint and olive rather than Chakra's stock greens, which are far
+    // louder than anything else on the page. Olive on the light mint clears AA
+    // at 4.58:1 — the stock pairing only managed 2.71:1.
     <FormMessage
-      backgroundColor="green.100"
-      borderColor="green.300"
-      color="green.500"
+      backgroundColor="mint.brandlight"
+      borderColor="mint.branddark"
+      color="green.brand"
     >
       {children}
     </FormMessage>

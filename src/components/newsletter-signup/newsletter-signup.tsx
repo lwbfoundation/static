@@ -140,20 +140,27 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             groups,
           });
 
-          if (result === 'error') {
-            formRef.current?.scrollIntoView(true);
+          // Branch on success rather than on error, so an unrecognized result
+          // shows the error message instead of a false confirmation.
+          if (result !== 'success') {
             const mailchimpError = getMailchimpError(message);
             if (mailchimpError) {
+              formRef.current?.scrollIntoView(true);
               return {
-                [FORM_ERROR]: getMailchimpError(message),
+                [FORM_ERROR]: mailchimpError,
               };
             }
 
-            // Some errors may be suppressed
+            // Suppressed errors — currently only "already subscribed" — count
+            // as success, so the visitor gets the confirmation rather than a
+            // form that sits there looking like the button did nothing.
+            setIsSignupComplete(true);
             return undefined;
           }
 
-          formRef.current?.scrollIntoView(true);
+          // No scroll on success, unlike the error paths. The confirmation
+          // replaces the form in place, so it lands where the visitor is
+          // already looking; scrolling would just yank the page under them.
           setIsSignupComplete(true);
 
           trackCustomEvent({

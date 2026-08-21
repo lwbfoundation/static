@@ -15,29 +15,10 @@ const HeadContent: FunctionComponent<HeadContentProps> = ({ title }) => (
       <link rel="icon" href={favicon} />
       <meta name="x-built-at" content={new Date().toISOString()} />
     </Helmet>
+    {/* Font faces live in `gatsby-ssr.js`, in the document head, so they are
+        not re-created on every route change. */}
     <Global
       styles={css`
-        @font-face {
-          font-family: 'Edmond Sans';
-          src: url('/fonts/Edmondsans-Bold.otf');
-          font-weight: 600;
-          font-display: fallback;
-        }
-
-        @font-face {
-          font-family: 'Edmond Sans';
-          src: url('/fonts/Edmondsans-Medium.otf');
-          font-weight: 400;
-          font-display: fallback;
-        }
-
-        @font-face {
-          font-family: 'Edmond Sans';
-          src: url('/fonts/Edmondsans-Regular.otf');
-          font-weight: 200;
-          font-display: fallback;
-        }
-
         a {
           text-decoration: underline;
         }

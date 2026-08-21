@@ -10,7 +10,16 @@ require('dotenv').config({
 module.exports = {
   plugins: [
     'gatsby-plugin-gatsby-cloud',
-    'gatsby-plugin-netlify',
+    {
+      resolve: 'gatsby-plugin-netlify',
+      options: {
+        headers: {
+          // Self-hosted and unhashed, so they need to be told to stay cached;
+          // change the filename if a face is ever replaced.
+          '/fonts/*': ['Cache-Control: public, max-age=31536000, immutable'],
+        },
+      },
+    },
     'gatsby-plugin-typescript',
     'gatsby-plugin-react-helmet',
     ...(process.env.GOOGLE_ANALYTICS_TRACKING_ID
@@ -78,6 +87,5 @@ module.exports = {
       },
     },
     // 'gatsby-plugin-netlify-cache',
-    'gatsby-plugin-netlify',
   ],
 };

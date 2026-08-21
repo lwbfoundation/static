@@ -1,7 +1,7 @@
 const { resolve } = require(`path`);
 const path = require(`path`);
 const glob = require(`glob`);
-const chunk = require(`lodash/chunk`);
+const { newsPostPath, newsYearPath } = require(`./src/utils/news-paths`);
 // const { dd } = require(`dumper.js`);
 
 const getTemplates = () => {
@@ -13,7 +13,7 @@ const nodeRedirects = {
   '/thank-you/': '/',
   '/application-form': 'https://forms.gle/4RjsgBBcQ7MvaeVy5',
   '/recommender-form': 'https://forms.gle/Lbvz3nLTZAQiqeGn6',
-  '/scholarship/recipients/': '/scholarship/recipients/2025-recipients',
+  '/scholarship/recipients/': '/scholarship/recipients/2026-recipients',
 };
 
 //
@@ -88,39 +88,63 @@ exports.createPages = async ({ actions, graphql /* , reporter */ }) => {
     })
   );
 
-  // create the homepage
+  // News lives under /news/: a post at /news/<slug>/, plus a year archive at
+  // /news/<year>/. WordPress keeps its default dated permalinks, so each post's
+  // CMS uri is redirected to the path built here.
   const {
     data: { allWpPost },
   } = await graphql(/* GraphQL */ `
     {
-      allWpPost(sort: { fields: modifiedGmt, order: DESC }) {
+      allWpPost(sort: { fields: date, order: DESC }) {
         nodes {
-          uri
           id
+          slug
+          uri
+          year: date(formatString: "YYYY")
         }
       }
     }
   `);
 
-  const perPage = 10;
-  const chunkedContentNodes = chunk(allWpPost.nodes, perPage);
+  const posts = allWpPost.nodes;
 
   await Promise.all(
-    chunkedContentNodes.map(async (nodesChunk, index) => {
-      const firstNode = nodesChunk[0];
-      const page = index + 1;
-      const offset = perPage * index;
+    posts.map(async (post, i) => {
+      const postPath = newsPostPath(post.slug);
+      console.log('creating post', postPath);
+
+      if (post.uri && post.uri !== postPath) {
+        actions.createRedirect({
+          fromPath: post.uri,
+          toPath: postPath,
+          isPermanent: true,
+        });
+      }
 
       await actions.createPage({
-        component: resolve(`./src/templates/index.js`),
-        path: page === 1 ? `/blog/` : `/blog/${page}/`,
+        component: resolve(`./src/templates/single/Post.tsx`),
+        path: postPath,
         context: {
-          firstId: firstNode.id,
-          page,
-          offset,
-          totalPages: chunkedContentNodes.length,
-          perPage,
+          id: post.id,
+          // Sorted newest-first, so the following entry is the older post.
+          olderPost: (posts[i + 1] || {}).id,
+          newerPost: (posts[i - 1] || {}).id,
         },
+      });
+    })
+  );
+
+  const years = [...new Set(posts.map((post) => post.year))];
+
+  await Promise.all(
+    years.map(async (year) => {
+      const yearPath = newsYearPath(year);
+      console.log('creating news archive', yearPath);
+
+      await actions.createPage({
+        component: resolve(`./src/templates/news-year.tsx`),
+        path: yearPath,
+        context: { year },
       });
     })
   );

@@ -67,27 +67,32 @@ function groupParams(groups: string[]): Record<string, string> {
 }
 
 /**
- * The endpoint always answers `text/html`, but the body is JSON whenever
- * Mailchimp has an actual verdict on the address — success, already
- * subscribed, blank email. Anything else means we got the hosted signup page
- * back and can't tell what happened, so we fail closed rather than telling
- * someone they're subscribed when they may not be.
+ * Asking for JSONP is what keeps this readable. Without a callback param the
+ * endpoint answers a real submission with 33KB of hosted signup page, which
+ * can't be told apart from a failure without scraping it. With one, every
+ * outcome comes back as `callback({"result":…,"msg":…})`.
+ */
+const jsonpCallback = 'lwbNewsletterSignup';
+
+/**
+ * Unwraps `callback({…})`. Mailchimp also answers plain JSON when it rejects a
+ * request before it gets as far as producing JSONP — a missing email, say — so
+ * a bare object is accepted too.
  */
 function interpret(status: number, body: string): MailchimpResult {
+  const unwrapped = body.trim().replace(/^[\w$.]+\s*\(([\s\S]*)\)\s*;?$/, '$1');
+
   try {
-    const parsed = JSON.parse(body) as Partial<MailchimpResult>;
+    const parsed = JSON.parse(unwrapped) as Partial<MailchimpResult>;
     if (parsed.result === 'success' || parsed.result === 'error') {
       return { result: parsed.result, msg: parsed.msg ?? '' };
     }
   } catch (e) {
-    // Not JSON — fall through to the status check below.
+    // Not JSON or JSONP — fall through and fail closed below.
   }
 
-  // A redirect to the "almost finished, confirm your email" page is a success.
-  if (status >= 300 && status < 400) {
-    return { result: 'success', msg: 'Thank you for subscribing!' };
-  }
-
+  // Anything else means we got the hosted page back and genuinely can't tell
+  // what happened, so say so rather than claiming a signup that may not exist.
   // eslint-disable-next-line no-console
   console.error('Unrecognized Mailchimp response', status, body.slice(0, 500));
   return { result: 'error', msg: genericMessage };
@@ -114,6 +119,7 @@ export default async function newsletterSignup(
   }
 
   const params = new URLSearchParams({
+    c: jsonpCallback,
     EMAIL: email,
     ...(firstName ? { FNAME: firstName } : {}),
     ...(lastName ? { LNAME: lastName } : {}),
@@ -131,9 +137,6 @@ export default async function newsletterSignup(
       const response = await fetch(
         `${endpoint}${separator}${params.toString()}`,
         {
-          // Don't follow the confirmation-page redirect; seeing the 3xx is how
-          // we recognize a success that came back without a JSON body.
-          redirect: 'manual',
           signal: abort.signal,
         }
       );

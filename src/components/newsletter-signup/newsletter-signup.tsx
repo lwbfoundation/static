@@ -1,4 +1,4 @@
-import React, { useState, useRef, FunctionComponent } from 'react';
+import React, { useState, useRef, useCallback, FunctionComponent } from 'react';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
 import { Text, Box } from '@chakra-ui/react';
@@ -89,17 +89,39 @@ type NewsletterSignupFormValues = SignupFormValues & {
   interestedInScholarshipOpportunities: boolean;
 };
 
+/**
+ * How far above the form to land once there is something to read. Enough that
+ * the message isn't jammed against the top of the viewport, and enough to show
+ * a little of whatever sits above it for context.
+ */
+const scrollMargin = 100;
+
 const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
   signupButtonText,
 }) => {
   const [isSignupComplete, setIsSignupComplete] = useState(false);
-  const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
+  // On the wrapper rather than the form itself, because the form unmounts when
+  // the confirmation replaces it — a ref on the form would be gone by the time
+  // the success path wanted to scroll to it.
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const scrollToForm = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const top =
+      container.getBoundingClientRect().top + window.pageYOffset - scrollMargin;
+    window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+  }, []);
 
   if (isSignupComplete) {
     return (
-      <FormSuccessMessage>
-        Thank you for signing up for the Lewis W. Butler Foundation newsletter!
-      </FormSuccessMessage>
+      <Box ref={containerRef}>
+        <FormSuccessMessage>
+          Thank you for signing up for the Lewis W. Butler Foundation
+          newsletter!
+        </FormSuccessMessage>
+      </Box>
     );
   }
 
@@ -112,7 +134,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
         try {
           const validationError = validateSignupFormValues(values);
           if (validationError) {
-            formRef.current?.scrollIntoView(true);
+            scrollToForm();
             return {
               [FORM_ERROR]: validationError,
             };
@@ -145,30 +167,30 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
           if (result !== 'success') {
             const mailchimpError = getMailchimpError(message);
             if (mailchimpError) {
-              formRef.current?.scrollIntoView(true);
+              scrollToForm();
               return {
                 [FORM_ERROR]: mailchimpError,
               };
             }
 
-            // Suppressed errors — currently only "already subscribed" — count
-            // as success, so the visitor gets the confirmation rather than a
-            // form that sits there looking like the button did nothing.
+            // Suppressed errors count as success, so the visitor gets the
+            // confirmation rather than a form that sits there looking like the
+            // button did nothing. Mailchimp now reports an already-subscribed
+            // address as a success outright, so little should reach this.
             setIsSignupComplete(true);
+            scrollToForm();
             return undefined;
           }
 
-          // No scroll on success, unlike the error paths. The confirmation
-          // replaces the form in place, so it lands where the visitor is
-          // already looking; scrolling would just yank the page under them.
           setIsSignupComplete(true);
+          scrollToForm();
 
           trackCustomEvent({
             category: 'Email Signup Form',
             action: 'Signup Complete',
           });
         } catch (e) {
-          formRef.current?.scrollIntoView(true);
+          scrollToForm();
           return { [FORM_ERROR]: genericError };
         }
 
@@ -182,82 +204,85 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
         dirtySinceLastSubmit,
         submitError,
       }) => (
-        <form onSubmit={handleSubmit} ref={formRef}>
-          {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
-          {submitError && !dirtySinceLastSubmit && (
-            <Box marginBottom={8}>
-              <FormErrorMessage>{submitError.message}</FormErrorMessage>
-            </Box>
-          )}
-          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
-            First name
-            <Field
-              name="firstName"
-              autoComplete="given-name"
-              marginTop={1}
-              component={InputControl}
-              backgroundColor="white"
-            />
-          </Text>
-          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
-            Last name
-            <Field
-              name="lastName"
-              autoComplete="family-name"
-              marginTop={1}
-              component={InputControl}
-              backgroundColor="white"
-            />
-          </Text>
-          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
-            Email address
-            <Field
-              name="email"
-              autoComplete="email"
-              marginTop={1}
-              component={InputControl}
-              backgroundColor="white"
-            />
-          </Text>
-          <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
-            I am a...
-            <Field
-              name="contactType"
-              marginTop={1}
-              component={SelectControl}
-              backgroundColor="white"
-            >
-              {contactTypes.map((contactType) => (
-                <option
-                  key={contactType.name || 'Other'}
-                  value={contactType.name || ''}
-                >
-                  {contactType.label}
-                </option>
-              ))}
-            </Field>
-          </Text>
-          <Field
-            name="interestedInScholarshipOpportunities"
-            type="checkbox"
-            component={CheckboxControl}
-            size="lg"
-            marginTop={4}
-          >
-            <Text fontSize="md">
-              Keep me in the loop about scholarship opportunities and deadlines.
+        <Box ref={containerRef}>
+          <form onSubmit={handleSubmit}>
+            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+            {submitError && !dirtySinceLastSubmit && (
+              <Box marginBottom={8}>
+                <FormErrorMessage>{submitError.message}</FormErrorMessage>
+              </Box>
+            )}
+            <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
+              First name
+              <Field
+                name="firstName"
+                autoComplete="given-name"
+                marginTop={1}
+                component={InputControl}
+                backgroundColor="white"
+              />
             </Text>
-          </Field>
-          <Box textAlign="right" marginTop={4}>
-            <SubmitButton
-              {...heroButtonStyle}
-              marginTop={2}
-              isDisabled={submitting}
+            <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
+              Last name
+              <Field
+                name="lastName"
+                autoComplete="family-name"
+                marginTop={1}
+                component={InputControl}
+                backgroundColor="white"
+              />
+            </Text>
+            <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
+              Email address
+              <Field
+                name="email"
+                autoComplete="email"
+                marginTop={1}
+                component={InputControl}
+                backgroundColor="white"
+              />
+            </Text>
+            <Text as="label" fontWeight="bold" display="block" marginBottom={2}>
+              I am a...
+              <Field
+                name="contactType"
+                marginTop={1}
+                component={SelectControl}
+                backgroundColor="white"
+              >
+                {contactTypes.map((contactType) => (
+                  <option
+                    key={contactType.name || 'Other'}
+                    value={contactType.name || ''}
+                  >
+                    {contactType.label}
+                  </option>
+                ))}
+              </Field>
+            </Text>
+            <Field
+              name="interestedInScholarshipOpportunities"
+              type="checkbox"
+              component={CheckboxControl}
+              size="lg"
+              marginTop={4}
             >
-              {submitting ? 'Submitting...' : signupButtonText}
-            </SubmitButton>
-          </Box>
-        </form>
+              <Text fontSize="md">
+                Keep me in the loop about scholarship opportunities and
+                deadlines.
+              </Text>
+            </Field>
+            <Box textAlign="right" marginTop={4}>
+              <SubmitButton
+                {...heroButtonStyle}
+                marginTop={2}
+                isDisabled={submitting}
+              >
+                {submitting ? 'Submitting...' : signupButtonText}
+              </SubmitButton>
+            </Box>
+          </form>
+        </Box>
       )}
     </Form>
   );

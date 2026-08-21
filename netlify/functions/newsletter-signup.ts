@@ -75,20 +75,45 @@ function groupParams(groups: string[]): Record<string, string> {
 const jsonpCallback = 'lwbNewsletterSignup';
 
 /**
- * Unwraps `callback({…})`. Mailchimp also answers plain JSON when it rejects a
- * request before it gets as far as producing JSONP — a missing email, say — so
- * a bare object is accepted too.
+ * Splits the body into its JSONP payloads. Mailchimp can put more than one
+ * callback invocation in a single response — a rate-limited request comes back
+ * as the specific reason followed by a generic "There are errors below" — so
+ * this can't treat the whole body as one wrapper. Splitting on the callback
+ * name rather than regexing the braces keeps nested objects intact.
+ *
+ * Returns the payloads in order; the first carries the real reason.
+ */
+function jsonpPayloads(body: string): string[] {
+  return body
+    .split(jsonpCallback)
+    .map((chunk) => chunk.trim())
+    .filter((chunk) => chunk.startsWith('('))
+    .map((chunk) => chunk.replace(/^\(\s*/, '').replace(/\s*\)\s*;?$/, ''));
+}
+
+/**
+ * Mailchimp also answers plain JSON when it rejects a request before it gets
+ * as far as producing JSONP — a missing email, say — so a bare object is
+ * accepted too.
  */
 function interpret(status: number, body: string): MailchimpResult {
-  const unwrapped = body.trim().replace(/^[\w$.]+\s*\(([\s\S]*)\)\s*;?$/, '$1');
+  const payloads = jsonpPayloads(body);
+  const candidates = payloads.length > 0 ? payloads : [body.trim()];
 
-  try {
-    const parsed = JSON.parse(unwrapped) as Partial<MailchimpResult>;
-    if (parsed.result === 'success' || parsed.result === 'error') {
-      return { result: parsed.result, msg: parsed.msg ?? '' };
-    }
-  } catch (e) {
-    // Not JSON or JSONP — fall through and fail closed below.
+  const verdict = candidates
+    .map((candidate) => {
+      try {
+        return JSON.parse(candidate) as Partial<MailchimpResult>;
+      } catch (e) {
+        return null;
+      }
+    })
+    .find(
+      (parsed) => parsed?.result === 'success' || parsed?.result === 'error'
+    );
+
+  if (verdict && verdict.result) {
+    return { result: verdict.result, msg: verdict.msg ?? '' };
   }
 
   // Anything else means we got the hosted page back and genuinely can't tell

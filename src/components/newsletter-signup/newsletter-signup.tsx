@@ -33,26 +33,23 @@ const genericError: ErrorInfo = {
 const getMailchimpError: (mailchimpError: string) => ErrorInfo | null = (
   mailchimpError
 ) => {
+  // Mailchimp reports an address that's already on the list as a success and
+  // merges the groups, so this is a safety net for any phrasing that still
+  // comes back as an error. Either way the visitor is subscribed, which is all
+  // they asked for — tell them so rather than showing them a problem.
   if (mailchimpError.match('is already subscribed')) {
-    // For now, just show success message if they are already subscribed.
-    // In the future, merge their signup groups.
     return null;
-
-    // return {
-    //   message: (
-    //     <>
-    //       You are already subscribed to our mailing list. Please email{' '}
-    //       <a href="mailto:info@lewiswbutlerfoundation.org">
-    //         info@lewiswbutlerfoundation.org
-    //       </a>{' '}
-    //       if you need assistance.
-    //     </>
-    //   ),
-    // };
   }
 
   if (mailchimpError === 'The email you entered is not valid.') {
     return emailError;
+  }
+
+  // Hitting submit repeatedly trips a per-address limit. Mailchimp's own
+  // wording says how long to wait, which beats sending them to us over
+  // something that clears itself up.
+  if (mailchimpError.match('Too many subscribe attempts')) {
+    return { message: mailchimpError };
   }
 
   return genericError;

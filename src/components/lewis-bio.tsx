@@ -4,6 +4,7 @@ import { Box, Heading, Text, Button } from '@chakra-ui/react';
 import AspectRatioResponsive from './aspect-ratio-responsive';
 import BackgroundImage100 from './background-image-100';
 import PostBody from './post-body';
+import { heroButtonStyle } from './form';
 
 type ExpandablePostBodyProps = {
   body: string;
@@ -25,9 +26,8 @@ const ExpandablePostBody: FunctionComponent<ExpandablePostBodyProps> = ({
           <Button
             as="button"
             // type="button"
+            {...heroButtonStyle}
             marginTop={8}
-            height={7}
-            paddingTop={1}
             backgroundColor="blue.brand"
             outline="1px solid white"
             _hover={{

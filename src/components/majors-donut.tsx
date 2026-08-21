@@ -231,7 +231,13 @@ const MajorsDonut: FunctionComponent<MajorsDonutProps> = ({
               marginRight={3}
               transform="translateY(0.1rem)"
             />
-            <Text as="dt" color="gray.type" flexGrow={1} marginBottom={0}>
+            <Text
+              as="dt"
+              color="gray.type"
+              fontWeight={600}
+              flexGrow={1}
+              marginBottom={0}
+            >
               {label}
             </Text>
             <Text

@@ -5,12 +5,25 @@ import PostBody from '../post-body';
 import Logo from '../../assets/svg/logo.inline.svg';
 import Instagram from '../../assets/svg/social/instagram.inline.svg';
 
-const Footer: FunctionComponent<PageTemplateProps> = ({ data }) => {
+type FooterProps = PageTemplateProps & {
+  /** Drop the gap above the orange band, for pages that run artwork into it. */
+  flush?: boolean;
+};
+
+const Footer: FunctionComponent<FooterProps> = ({ data, flush = false }) => {
   return (
-    <Box backgroundColor="orange.brand" color="white">
+    // `position: sticky` with `top: 100vh` keeps the footer in normal flow on
+    // long pages, but pins it to the bottom of the viewport on short ones —
+    // PageWrapper gives it a 100vh-tall parent to be pinned against.
+    <Box
+      backgroundColor="orange.brand"
+      color="white"
+      position="sticky"
+      top="100vh"
+    >
       <Container
         maxWidth="container.lg"
-        marginTop={[4, 8, 16]}
+        marginTop={flush ? 0 : [4, 8, 16]}
         paddingTop={[4, 8, 16]}
         paddingBottom={4}
       >
@@ -43,27 +56,6 @@ const Footer: FunctionComponent<PageTemplateProps> = ({ data }) => {
       >
         SUBSCRIBE
       </Box> */}
-          <Box width={['100%', '100%', 'auto']} marginTop={['auto', 4, 'auto']}>
-            <a
-              href="https://www.guidestar.org/profile/shared/824b931a-4cc6-4cf5-a440-8ce32f01a524"
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: 'block',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-            >
-              <img
-                src="https://widgets.guidestar.org/TransparencySeal/9955646"
-                alt="Guidestar Transparency Seal"
-                style={{
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                }}
-              />
-            </a>
-          </Box>
           <Box
             width={['100%', '100%', 'auto']}
             marginTop={4}

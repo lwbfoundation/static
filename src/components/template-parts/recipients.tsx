@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { IGatsbyImageData } from 'gatsby-plugin-image';
-import { Center, Divider, Text } from '@chakra-ui/react';
+import { Box, ChakraProps, Divider, Flex, Link } from '@chakra-ui/react';
 import { PageTemplateProps } from '../../templates/single/Page';
 import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
@@ -42,6 +42,61 @@ type ScholarData = Readonly<{
   };
 }>;
 
+const yearHref = (year: number): string =>
+  `/scholarship/recipients/${year}-recipients`;
+
+const YEAR_STYLES: ChakraProps = {
+  borderWidth: '2px',
+  paddingX: [4, 5],
+  paddingY: 2,
+  fontSize: ['md', 'lg'],
+  lineHeight: 1.2,
+  textTransform: 'uppercase',
+};
+
+/**
+ * Every year of recipients, current one included and marked, so the row reads as
+ * "where am I" rather than a list of somewhere else to go.
+ */
+const YearSwitcher: FunctionComponent<{
+  readonly years: number[];
+  readonly currentYear: number;
+}> = ({ years, currentYear }) => (
+  <Box as="nav" aria-label="Scholarship recipients by year">
+    <Flex justify="center" wrap="wrap" gridGap={2}>
+      {years.map((year) =>
+        year === currentYear ? (
+          <Box
+            key={year}
+            {...YEAR_STYLES}
+            aria-current="page"
+            backgroundColor="blue.brand"
+            borderColor="blue.brand"
+            color="white"
+          >
+            {year}
+          </Box>
+        ) : (
+          <Link
+            key={year}
+            {...YEAR_STYLES}
+            href={yearHref(year)}
+            borderColor="mint.branddark"
+            color="gray.type"
+            _hover={{
+              backgroundColor: 'mint.brand',
+              borderColor: 'mint.brand',
+              textDecoration: 'none',
+            }}
+          >
+            {year}
+          </Link>
+        )
+      )}
+    </Flex>
+  </Box>
+);
+
 const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
   const pageDate = new Date(data.page.date);
   const scholarshipYear = pageDate.getFullYear();
@@ -78,13 +133,12 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
     }
   `);
 
-  const otherYears = [
-    ...new Set(
-      scholars.nodes.map((scholar) => {
-        return new Date(scholar.date).getFullYear();
-      }, [])
-    ),
-  ].filter((year) => year !== scholarshipYear);
+  const years = [
+    ...new Set([
+      scholarshipYear,
+      ...scholars.nodes.map((scholar) => new Date(scholar.date).getFullYear()),
+    ]),
+  ].sort((a, b) => b - a);
 
   const filteredScholars = scholars.nodes.filter((scholar) => {
     const scholarDate = new Date(scholar.date);
@@ -143,6 +197,9 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
           body={data.page.title}
         />
       </PageContainer>
+      <PageContainer marginBottom={[10, null, 16]}>
+        <YearSwitcher years={years} currentYear={scholarshipYear} />
+      </PageContainer>
       <PageContainer>
         <Divider
           borderColor="mint.brand"
@@ -152,19 +209,6 @@ const Recipients: FunctionComponent<PageTemplateProps> = ({ data }) => {
       </PageContainer>
       <PageContainer>
         <PeopleList people={people} />
-      </PageContainer>
-      <PageContainer>
-        <Text textAlign="center">
-          More scholars:{` `}
-          {otherYears.map((year) => (
-            <>
-              <a key={year} href={`/scholarship/recipients/${year}-recipients`}>
-                {year}
-              </a>
-              {` `}
-            </>
-          ))}
-        </Text>
       </PageContainer>
       <Footer data={data} />
     </PageWrapper>

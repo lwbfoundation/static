@@ -2,7 +2,7 @@
 import React from 'react';
 import { Box, Grid } from '@chakra-ui/react';
 import Header from './header';
-import Menu from './menu';
+import MainMenu from './main-menu';
 
 import '../assets/style.css';
 
@@ -12,7 +12,9 @@ const DefaultLayout = ({ children }) => (
       <Box mb={10} mt={20}>
         <Header />
       </Box>
-      <Menu />
+      <Box mb={10} maxW="100%">
+        <MainMenu variant="desktop" marginLeft={0} showHomeLink />
+      </Box>
 
       <Box mb={100}>{children}</Box>
     </Grid>

@@ -26,6 +26,10 @@ import { PageContainer } from '../styleguide/page-container';
 import PageWrapper from './page-wrapper';
 import Footer from './footer';
 import CustomHeading from '../custom-heading';
+import Results from '../results';
+import ScholarArtwork from '../scholar-artwork';
+import ScholarBanner from '../scholar-banner';
+import PeopleCarousel from '../people-carousel';
 
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -187,18 +191,19 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
       </PageContainer>
       <Box backgroundColor="orange.brand" marginY={8} padding={8}>
         <Text fontSize="2em" textAlign="center" color="white">
-          2025 Scholarship recipients have been annnounced!
+          2026 Scholarship recipients have been annnounced!
         </Text>
         <Text textAlign="center">
           <HeaderButton
             textAlign="center"
             as={Link}
-            href="/scholarship/recipients/2025-recipients"
+            href="/scholarship/recipients/2026-recipients"
           >
-            See the 2025 Recipients
+            See the 2026 Recipients
           </HeaderButton>
         </Text>
       </Box>
+      <div id="about" />
       <Container maxWidth="container.lg">
         <PostBody
           body={data.page.content}
@@ -213,18 +218,30 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
       <div id="sign-up" />
       <FormsContainer initialState={initialFormState} />
 
+      <Box marginTop={[8, 12, 20]} position="relative" zIndex={1}>
+        <PageContainer>
+          <Box paddingTop={[8, 12, 16]}>
+            <div id="results" />
+            <Results />
+          </Box>
+        </PageContainer>
+      </Box>
+
+      <ScholarArtwork />
+
       <Box
-        marginTop={[4, 8, 16]}
         paddingTop={[4, 8, 16]}
         paddingBottom={[8, null, 16]}
         backgroundColor="blue.brand"
         color="white"
       >
         <PageContainer>
-          <div id="about" />
+          <div id="lewis-w-butler" />
           <LewisBio />
         </PageContainer>
       </Box>
+
+      <PeopleCarousel />
 
       <Box marginTop={[4, 8, 16]}>
         <PageContainer>
@@ -233,7 +250,9 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         </PageContainer>
       </Box>
 
-      <Footer data={data} />
+      <ScholarBanner />
+
+      <Footer data={data} flush />
     </PageWrapper>
   );
 };

@@ -1,6 +1,27 @@
 import { extendTheme } from '@chakra-ui/react';
 
 const theme = {
+  /**
+   * Chakra's reset paints an opaque white `body`, which would cover the blue
+   * canvas the root element sets for the overscroll bands (see `HEAD_STYLES`
+   * in gatsby-ssr.js). The page's own white comes from the app root instead.
+   */
+  styles: {
+    global: {
+      body: {
+        bg: 'transparent',
+      },
+      /**
+       * Hash links used to land flush against the top of their target, which
+       * reads as standing too close to it. Offsetting where the scroll stops
+       * leaves the element itself — and so the layout — untouched, and it
+       * covers the `scrollIntoView` calls the forms make as well.
+       */
+      '[id]': {
+        scrollMarginTop: '100px',
+      },
+    },
+  },
   fonts: {
     heading: 'Edmond Sans',
     body: 'Edmond Sans',

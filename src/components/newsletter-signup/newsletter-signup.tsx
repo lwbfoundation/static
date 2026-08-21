@@ -14,6 +14,7 @@ import {
   FormSuccessMessage,
   SubmitButton,
   CheckboxControl,
+  heroButtonStyle,
 } from '../form';
 import signupForNewsletter, { NewsletterGroup } from './signup-for-newsletter';
 
@@ -185,7 +186,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             First name
             <Field
               name="firstName"
-              autocomplete="given-name"
+              autoComplete="given-name"
               marginTop={1}
               component={InputControl}
               backgroundColor="white"
@@ -195,7 +196,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             Last name
             <Field
               name="lastName"
-              autocomplete="family-name"
+              autoComplete="family-name"
               marginTop={1}
               component={InputControl}
               backgroundColor="white"
@@ -205,7 +206,7 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             Email address
             <Field
               name="email"
-              autocomplete="email"
+              autoComplete="email"
               marginTop={1}
               component={InputControl}
               backgroundColor="white"
@@ -241,7 +242,11 @@ const NewsletterSignupForm: FunctionComponent<NewsletterSignupProps> = ({
             </Text>
           </Field>
           <Box textAlign="right" marginTop={4}>
-            <SubmitButton marginTop={2} isDisabled={submitting}>
+            <SubmitButton
+              {...heroButtonStyle}
+              marginTop={2}
+              isDisabled={submitting}
+            >
               {submitting ? 'Submitting...' : signupButtonText}
             </SubmitButton>
           </Box>

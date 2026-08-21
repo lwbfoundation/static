@@ -15,19 +15,20 @@ const CenteredLayout: FunctionComponent<CenteredLayoutProps> = ({
     <HeadContent title={title} />
     <Global
       styles={css`
-        html {
+        html,
+        body {
           height: 100%;
-          background-color: #4b4b4b;
         }
 
         body {
-          height: 100%;
           color: #ffffff;
         }
 
+        /* Overrides the white the app root carries for the rest of the site. */
         #___gatsby,
         #gatsby-focus-wrapper {
           height: 100%;
+          background-color: #4b4b4b;
         }
       `}
     />

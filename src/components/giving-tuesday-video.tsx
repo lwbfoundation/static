@@ -134,7 +134,7 @@ const GivingTuesdayVideo: FunctionComponent = () => {
           isRound
           size="lg"
           fontSize="xl"
-          backgroundColor="blue.brand"
+          backgroundColor="rgba(0, 0, 0, 0.5)"
           color="white"
           _hover={{ backgroundColor: 'blue.brand' }}
           _focusVisible={{ outline: '2px solid white', outlineOffset: '2px' }}
@@ -147,9 +147,9 @@ const GivingTuesdayVideo: FunctionComponent = () => {
         position="absolute"
         bottom={3}
         left={3}
-        size="sm"
-        fontSize="md"
-        backgroundColor="blue.brand"
+        size="lg"
+        fontSize="2xl"
+        backgroundColor="rgba(0, 0, 0, 0.5)"
         color="white"
         _hover={{ backgroundColor: 'blue.brand' }}
         _focusVisible={{ outline: '2px solid white', outlineOffset: '-4px' }}

@@ -8,6 +8,7 @@ import CustomHeading from '../custom-heading';
 import PostBody from '../post-body';
 import NewsArticles from '../news-articles';
 import { useNewsPosts } from '../../utils/use-news-posts';
+import NewsletterSection from '../newsletter-section';
 
 /**
  * The /news/ index, reached through the WordPress "News" page's
@@ -36,6 +37,7 @@ const News: FunctionComponent<PageTemplateProps> = ({ data }) => {
           </Box>
         )}
       </PageContainer>
+      <NewsletterSection marginTop={0} marginBottom={[12, 16]} />
       <PageContainer maxWidth={800}>
         {posts.length ? (
           <NewsArticles posts={posts} />

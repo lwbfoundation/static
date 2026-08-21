@@ -1,9 +1,18 @@
-import { Box, Container, Flex, Link, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Flex,
+  HStack,
+  Icon,
+  Link,
+  Text,
+} from '@chakra-ui/react';
 import React, { FunctionComponent } from 'react';
 import { PageTemplateProps } from '../../templates/single/Page';
 import PostBody from '../post-body';
 import Logo from '../../assets/svg/logo.inline.svg';
 import Instagram from '../../assets/svg/social/instagram.inline.svg';
+import { FiMail } from 'react-icons/fi';
 
 type FooterProps = PageTemplateProps & {
   /** Drop the gap above the orange band, for pages that run artwork into it. */
@@ -62,19 +71,38 @@ const Footer: FunctionComponent<FooterProps> = ({ data, flush = false }) => {
             marginLeft={[0, 0, 8]}
             textAlign={['center', 'center', 'right']}
           >
-            <Link
-              href="https://www.instagram.com/lewiswbutlerfdn/"
-              target="_blank"
-              rel="nofollow noreferrer"
+            <HStack
+              spacing={3}
+              justifyContent={['center', 'center', 'flex-end']}
             >
-              <Instagram
-                width="40"
-                height="40"
-                fill="white"
-                alt="Lewis W. Butler Foundation on Instagram"
-                style={{ display: 'inline' }}
-              />
-            </Link>
+              <Link
+                href="https://www.instagram.com/lewiswbutlerfdn/"
+                target="_blank"
+                rel="nofollow noreferrer"
+              >
+                <Instagram
+                  width="40"
+                  height="40"
+                  fill="white"
+                  alt="Lewis W. Butler Foundation on Instagram"
+                  style={{ display: 'inline' }}
+                />
+              </Link>
+              {/* Feather's mail glyph set into a white disc, so it reads as the
+                  same badge shape as the Instagram mark beside it. */}
+              <Link
+                href="mailto:info@lewiswbutlerfoundation.org"
+                aria-label="Email the Lewis W. Butler Foundation"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                boxSize="40px"
+                borderRadius="full"
+                backgroundColor="white"
+              >
+                <Icon as={FiMail} boxSize="22px" color="orange.brand" />
+              </Link>
+            </HStack>
           </Box>
         </Flex>
         <Box maxWidth={680} marginX="auto">

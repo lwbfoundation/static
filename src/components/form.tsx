@@ -143,6 +143,23 @@ export const FormSuccessMessage: FunctionComponent = ({ children }) => {
   );
 };
 
+/**
+ * The hero buttons' proportions and text layout, shared so a submit button
+ * standing in for one — the newsletter signup — doesn't drift out of step with
+ * them. `display` matters as much as the metrics here: Chakra's Button is
+ * `inline-flex` and centres its label as a flex item, which sits the caps a
+ * couple of pixels higher than the hero buttons' normal-flow `inline-block`.
+ * Colours stay with each button.
+ */
+export const heroButtonStyle: ButtonProps = {
+  fontSize: 20,
+  height: 9,
+  paddingY: '0.4em',
+  minWidth: [null, 150],
+  display: 'inline-block',
+  textAlign: 'center',
+};
+
 export const SubmitButton: ComponentWithAs<'button', ButtonProps> = (props) => (
   <Button
     type="submit"

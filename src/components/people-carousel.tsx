@@ -53,6 +53,13 @@ const PeopleCarousel: FunctionComponent = () => {
       role="img"
       aria-label="Photos from Lewis W. Butler Foundation events and scholar gatherings"
       overflowX="hidden"
+      // The strip sits back at half strength so it reads as texture behind the
+      // page, and comes up to full when someone hovers or taps it.
+      opacity={0.67}
+      transition="opacity 400ms ease"
+      _hover={{ opacity: 1 }}
+      _active={{ opacity: 1 }}
+      _focusWithin={{ opacity: 1 }}
       sx={{
         // Nothing should be moving under a reduced-motion preference, so the
         // strip parks and becomes an ordinary scrollable row instead.

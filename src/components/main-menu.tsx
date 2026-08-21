@@ -147,11 +147,27 @@ function DesktopItem({ item }: { item: MainMenuItem }): ReactElement {
     entries.unshift({ item, depth: 0 });
   }
 
+  // Hover opens the dropdown, but only for a real mouse. A touch screen still
+  // emulates mouseenter on tap, which fires just before MenuButton's own click:
+  // the dropdown opened and the click immediately toggled it shut again, so on
+  // an iPad the nested items were unreachable. Ignoring pen and touch pointers
+  // leaves the tap to MenuButton, which toggles it open and keeps it open.
+  const openIfMouse = (event: React.PointerEvent) => {
+    if (event.pointerType === 'mouse') {
+      onOpen();
+    }
+  };
+  const closeIfMouse = (event: React.PointerEvent) => {
+    if (event.pointerType === 'mouse') {
+      onClose();
+    }
+  };
+
   return (
     // The MenuList is a DOM descendant of this Box, so moving the pointer from
     // the button into the dropdown never fires mouseleave. gutter={0} keeps the
     // two flush; any gap would close the menu as the pointer crossed it.
-    <Box onMouseEnter={onOpen} onMouseLeave={onClose}>
+    <Box onPointerEnter={openIfMouse} onPointerLeave={closeIfMouse}>
       <Menu
         isOpen={isOpen}
         onOpen={onOpen}
@@ -184,8 +200,14 @@ function DesktopItem({ item }: { item: MainMenuItem }): ReactElement {
             <Link
               key={entry.id}
               {...linkProps(entry)}
+              // Without a mouse there is no pointerleave to close on, and an
+              // in-page anchor link never reloads the page, so the dropdown
+              // would sit open over the content after a tap.
+              onClick={onClose}
               display="block"
-              paddingY={2}
+              // Enough vertical padding to clear the ~44px touch target these
+              // are now tapped with rather than clicked.
+              paddingY={3}
               paddingRight={4}
               paddingLeft={4 + depth * 4}
               textTransform="uppercase"

@@ -26,7 +26,7 @@ const ScholarCredit: FunctionComponent<ScholarCreditProps> = ({ credit }) => (
         backgroundColor="rgba(0, 0, 0, 0.5)"
         color="white"
         textAlign="right"
-        fontSize={['0.625rem', 'xs', 'sm']}
+        fontSize={['0.625rem']}
         lineHeight={1.5}
         letterSpacing="0.08em"
         textTransform="uppercase"

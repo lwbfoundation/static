@@ -3,6 +3,7 @@ import { Box, BoxProps } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import theme from '../@chakra-ui/gatsby-plugin/theme';
+import { LEAD_SENTENCE_CLASS } from '../utils/lead-sentence';
 
 type PostBodyProps = BoxProps & {
   body: string;
@@ -13,6 +14,13 @@ type PostBodyProps = BoxProps & {
    * spacing they were designed against.
    */
   richText?: boolean;
+  /**
+   * Styles the span that `utils/lead-sentence` wraps around the opening
+   * sentence of the first paragraph. Opt-in, and deliberately not combinable
+   * with `richText`: the bodies that want a lead sentence are short intros,
+   * not articles.
+   */
+  leadSentence?: boolean;
 };
 
 const baseStyles = css`
@@ -163,8 +171,37 @@ const richTextStyles = css`
   }
 `;
 
+/**
+ * The opening sentence promoted to a statement above the paragraph it starts.
+ * It has to be a block: left inline, a run this much larger than its paragraph
+ * drags that one line's leading open and the rest of the block goes ragged.
+ */
+const leadSentenceStyles = css`
+  .${LEAD_SENTENCE_CLASS} {
+    display: block;
+    margin-bottom: 1.5rem;
+    color: ${theme.colors.blue.brand};
+    /* Holds the size this was designed at. It was drawn as 1.85em over an 18px
+       body; the body is now set at 1.4em to match the Lewis bio, so the same
+       result needs 1.5 rather than 1.85. */
+    font-size: 1.5em;
+    /* 600 is the Bold face. gatsby-ssr.js declares no 700, so asking for one
+       only resolves back here by nearest-weight matching. */
+    font-weight: 600;
+    line-height: 1.28;
+  }
+  p:nth-of-type(n + 2) {
+    color: ${theme.colors.gray.type};
+  }
+`;
+
 const PostBodyInner = styled(Box)`
   ${baseStyles}
+`;
+
+const LeadSentenceBody = styled(Box)`
+  ${baseStyles}
+  ${leadSentenceStyles}
 `;
 
 const RichTextBody = styled(Box)`
@@ -175,9 +212,14 @@ const RichTextBody = styled(Box)`
 const PostBody: FunctionComponent<PostBodyProps> = ({
   body,
   richText = false,
+  leadSentence = false,
   ...rest
 }) => {
-  const Component = richText ? RichTextBody : PostBodyInner;
+  const Component = (() => {
+    if (richText) return RichTextBody;
+    if (leadSentence) return LeadSentenceBody;
+    return PostBodyInner;
+  })();
 
   return (
     // eslint-disable-next-line react/no-danger

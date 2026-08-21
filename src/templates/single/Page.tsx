@@ -39,6 +39,8 @@ interface CustomCommonDataFields {
   readonly legalinfo: string;
   readonly address: string;
   readonly contactemail: string;
+  /** Gates the routes into the application and recommendation forms. */
+  readonly applicationsOpen: boolean | null;
 }
 
 interface CommonSiteSettings {
@@ -110,6 +112,7 @@ export const query = graphql`
         address
         contactemail
         donatebuttontext
+        applicationsOpen: applicationsopen
       }
     }
 

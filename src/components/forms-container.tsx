@@ -1,32 +1,14 @@
-import React, {
-  FunctionComponent,
-  Suspense,
-  useState,
-  useRef,
-  lazy,
-  useEffect,
-} from 'react';
-import { useStaticQuery, graphql } from 'gatsby';
-import {
-  Box,
-  Text,
-  Button,
-  ButtonProps,
-  ComponentWithAs,
-} from '@chakra-ui/react';
+import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
+import { Box, Button, ButtonProps, ComponentWithAs } from '@chakra-ui/react';
 import { DonateForm } from './donate-form';
-import PostBody from './post-body';
-
-const LazyNewsletterSignup = lazy(
-  () => import('./newsletter-signup/newsletter-signup')
-);
+import { heroButtonStyle } from './form';
 
 export const HeaderButton: ComponentWithAs<'button', ButtonProps> = ({
   ...rest
 }) => {
   return (
     <Button
-      fontSize={20}
+      {...heroButtonStyle}
       backgroundColor="mint.brand"
       _hover={{
         backgroundColor: 'mint.brandlight',
@@ -35,14 +17,12 @@ export const HeaderButton: ComponentWithAs<'button', ButtonProps> = ({
         backgroundColor: 'mint.branddark',
       }}
       borderRadius={0}
-      height={9}
-      paddingY="0.4em"
-      marginX={1}
-      display="inline-block"
-      minWidth={[null, 150]}
+      // Vertical to match the horizontal: the pair wraps to two rows wherever
+      // the column holding them is narrower than both together, and without
+      // this they meet with no seam between them.
+      margin={1}
       textTransform="uppercase"
       fontFamily="Edmond Sans, Helvetica"
-      textAlign="center"
       {...rest}
     />
   );
@@ -52,7 +32,6 @@ export const HeaderButton: ComponentWithAs<'button', ButtonProps> = ({
 export enum FormsState {
   none = 0,
   donate,
-  newsletterSignup,
 }
 
 type FormsContainerProps = {
@@ -62,18 +41,6 @@ type FormsContainerProps = {
 const FormsContainer: FunctionComponent<FormsContainerProps> = ({
   initialState = FormsState.none,
 }) => {
-  const data = useStaticQuery(graphql`
-    query {
-      wpCommonSiteSettings {
-        customCommonDataFields {
-          donateformexplainer
-          newslettersignupexplainer
-          legalinfo
-        }
-      }
-    }
-  `);
-
   const [openForm, setOpenForm] = useState(initialState);
   const formsContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -98,26 +65,6 @@ const FormsContainer: FunctionComponent<FormsContainerProps> = ({
       marginBottom={openForm === FormsState.none ? 0 : 16}
     >
       {openForm === FormsState.donate && <DonateForm />}
-      {openForm === FormsState.newsletterSignup && (
-        <Suspense fallback={<Box height={600} />}>
-          <Box
-            backgroundColor="#F4F9F9"
-            paddingX={[2, 8]}
-            paddingY={6}
-            borderRadius={[0, 10]}
-          >
-            <Text as="div" fontSize={['1em', '1.4em']} marginBottom={4}>
-              <PostBody
-                body={
-                  data.wpCommonSiteSettings.customCommonDataFields
-                    .newslettersignupexplainer
-                }
-              />
-            </Text>
-            <LazyNewsletterSignup signupButtonText="Sign up" />
-          </Box>
-        </Suspense>
-      )}
     </Box>
   );
 };

@@ -1,6 +1,4 @@
-import saveMailchimpSignup from 'gatsby-plugin-mailchimp';
 import type { SignupFormValues } from '../form';
-import categories from './categories.json';
 
 // eslint-disable-next-line no-shadow
 export enum NewsletterGroup {
@@ -16,32 +14,33 @@ type NewsletterSignupValues = SignupFormValues & {
   groups: NewsletterGroup[];
 };
 
-function createGroupProperties(
-  groups: NewsletterGroup[]
-): Record<string, number> {
-  return groups.reduce((acc, group) => {
-    acc[`group[${categories.categoryId}][${categories.groups[group].id}]`] =
-      categories.groups[group].id;
-    return acc;
-  }, {} as Record<string, number>);
-}
-
 type MailchimpSignupResult = {
   result: string;
   msg: string;
 };
 
-function signupForNewsletter({
+/**
+ * Posts to our own Netlify function rather than to Mailchimp directly.
+ * Mailchimp removed the JSONP endpoint that `gatsby-plugin-mailchimp` used,
+ * and the endpoint that replaced it can't be reached from the browser, so the
+ * request goes through `netlify/functions/newsletter-signup.ts`. The group
+ * name to Mailchimp field mapping now lives there too.
+ */
+async function signupForNewsletter({
   firstName,
   lastName,
   email,
   groups,
 }: NewsletterSignupValues): Promise<MailchimpSignupResult> {
-  return saveMailchimpSignup(email, {
-    FNAME: firstName,
-    LNAME: lastName,
-    ...createGroupProperties(groups),
+  const response = await fetch('/.netlify/functions/newsletter-signup', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ firstName, lastName, email, groups }),
   });
+
+  return (await response.json()) as MailchimpSignupResult;
 }
 
 export default signupForNewsletter;

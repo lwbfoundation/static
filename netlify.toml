@@ -1,2 +1,7 @@
 [[plugins]]
 package = "@netlify/plugin-gatsby"
+
+[functions]
+  directory = "netlify/functions"
+  # The signup handler is TypeScript; esbuild is the bundler that compiles it.
+  node_bundler = "esbuild"

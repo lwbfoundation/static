@@ -13,6 +13,7 @@ const nodeRedirects = {
   '/thank-you/': '/#thank-you',
   // Same form as DONATE_URL in src/utils/donate.ts.
   '/donate': 'https://secure.lglforms.com/form_engine/s/fOrzrx_W51sfuYJLWceL2g',
+  '/cancel': 'https://secure.lglforms.com/form_engine/s/cXoDtlfXGs1oko-Wy7BKWQ',
   '/application-form': 'https://forms.gle/4RjsgBBcQ7MvaeVy5',
   '/recommender-form': 'https://forms.gle/Lbvz3nLTZAQiqeGn6',
   '/scholarship/recipients/': '/scholarship/recipients/2026-recipients',

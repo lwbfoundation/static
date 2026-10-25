@@ -5,3 +5,11 @@ package = "@netlify/plugin-gatsby"
   directory = "netlify/functions"
   # The signup handler is TypeScript; esbuild is the bundler that compiles it.
   node_bundler = "esbuild"
+
+# Read by Netlify straight from this file, so it doesn't depend on the Gatsby
+# build regenerating _redirects. Same form as DONATE_URL in src/utils/donate.ts.
+[[redirects]]
+  from = "/donate"
+  to = "https://secure.lglforms.com/form_engine/s/fOrzrx_W51sfuYJLWceL2g"
+  status = 302
+  force = true

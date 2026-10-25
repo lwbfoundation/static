@@ -1,6 +1,14 @@
 import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
-import { Box, Button, ButtonProps, ComponentWithAs } from '@chakra-ui/react';
-import { DonateForm } from './donate-form';
+import {
+  Box,
+  Button,
+  ButtonProps,
+  ComponentWithAs,
+  Heading,
+  Text,
+} from '@chakra-ui/react';
+// Donations are moving offsite, so the form is out of the page for now.
+// import { DonateForm } from './donate-form';
 import { heroButtonStyle } from './form';
 
 export const HeaderButton: ComponentWithAs<'button', ButtonProps> = ({
@@ -32,7 +40,37 @@ export const HeaderButton: ComponentWithAs<'button', ButtonProps> = ({
 export enum FormsState {
   none = 0,
   donate,
+  thankYou,
 }
+
+/** Shown when a donor comes back to `/#thank-you`. */
+const ThankYouMessage: FunctionComponent = () => (
+  <Box
+    role="status"
+    backgroundColor="#F4F9F9"
+    borderTopWidth={6}
+    borderTopColor="mint.brand"
+    paddingX={[4, 8]}
+    paddingY={[6, 8]}
+    borderRadius={[0, 10]}
+    textAlign="center"
+  >
+    <Heading
+      as="h2"
+      variant="h3"
+      fontSize={['2xl', '3xl']}
+      fontWeight="bold"
+      marginTop={0}
+    >
+      Thank you for your donation!
+    </Heading>
+    <Text fontSize={['1em', '1.4em']} marginTop={4} marginBottom={0}>
+      Every dollar donated goes directly to our scholars studying architecture
+      and design. Your support is essential to help these students grow and find
+      their calling in the world of design.
+    </Text>
+  </Box>
+);
 
 type FormsContainerProps = {
   initialState?: FormsState;
@@ -64,7 +102,8 @@ const FormsContainer: FunctionComponent<FormsContainerProps> = ({
       marginTop={8}
       marginBottom={openForm === FormsState.none ? 0 : 16}
     >
-      {openForm === FormsState.donate && <DonateForm />}
+      {/* {openForm === FormsState.donate && <DonateForm />} */}
+      {openForm === FormsState.thankYou && <ThankYouMessage />}
     </Box>
   );
 };

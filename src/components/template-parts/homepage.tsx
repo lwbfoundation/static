@@ -26,6 +26,7 @@ import ScholarArtwork from '../scholar-artwork';
 import ScholarBanner from '../scholar-banner';
 import PeopleCarousel from '../people-carousel';
 import NewsletterSection from '../newsletter-section';
+import { DONATE_URL } from '../../utils/donate';
 
 /** The wordmark's own proportions, and its height below `sm`. */
 const LOGO_RATIO = 1.85;
@@ -34,9 +35,7 @@ const LOGO_HEIGHT = 120;
 const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
   const data = useStaticQuery(graphql`
     {
-      mobile: file(
-        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
-      ) {
+      mobile: file(relativePath: { eq: "lwbf-header-2026.jpg" }) {
         childImageSharp {
           gatsbyImageData(
             quality: 70
@@ -47,9 +46,7 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
           )
         }
       }
-      tablet: file(
-        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
-      ) {
+      tablet: file(relativePath: { eq: "lwbf-header-2026.jpg" }) {
         childImageSharp {
           gatsbyImageData(
             quality: 70
@@ -60,9 +57,7 @@ const HeaderBackgroundImage: FunctionComponent = ({ children }) => {
           )
         }
       }
-      desktop: file(
-        relativePath: { eq: "jeswin-thomas-8nHQx4zi9Wk-unsplash.jpg" }
-      ) {
+      desktop: file(relativePath: { eq: "lwbf-header-2026.jpg" }) {
         childImageSharp {
           gatsbyImageData(
             quality: 70
@@ -99,7 +94,12 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
   const [initialFormState, setInitialFormState] = useState(FormsState.none);
   const setStateFromHash = useCallback(() => {
     if (window.location.hash === '#donate') {
-      setInitialFormState(FormsState.donate);
+      // `replace` so going back doesn't land on `/#donate` and bounce again.
+      window.location.replace(DONATE_URL);
+      return;
+    }
+    if (window.location.hash === '#thank-you') {
+      setInitialFormState(FormsState.thankYou);
     }
   }, [setInitialFormState]);
 
@@ -151,7 +151,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
               />
             </Box>
             <Box paddingTop={4}>
-              <HeaderButton as={Link} href="/#donate">
+              <HeaderButton as={Link} href={DONATE_URL} isExternal>
                 Donate
               </HeaderButton>
               {applicationsOpen ? (
@@ -218,7 +218,7 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           marginBottom={4}
           fontSize={['4xl', '5xl']}
         />
-        <HeaderButton as={Link} href="/#donate">
+        <HeaderButton as={Link} href={DONATE_URL} isExternal>
           Donate
         </HeaderButton>
         {applicationsOpen ? (
@@ -246,8 +246,15 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
         />
       </PageContainer>
 
+      <Box marginTop={[8, 12, 16]}>
+        <PeopleCarousel />
+      </Box>
+
+      <NewsletterSection />
+
       <div id="forms" />
       <div id="donate" />
+      <div id="thank-you" />
       <FormsContainer initialState={initialFormState} />
 
       <Box marginTop={[8, 12, 20]} position="relative" zIndex={1}>
@@ -272,10 +279,6 @@ const Homepage: FunctionComponent<PageTemplateProps> = ({ data }) => {
           <LewisBio />
         </PageContainer>
       </Box>
-
-      <PeopleCarousel />
-
-      <NewsletterSection />
 
       <Box marginTop={16}>
         <PageContainer>

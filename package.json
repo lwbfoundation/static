@@ -14,7 +14,7 @@
   "scripts": {
     "develop": "mkdir -p logs && GATSBY_LOGGER=yurnalist script -q -F ./logs/$(date +%Y-%m-%d_%H-%M-%S).log gatsby develop -H 0.0.0.0",
     "clean": "gatsby clean",
-    "build": "gatsby build",
+    "build": "gatsby clean && gatsby build",
     "clean-develop": "gatsby clean && npm run develop",
     "clean-build": "gatsby clean && gatsby build",
     "start": "npm run develop",
